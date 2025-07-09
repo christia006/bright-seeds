@@ -1,0 +1,44 @@
+/* Import Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap');
+
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F8F9FA; /* Light gray background for the whole app */
+  color: #333;
+  line-height: 1.6;
+}
+
+html, body, #root {
+  height: 100%; /* Ensure html, body, and root div take full height */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Basic Layout Styles (can be overridden by module-specific margins) */
+/* These are just base styles, specific components might override them */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Base content area style, specific pages will add their own classes */
+/* The margin-top will be dynamically adjusted by each page for header spacing */
+.content-area {
+  flex-grow: 1;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 80px auto 20px auto; /* Default margin for header spacing */
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* General button styles for disabled state if not explicitly styled in modules */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed !important;
+}

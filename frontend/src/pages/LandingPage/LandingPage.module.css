@@ -1,0 +1,259 @@
+.landingPageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #F8F9FA;
+  color: #333;
+}
+
+.heroSection {
+  background: linear-gradient(135deg, #FFEB3B 0%, #FFC107 100%); /* Gradien kuning cerah */
+  padding: 80px 20px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap-reverse; /* Gambar di atas di mobile */
+  gap: 30px;
+  min-height: 500px;
+  margin-top: 60px; /* Space for fixed header */
+}
+
+.heroContent {
+  flex: 1;
+  max-width: 600px;
+  text-align: left;
+}
+
+.heroTitle {
+  font-size: 3.5em;
+  color: #D32F2F; /* Merah cerah */
+  margin-bottom: 15px;
+  font-weight: 900;
+  line-height: 1.1;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.heroSubtitle {
+  font-size: 1.5em;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.4;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 30px;
+  justify-content: flex-start;
+}
+
+.ctaButton {
+  background-color: #4CAF50; /* Hijau untuk CTA utama */
+  color: white;
+  padding: 15px 30px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 1.3em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctaButton:hover {
+  background-color: #45a049;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.loginButton {
+  background-color: #007bff; /* Biru untuk login */
+}
+
+.loginButton:hover {
+  background-color: #0056b3;
+}
+
+.dashboardButton {
+    background-color: #673AB7; /* Ungu untuk dashboard jika sudah login */
+}
+
+.dashboardButton:hover {
+    background-color: #512DA8;
+}
+
+.heroImageContainer {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heroImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  transform: rotate(-5deg); /* Sedikit rotasi untuk kesan dinamis */
+  transition: transform 0.3s ease;
+}
+
+.heroImage:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+.featuresSection {
+  padding: 60px 20px;
+  background-color: #E8F5E9; /* Hijau muda */
+  text-align: center;
+}
+
+.sectionTitle {
+  font-size: 2.8em;
+  color: #388E3C; /* Hijau tua */
+  margin-bottom: 40px;
+  font-weight: 800;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.featureCard {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.featureCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  border-color: #FFD700; /* Border kuning saat hover */
+}
+
+.featureIcon {
+  font-size: 3.5em;
+  margin-bottom: 15px;
+  line-height: 1;
+}
+
+.featureCard h3 {
+  font-size: 1.8em;
+  color: #4CAF50;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.featureCard p {
+  font-size: 1.1em;
+  color: #555;
+}
+
+.callToActionSection {
+  background-color: #FFECB3; /* Kuning sangat muda */
+  padding: 60px 20px;
+  text-align: center;
+}
+
+/* Media Queries for Responsiveness */
+
+@media (max-width: 900px) {
+  .heroSection {
+    flex-direction: column; /* Stack vertically on smaller screens */
+    padding: 70px 20px 30px;
+  }
+  .heroContent {
+    text-align: center;
+    max-width: 100%;
+  }
+  .heroTitle {
+    font-size: 2.8em;
+  }
+  .heroSubtitle {
+    font-size: 1.3em;
+  }
+  .buttonGroup {
+    justify-content: center; /* Center buttons on mobile */
+  }
+  .heroImageContainer {
+    margin-top: 30px;
+    order: -1; /* Move image to top on smaller screens */
+  }
+  .heroImage {
+    transform: rotate(0deg); /* Remove rotation on mobile */
+  }
+  .sectionTitle {
+    font-size: 2.2em;
+  }
+  .featuresGrid {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+  }
+  .featureCard {
+    padding: 25px;
+  }
+  .featureIcon {
+    font-size: 3em;
+  }
+  .featureCard h3 {
+    font-size: 1.6em;
+  }
+  .featureCard p {
+    font-size: 1em;
+  }
+  .ctaButton {
+    font-size: 1.1em;
+    padding: 12px 25px;
+  }
+}
+
+@media (max-width: 600px) {
+  .heroSection {
+    padding: 60px 15px 20px;
+    margin-top: 50px; /* Adjust for smaller header on mobile */
+  }
+  .heroTitle {
+    font-size: 2.3em;
+  }
+  .heroSubtitle {
+    font-size: 1.1em;
+  }
+  .buttonGroup {
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 15px;
+  }
+  .ctaButton {
+    width: calc(100% - 30px); /* Full width buttons */
+    text-align: center;
+    justify-content: center;
+  }
+  .sectionTitle {
+    font-size: 1.8em;
+  }
+  .featureIcon {
+    font-size: 2.5em;
+  }
+  .featureCard h3 {
+    font-size: 1.4em;
+  }
+  .featureCard p {
+    font-size: 0.9em;
+  }
+}

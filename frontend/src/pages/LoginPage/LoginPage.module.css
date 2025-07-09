@@ -1,0 +1,151 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #F8F9FA; /* Light gray background */
+  color: #333;
+}
+
+.loginContent {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-top: 60px; /* Space for fixed header */
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  padding: 40px 30px;
+  max-width: 450px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.title {
+  font-size: 2.2em;
+  color: #FF6F61; /* Bright red/orange */
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+
+.description {
+  font-size: 1.1em;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.errorMessage {
+  color: #f44336; /* Red error */
+  background-color: #ffebee;
+  border: 1px solid #ffcdD2;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputGroup {
+  text-align: left;
+}
+
+.inputGroup label {
+  display: block;
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.inputField {
+  width: calc(100% - 24px); /* Full width minus padding */
+  padding: 12px;
+  font-size: 1.1em;
+  border: 2px solid #BBDEFB; /* Light blue border */
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputField:focus {
+  border-color: #6200EE; /* Purple on focus */
+  box-shadow: 0 0 0 3px rgba(98, 0, 238, 0.2);
+}
+
+.submitButton {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 10px;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.submitButton:disabled {
+  background-color: #b0c4de; /* Lighter blue when disabled */
+  cursor: not-allowed;
+}
+
+.registerText {
+  margin-top: 30px;
+  font-size: 1em;
+  color: #555;
+}
+
+.registerLink {
+  color: #007bff; /* Bright blue link */
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.registerLink:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 600px) {
+  .loginContent {
+    padding: 15px;
+  }
+  .card {
+    padding: 30px 20px;
+  }
+  .title {
+    font-size: 2em;
+  }
+  .description {
+    font-size: 1em;
+  }
+  .inputField {
+    padding: 10px;
+    font-size: 1em;
+  }
+  .submitButton {
+    padding: 12px;
+    font-size: 1.1em;
+  }
+  .registerText {
+    font-size: 0.9em;
+  }
+}

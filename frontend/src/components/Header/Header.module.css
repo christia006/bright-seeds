@@ -1,0 +1,174 @@
+/* Header.module.css */
+.header {
+  position: fixed; /* Keep header at the top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #FFECB3; /* Bright yellow */
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure header is above other content */
+  box-sizing: border-box; /* Ensure padding doesn't add to width */
+}
+
+.appName {
+  font-size: 2.5em; /* App name size */
+  font-weight: bold;
+}
+
+.appLink {
+  text-decoration: none;
+  color: #FF5722; /* Bright orange-red */
+  transition: color 0.3s ease;
+}
+
+.appLink:hover {
+  color: #FFC107; /* Yellow on hover */
+}
+
+.menuContainer {
+  position: relative;
+}
+
+.menuButton {
+  background-color: #4CAF50; /* Cheerful green */
+  color: white;
+  border: none;
+  border-radius: 25px; /* Capsule shape */
+  padding: 10px 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.menuButton:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.menuIcon {
+  font-size: 1.5em; /* Menu icon size */
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 10px); /* Just below the button */
+  right: 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  min-width: 180px;
+  overflow: hidden;
+  z-index: 1010; /* Ensure it's above the header */
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1em;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border: none; /* For buttons styled as menu items */
+  background: none; /* For buttons styled as menu items */
+  width: 100%; /* For buttons styled as menu items */
+  text-align: left; /* For buttons styled as menu items */
+  cursor: pointer; /* For buttons styled as menu items */
+}
+
+.menuItem:hover {
+  background-color: #E0F7FA; /* Light blue on hover */
+  color: #00796B; /* Text color on hover */
+}
+
+.itemIcon {
+  font-size: 1.5em; /* Icon size within menu items */
+  margin-right: 10px;
+}
+
+.authButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.authButton {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.authButton:hover {
+    background-color: #0056b3;
+}
+
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 15px;
+  }
+
+  .appName {
+    font-size: 2em;
+  }
+
+  .menuButton {
+    padding: 8px 15px;
+    font-size: 1em;
+  }
+
+  .menuIcon {
+    font-size: 1.2em;
+  }
+
+  .menuText {
+    display: none; /* Hide "Menu" text on small screens */
+  }
+
+  .dropdownMenu {
+    min-width: 160px;
+    top: calc(100% + 5px); /* Adjust dropdown position */
+  }
+
+  .menuItem {
+    padding: 10px 15px;
+    font-size: 1em;
+  }
+
+  .itemIcon {
+    font-size: 1.2em;
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .appName {
+    font-size: 1.8em;
+  }
+  .menuButton {
+    padding: 6px 12px;
+  }
+  .authButton {
+      font-size: 0.9em;
+      padding: 6px 12px;
+  }
+}

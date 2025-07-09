@@ -1,0 +1,332 @@
+.writingPageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #F8F9FA; /* Light gray background */
+  color: #333;
+}
+
+.contentArea {
+  flex-grow: 1;
+  padding: 20px;
+  max-width: 900px;
+  margin: 80px auto 20px auto;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: 3em;
+  color: #8E24AA; /* Purple */
+  margin-bottom: 25px;
+  font-weight: 800;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.levelIndicator {
+    font-size: 1.5em;
+    color: #4CAF50; /* Green */
+    font-weight: bold;
+    margin-bottom: 30px;
+    background-color: #E8F5E9; /* Very light green */
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.levelNumber {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.sectionSelector {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.sectionButton {
+  background-color: #E1BEE7; /* Light purple */
+  color: #4A148C; /* Dark purple */
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.sectionButton:hover {
+  background-color: #CE93D8;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.sectionButton.active {
+  background-color: #8E24AA; /* Active purple */
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.writingCard {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cardTitle {
+  font-size: 2.2em;
+  color: #673AB7; /* Deep Purple */
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.instructions {
+  font-size: 1.1em;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.exampleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  background-color: #F3E5F5; /* Very light purple */
+  border-radius: 10px;
+  padding: 15px 20px;
+  box-shadow: inset 0 1px 5px rgba(0,0,0,0.05);
+  min-height: 80px; /* Agar tombol tidak melompat-lompat */
+}
+
+/* Teks contoh yang disembunyikan secara visual */
+.hiddenExampleText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.speakButton {
+  background-color: #FFC107; /* Amber */
+  border: none;
+  border-radius: 30px; /* Bentuk kapsul */
+  padding: 12px 25px; /* Lebih besar */
+  font-size: 1.5em; /* Ukuran teks lebih besar */
+  font-weight: bold;
+  color: white; /* Teks putih */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Spasi antara ikon dan teks */
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  flex-grow: 1; /* Agak melebar */
+  max-width: 300px; /* Batasi lebar */
+}
+
+.speakButton:hover {
+  background-color: #FFB300;
+  transform: scale(1.02); /* Sedikit membesar saat hover */
+}
+
+.speakButton span {
+  font-size: 1.8em; /* Ukuran ikon lebih besar */
+  color: white;
+}
+
+.writingInput {
+  width: calc(100% - 40px); /* Account for padding */
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 2px solid #D1C4E9; /* Light purple border */
+  border-radius: 10px;
+  font-size: 1.3em;
+  font-family: 'Roboto', sans-serif; /* Consistent font */
+  resize: vertical; /* Allow vertical resize */
+  min-height: 80px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.writingInput:focus {
+  outline: none;
+  border-color: #8E24AA; /* Highlight on focus */
+  box-shadow: 0 0 0 3px rgba(142, 36, 170, 0.2);
+}
+
+.feedbackMessage {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  min-height: 25px; /* Prevent layout shift */
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.submitButton, .skipButton {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.submitButton {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.submitButton:hover {
+  background-color: #43A047;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.skipButton {
+  background-color: #FFB300; /* Orange */
+  color: white;
+}
+
+.skipButton:hover {
+  background-color: #FB8C00;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .contentArea {
+    padding: 15px;
+    margin-top: 60px;
+  }
+  .pageTitle {
+    font-size: 2.5em;
+  }
+  .levelIndicator {
+      font-size: 1.3em;
+  }
+  .sectionButton {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+  .writingCard {
+    padding: 20px;
+  }
+  .cardTitle {
+    font-size: 1.8em;
+  }
+  .instructions {
+    font-size: 1em;
+  }
+  .speakButton {
+    font-size: 1.2em; /* Ukuran teks tombol di mobile */
+    padding: 10px 20px;
+  }
+  .speakButton span {
+    font-size: 1.5em; /* Ukuran ikon di mobile */
+  }
+  .writingInput {
+    font-size: 1.1em;
+    padding: 12px;
+  }
+  .feedbackMessage {
+    font-size: 1.1em;
+  }
+  .submitButton, .skipButton {
+    padding: 10px 20px;
+    font-size: 1.1em;
+  }
+  .buttonGroup {
+      gap: 10px;
+  }
+}
+
+
+/* New styling for confetti container */
+.confettiContainer {
+    position: fixed; /* Fixes it to the viewport */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for its own size */
+    z-index: 1001; /* Above header and content */
+    pointer-events: none; /* Allows clicks to pass through */
+}
+
+/* Existing styles continue... */
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  /* ... existing media queries ... */
+}
+
+@media (max-width: 480px) {
+  /* ... existing media queries ... */
+}
+
+@media (max-width: 480px) {
+  .pageTitle {
+    font-size: 2em;
+  }
+  .levelIndicator {
+      font-size: 1.1em;
+      padding: 8px 15px;
+  }
+  .sectionSelector {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .sectionButton {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+  .writingCard {
+    padding: 15px;
+  }
+  .speakButton {
+    font-size: 1em;
+    padding: 8px 15px;
+    gap: 5px;
+  }
+  .speakButton span {
+    font-size: 1.3em;
+  }
+  .writingInput {
+    font-size: 1em;
+    padding: 10px;
+  }
+  .feedbackMessage {
+    font-size: 1em;
+  }
+  .submitButton, .skipButton {
+    font-size: 1em;
+    padding: 8px 15px;
+  }
+}

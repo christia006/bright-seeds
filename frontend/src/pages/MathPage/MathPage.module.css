@@ -1,0 +1,322 @@
+.mathPageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #F8F9FA; /* Light gray background */
+  color: #333;
+}
+
+.contentArea {
+  flex-grow: 1;
+  padding: 20px;
+  max-width: 900px;
+  margin: 80px auto 20px auto;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: 3em;
+  color: #FF5722; /* Orange-Red */
+  margin-bottom: 25px;
+  font-weight: 800;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.levelIndicator {
+    font-size: 1.5em;
+    color: #00796B; /* Teal Green */
+    font-weight: bold;
+    margin-bottom: 30px;
+    background-color: #E0F2F7; /* Very light blue */
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.levelNumber {
+    background-color: #00796B;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.sectionSelector {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.sectionButton {
+  background-color: #BBDEFB; /* Light Blue */
+  color: #1976D2; /* Darker Blue */
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.sectionButton:hover {
+  background-color: #90CAF9;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.sectionButton.active {
+  background-color: #2196F3; /* Active Blue */
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.mathCard {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cardTitle {
+  font-size: 2.2em;
+  color: #3F51B5; /* Indigo */
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.instructions {
+  font-size: 1.1em;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.questionContainer {
+  display: flex;
+  flex-direction: column; /* Stack button and question */
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  background-color: #E8EAF6; /* Very light indigo */
+  border-radius: 10px;
+  padding: 15px 20px;
+  box-shadow: inset 0 1px 5px rgba(0,0,0,0.05);
+  min-height: 120px; /* Ensure enough space */
+}
+
+.questionText {
+    font-size: 2em;
+    font-weight: bold;
+    color: #424242;
+    margin-top: 15px; /* Space from button */
+    word-break: break-word; /* Ensure long questions wrap */
+}
+
+
+.speakButton {
+  background-color: #FFC107; /* Amber */
+  border: none;
+  border-radius: 30px;
+  padding: 12px 25px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  width: fit-content; /* Adjust width to content */
+}
+
+.speakButton:hover {
+  background-color: #FFB300;
+  transform: scale(1.02);
+}
+
+.speakButton span {
+  font-size: 1.8em;
+  color: white;
+}
+
+.mathInput {
+  width: calc(100% - 40px); /* Account for padding */
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 2px solid #C5CAE9; /* Light indigo border */
+  border-radius: 10px;
+  font-size: 1.5em; /* Larger font for numbers */
+  font-family: 'Roboto', sans-serif;
+  text-align: center; /* Center align numbers */
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mathInput:focus {
+  outline: none;
+  border-color: #3F51B5; /* Highlight on focus */
+  box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.2);
+}
+
+.feedbackMessage {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  min-height: 25px;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.submitButton, .skipButton {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.submitButton {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.submitButton:hover {
+  background-color: #43A047;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.skipButton {
+  background-color: #FFB300; /* Orange */
+  color: white;
+}
+
+.skipButton:hover {
+  background-color: #FB8C00;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+/* Confetti Container */
+.confettiContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001; /* Ensure it's above other content */
+    pointer-events: none; /* Allows clicks to pass through */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .contentArea {
+    padding: 15px;
+    margin-top: 60px;
+  }
+  .pageTitle {
+    font-size: 2.5em;
+  }
+  .levelIndicator {
+      font-size: 1.3em;
+  }
+  .sectionButton {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+  .mathCard {
+    padding: 20px;
+  }
+  .cardTitle {
+    font-size: 1.8em;
+  }
+  .instructions {
+    font-size: 1em;
+  }
+  .questionText {
+      font-size: 1.5em;
+  }
+  .speakButton {
+    font-size: 1.2em;
+    padding: 10px 20px;
+  }
+  .speakButton span {
+    font-size: 1.5em;
+  }
+  .mathInput {
+    font-size: 1.2em;
+    padding: 12px;
+  }
+  .feedbackMessage {
+    font-size: 1.1em;
+  }
+  .submitButton, .skipButton {
+    padding: 10px 20px;
+    font-size: 1.1em;
+  }
+  .buttonGroup {
+      gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageTitle {
+    font-size: 2em;
+  }
+  .levelIndicator {
+      font-size: 1.1em;
+      padding: 8px 15px;
+  }
+  .sectionSelector {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .sectionButton {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+  .mathCard {
+    padding: 15px;
+  }
+  .questionText {
+      font-size: 1.3em;
+  }
+  .speakButton {
+    font-size: 1em;
+    padding: 8px 15px;
+    gap: 5px;
+  }
+  .speakButton span {
+    font-size: 1.3em;
+  }
+  .mathInput {
+    font-size: 1.1em;
+    padding: 10px;
+  }
+  .feedbackMessage {
+    font-size: 1em;
+  }
+  .submitButton, .skipButton {
+    font-size: 1em;
+    padding: 8px 15px;
+  }
+}
