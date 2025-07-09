@@ -53,6 +53,32 @@ Atur:
 - “C harus duduk di ujung.”  
 Anak atur posisi sesuai aturan.
 
+
+
+
+### 🎮 Project “Kode Rahasia”
+**Fungsi:** Melatih membaca simbol dan mencocokkan pola sandi huruf ke angka.  
+**Langkah:**  
+1️⃣ Guru/Orang tua bikin tabel sandi: 
+
+A = 1
+B = 2
+C = 3
+D = 4
+...
+Z = 26
+
+yaml
+Salin
+Edit
+2️⃣ Buat pesan rahasia, misalnya **“HELLO”** → **8-5-12-12-15**  
+3️⃣ Anak membaca angka, lalu mencocokkan huruf:  
+- 8 → H  
+- 5 → E  
+- 12 → L  
+- 12 → L  
+- 15 → O  
+4️⃣ Anak menuliskan kembali huruf → jawaban terbaca.
 ---
 
 ## 🔒 **Fitur Login & Register**
