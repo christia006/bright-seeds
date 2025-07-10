@@ -14,24 +14,21 @@ const LandingPage = ({ currentUser }) => {
             Tempat seru untuk anak-anak belajar membaca, menulis, dan berhitung dengan cara yang menyenangkan!
           </p>
           <div className={styles.buttonGroup}>
+            {/* Hanya ada satu tombol 'Masuk' atau 'Lanjut Belajar' */}
             {currentUser ? (
-              <Link to="/login" className={`${styles.ctaButton} ${styles.dashboardButton}`}>
+              // Jika sudah ada pengguna, arahkan langsung ke Dashboard
+              <Link to="/dashboard" className={`${styles.ctaButton} ${styles.dashboardButton}`}>
                 Lanjut Belajar! ✨
               </Link>
             ) : (
-              <>
-                <Link to="/register" className={styles.ctaButton}>
-                  Daftar Sekarang! 🚀
-                </Link>
-                <Link to="/login" className={`${styles.ctaButton} ${styles.loginButton}`}>
-                  Sudah Punya Akun? Masuk! 👋
-                </Link>
-              </>
+              // Jika belum ada pengguna, arahkan ke halaman Login
+              <Link to="/login" className={`${styles.ctaButton} ${styles.loginButton}`}>
+                Masuk Sekarang! 👋
+              </Link>
             )}
           </div>
         </div>
         <div className={styles.heroImageContainer}>
-          {/* Ganti dengan gambar ilustrasi yang menarik untuk anak-anak */}
           <img
             src="/images/Anak.png" // Pastikan gambar ini ada di public/images
             alt="Anak-anak belajar dengan gembira"
@@ -68,20 +65,19 @@ const LandingPage = ({ currentUser }) => {
 
       <section className={styles.callToActionSection}>
         <h2 className={styles.sectionTitle}>Siap untuk Petualangan Belajar? ✨</h2>
+        {/* Hanya ada satu tombol 'Mulai Petualanganmu!' atau 'Masuk Sekarang!' */}
         {currentUser ? (
-             <Link to="/login" className={`${styles.ctaButton} ${styles.dashboardButton}`}>
-                Mulai Petualanganmu! 🚀
-            </Link>
+          <Link to="/dashboard" className={`${styles.ctaButton} ${styles.dashboardButton}`}>
+            Mulai Petualanganmu! 🚀
+          </Link>
         ) : (
-            <Link to="/register" className={styles.ctaButton}>
-            Daftar Gratis Sekarang! 🎉
-            </Link>
+          <Link to="/login" className={styles.ctaButton}>
+            Masuk Sekarang! 🎉
+          </Link>
         )}
       </section>
     </div>
   );
 };
 
-// --- INI ADALAH BAGIAN PENTINGNYA ---
-// Pastikan baris ini ada di akhir file LandingPage.jsx
 export default LandingPage;

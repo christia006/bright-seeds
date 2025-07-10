@@ -1,129 +1,54 @@
+// brightseeds-app/frontend/src/App.jsx
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
-
-// Import semua komponen halaman Anda dari sub-folder baru
-// PASTIKAN NAMA FOLDER DAN FILE SESUAI DENGAN HURUF BESAR/KECIL
-import Header from './components/Header/Header';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage/LandingPage';
-import RegisterPage from './pages/RegisterPage/RegisterPage';
 import LoginPage from './pages/LoginPage/LoginPage';
-import Dashboard from './pages/Dashboard/Dashboard';
-import ReadingPage from './pages/ReadingPage/ReadingPage';
-import WritingPage from './pages/WritingPage/WritingPage';
-import MathPage from './pages/MathPage/MathPage';
-import GamesPage from './pages/GamesPage/GamesPage'; // PERUBAHAN PATH INI
-import ProfilePage from './pages/ProfilePage/ProfilePage'; // PERUBAHAN PATH INI
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+import Dashboard from './pages/Dashboard/Dashboard'; // Import komponen Dashboard
+import { getCurrentUser, logout } from './services/authService';
+// ... import halaman lain
 
-// Import service dan komponen tambahan
-import { getCurrentUser } from './services/authService';
-import LoadingSpinner from './components/LoadingSpinner';
-
-/**
- * ProtectedRoute Component
- * Wrapper untuk melindungi rute.
- * Jika pengguna tidak login, akan dialihkan ke halaman login.
- */
-const ProtectedRoute = ({ children, currentUser }) => {
-  if (!currentUser) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
-};
-
-function AppContent() {
+const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const user = getCurrentUser();
-    if (user) {
-      setCurrentUser(user);
-    }
-    setLoading(false);
+    setCurrentUser(getCurrentUser());
   }, []);
 
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
-    navigate('/dashboard');
+    // Otomatis navigasi ke dashboard setelah login
+    // Karena useNavigate hanya bisa dipakai di dalam Router context
+    // Kita bisa pakai Link di LoginPage, atau pakai useNavigate jika LoginPage adalah bagian dari Routes
+    // atau kita bisa lakukan ini di komponen App itu sendiri
+    // Untuk saat ini, kita asumsikan LoginPage sudah menangani navigasi ke dashboard
   };
 
   const handleLogout = () => {
+    logout();
     setCurrentUser(null);
-    localStorage.removeItem('currentUser');
-    navigate('/');
+    // Setelah logout, arahkan ke landing page
+    // navigate('/'); // Ini perlu ada di dalam komponen yang di-render di dalam Router
   };
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  return (
-    <Routes>
-      <Route path="/" element={<LandingPage currentUser={currentUser} />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} />
-
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute currentUser={currentUser}>
-            <Dashboard currentUser={currentUser} setCurrentUser={setCurrentUser} />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/read"
-        element={
-          <ProtectedRoute currentUser={currentUser}>
-            <ReadingPage currentUser={currentUser} setCurrentUser={setCurrentUser} />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/write"
-        element={
-          <ProtectedRoute currentUser={currentUser}>
-            <WritingPage currentUser={currentUser} setCurrentUser={setCurrentUser} />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/math"
-        element={
-          <ProtectedRoute currentUser={currentUser}>
-            <MathPage currentUser={currentUser} setCurrentUser={setCurrentUser} />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/games"
-        element={
-          <ProtectedRoute currentUser={currentUser}>
-            <GamesPage currentUser={currentUser} setCurrentUser={setCurrentUser} />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute currentUser={currentUser}>
-            <ProfilePage currentUser={currentUser} onLogout={handleLogout} setCurrentUser={setCurrentUser} />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-  );
-}
-
-function App() {
   return (
     <Router>
-      <AppContent />
+      {/* Anda bisa pass currentUser ke Header juga jika ingin menampilkan nama pengguna atau tombol logout */}
+      <Routes>
+        <Route path="/" element={<LandingPage currentUser={currentUser} />} />
+        <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} />
+        <Route path="/register" element={<RegisterPage />} />
+        {/* Rute ke Dashboard */}
+        <Route path="/dashboard" element={currentUser ? <Dashboard currentUser={currentUser} onLogout={handleLogout} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} />
+        {/* Tambahkan rute lain di sini (ReadingPage, WritingPage, dll.) */}
+        {/* Contoh protected route (harus login dulu) */}
+        {/* <Route 
+            path="/reading" 
+            element={currentUser ? <ReadingPage currentUser={currentUser} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} 
+        /> */}
+      </Routes>
     </Router>
   );
-}
+};
 
 export default App;
