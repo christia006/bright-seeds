@@ -1,8 +1,9 @@
+// brightseeds-app/frontend/src/pages/LoginPage/LoginPage.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../services/authService';
-import Header from '../../components/Header/Header'; // Perbaikan path
-import styles from './LoginPage.module.css'; // Import CSS Module
+import Header from '../../components/Header/Header';
+import styles from './LoginPage.module.css';
 
 const LoginPage = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
@@ -20,22 +21,22 @@ const LoginPage = ({ onLoginSuccess }) => {
       const user = await login(username, password);
       onLoginSuccess(user); // Panggil callback untuk update state di App.jsx
     } catch (err) {
-      setError(err.message || 'Login gagal. Coba lagi!');
+      setError(err || 'Login gagal. Coba lagi!'); // Sesuaikan dengan cara authService melempar error
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className={styles.pageContainer}> {/* Gunakan styles.pageContainer */}
+    <div className={styles.pageContainer}>
       <Header />
-      <div className={styles.loginContent}> {/* Gunakan styles.loginContent */}
-        <div className={styles.card}> {/* Gunakan styles.card */}
+      <div className={styles.loginContent}>
+        <div className={styles.card}>
           <h2 className={styles.title}>Masuk ke Akunmu! 🚀</h2>
           <p className={styles.description}>Ayo mulai petualangan belajarmu!</p>
           {error && <p className={styles.errorMessage}>{error}</p>}
-          <form onSubmit={handleSubmit} className={styles.form}> {/* Gunakan styles.form */}
-            <div className={styles.inputGroup}> {/* Gunakan styles.inputGroup */}
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.inputGroup}>
               <label htmlFor="username">Nama Pengguna:</label>
               <input
                 type="text"
@@ -43,7 +44,7 @@ const LoginPage = ({ onLoginSuccess }) => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className={styles.inputField} 
+                className={styles.inputField}
               />
             </div>
             <div className={styles.inputGroup}>
@@ -57,7 +58,7 @@ const LoginPage = ({ onLoginSuccess }) => {
                 className={styles.inputField}
               />
             </div>
-            <button type="submit" disabled={loading} className={styles.submitButton}> {/* Gunakan styles.submitButton */}
+            <button type="submit" disabled={loading} className={styles.submitButton}>
               {loading ? 'Memproses...' : 'Masuk! ✨'}
             </button>
           </form>

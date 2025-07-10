@@ -1,8 +1,9 @@
+// brightseeds-app/frontend/src/pages/RegisterPage/RegisterPage.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../services/authService';
-import Header from '../../components/Header/Header'; // Perbaikan path
-import styles from './RegisterPage.module.css'; // Import CSS Module
+import Header from '../../components/Header/Header';
+import styles from './RegisterPage.module.css';
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
@@ -32,7 +33,8 @@ const RegisterPage = () => {
         navigate('/login');
       }, 2000);
     } catch (err) {
-      setError(err.message || 'Pendaftaran gagal. Coba lagi!');
+      // Menggunakan `err` langsung karena `authService` sudah melempar pesan string atau Error object
+      setError(err || 'Pendaftaran gagal. Coba lagi!');
     } finally {
       setLoading(false);
     }

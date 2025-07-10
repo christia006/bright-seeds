@@ -1,8 +1,9 @@
+// brightseeds-app/frontend/src/services/userService.js
 import axios from 'axios';
 // import { getCurrentUser } from './authService'; // Ini tidak diperlukan di sini
 
-// API_URL sekarang cukup '/api'
-const API_URL = '/api'; // <--- PERBAIKAN DI SINI
+// PERBAIKAN KRITIS: API_URL harus menunjuk ke jalur relatif /api
+const API_URL = '/api'; 
 
 export const fetchUserProfile = async (username) => {
     try {
