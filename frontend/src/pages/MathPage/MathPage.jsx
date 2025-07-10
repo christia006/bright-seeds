@@ -92,6 +92,28 @@ const NEGATIVE_FEEDBACK_SOUNDS = [
     'coba-lagi-ya', 'jangan-menyerah', 'pasti-bisa'
 ];
 
+// Define getSoundPath function here
+const getSoundPath = (fileName, type) => {
+    switch (type) {
+        case 'feedback':
+            return `/sounds/feedback/${fileName}.mp3`;
+        case 'number':
+            // Assuming you have specific audio files for numbers if needed
+            return `/sounds/numbers/${fileName}.mp3`;
+        case 'math_question':
+            // Assuming you have specific audio files for parts of math questions or full questions
+            // This case might require more specific logic if 'soundText' is a full sentence
+            // For now, we'll try to match exact phrases or fall back
+            // You might need to preprocess `fileName` to match actual audio file names
+            // For simplicity, let's assume specific question sounds if you have them,
+            // otherwise, the Web Speech API fallback is good.
+            // Example: if you have 'ada-berapa-apel-ini.mp3'
+            const formattedFileName = fileName.replace(/ /g, '-').toLowerCase();
+            return `/sounds/questions/${formattedFileName}.mp3`;
+        default:
+            return null; // Or a default sound if desired
+    }
+};
 
 const MathPage = () => { // Hapus props currentUser, setCurrentUser
     const [selectedSection, setSelectedSection] = useState('counting');
@@ -250,8 +272,6 @@ const MathPage = () => { // Hapus props currentUser, setCurrentUser
                 )}
 
                 <h1 className={styles.pageTitle}>Ayo Berhitung! 🔢✨</h1>
-
-                {/* Level indicator dihapus sesuai permintaan */}
 
                 {/* Bagian pemilih kategori (Menghitung Objek, Penjumlahan, Pengurangan) */}
                 <div className={styles.sectionSelector}>
