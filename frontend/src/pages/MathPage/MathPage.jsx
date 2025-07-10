@@ -94,18 +94,6 @@ const mathContent = {
     }
 };
 
-// Daftar sound efek untuk jawaban benar (pastikan file audio ada di path /sounds/feedback/)
-const POSITIVE_FEEDBACK_SOUNDS = [
-    'mantap-bos', 'kamu-gila', 'gila-bisa-benar', 'kok-bisa-benar', 'anjay-benar', 'benar-pula',
-    'bagus-sekali', 'pintar-banget', 'luar-biasa', 'keren-abis'
-];
-
-// Daftar sound efek untuk jawaban salah (pastikan file audio ada di path /sounds/feedback/)
-const NEGATIVE_FEEDBACK_SOUNDS = [
-    'kasihan-salah', 'salah-gila', 'salah-ya', 'slebew-salah', 'salah-terus', 'udah-jelek-salah-lagi',
-    'coba-lagi-ya', 'jangan-menyerah', 'pasti-bisa'
-];
-
 // Define getSoundPath function here
 const getSoundPath = (fileName, type) => {
     switch (type) {
@@ -159,7 +147,7 @@ const MathPage = () => {
         if (!textToSpeak) return;
 
         let path;
-        if (soundType === 'positive-feedback' || soundType === 'negative-feedback') {
+        if (soundType === 'feedback') { // Handle specific feedback sound type
             path = getSoundPath(textToSpeak, 'feedback');
         } else if (soundType === 'number') {
             path = getSoundPath(textToSpeak, 'number');
@@ -171,13 +159,14 @@ const MathPage = () => {
             audioRef.current.src = path;
             audioRef.current.play().catch(e => {
                 console.warn(`Error playing sound from file (${path}), falling back to Web Speech API:`, e);
-                if (soundType !== 'positive-feedback' && soundType !== 'negative-feedback') {
+                // Fallback to Web Speech API only for question/number sounds, not for feedback
+                if (soundType !== 'feedback') {
                     playWebSpeech(textToSpeak);
                 }
             });
         } else {
             console.warn(`No specific sound file found for "${textToSpeak}" (type: ${soundType}), falling back to Web Speech API.`);
-            if (soundType !== 'positive-feedback' && soundType !== 'negative-feedback') {
+            if (soundType !== 'feedback') {
                 playWebSpeech(textToSpeak);
             }
         }
@@ -209,8 +198,7 @@ const MathPage = () => {
 
     // Handler untuk jawaban benar
     const handleCorrectAnswer = () => {
-        const randomPositiveSound = POSITIVE_FEEDBACK_SOUNDS[getRandomNumber(0, POSITIVE_FEEDBACK_SOUNDS.length - 1)];
-        playSound(randomPositiveSound, 'positive-feedback');
+        playSound('benar-pula', 'feedback'); // Play specific correct feedback sound
         setFeedback('Hebat! Jawabanmu benar! 🎉 Lanjut ke soal berikutnya!');
         setFeedbackColor('green');
         setIsExploding(true);
@@ -224,8 +212,7 @@ const MathPage = () => {
 
     // Handler untuk jawaban salah
     const handleIncorrectAnswer = () => {
-        const randomNegativeSound = NEGATIVE_FEEDBACK_SOUNDS[getRandomNumber(0, NEGATIVE_FEEDBACK_SOUNDS.length - 1)];
-        playSound(randomNegativeSound, 'negative-feedback');
+        playSound('coba-lagi-ya', 'feedback'); // Play specific incorrect feedback sound
         setFeedback('Coba lagi! Jawabanmu belum tepat. 🤔 Jangan menyerah!');
         setFeedbackColor('red');
         setIsExploding(false);
