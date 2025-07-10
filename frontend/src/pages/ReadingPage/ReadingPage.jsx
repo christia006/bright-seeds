@@ -317,7 +317,7 @@ const ReadingPage = () => {
                 return (
                     <div className={styles.card}>
                         <h3>🔤 Pengenalan Huruf (A-Z)</h3>
-                        <p className={styles.descriptionText}>Ketuk huruf untuk mendengarkan bunyinya!</p>
+                    
 
                         <div className={styles.letterGrid}>
                             {LETTERS_QUESTIONS.map((item, index) => (
