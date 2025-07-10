@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../../components/Header/Header';
-import { updateUserProgess } from '../../services/userService';
 import { getSoundPath } from '../../utils/soundHelper';
 import styles from './WritingPage.module.css';
 import ConfettiExplosion from 'react-confetti-explosion'; // Import the confetti component
@@ -81,6 +80,7 @@ const WritingPage = ({ currentUser, setCurrentUser }) => {
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
   const [feedbackColor, setFeedbackColor] = useState('');
+  // Level state is still here, but its update logic is simplified
   const [level, setLevel] = useState(currentUser?.progress?.writing?.level || 1);
   const [isExploding, setIsExploding] = useState(false); // New state for confetti
 
@@ -139,68 +139,56 @@ const WritingPage = ({ currentUser, setCurrentUser }) => {
     const trimmedExample = currentExample.trim().toLowerCase();
 
     if (trimmedInput === trimmedExample) {
-      setFeedback('Hebat! Jawabanmu benar! 🎉');
+      // Positive feedback for kids
+      setFeedback('Hebat! Betul sekali! Lanjut ke tantangan berikutnya! ✨');
       setFeedbackColor('green');
       setIsExploding(true); // Trigger confetti on correct answer
 
-      try {
-        const currentSectionProgress = currentUser.progress?.writing?.[selectedSection] || [];
-        const newCompleted = [...currentSectionProgress, currentExample];
-        const uniqueCompleted = Array.from(new Set(newCompleted));
+      // --- Removed user progress update logic ---
+      // The section below would typically update user progress on a backend or global state.
+      // Since the request is to remove saving, this block is commented/removed.
 
-        let newLevel = level;
-        const totalExamples = currentContent.examples.length;
-        const completedCount = uniqueCompleted.length;
-        const threshold = currentContent.levelThreshold;
+      // Example of removed level calculation logic:
+      // const currentSectionProgress = currentUser.progress?.writing?.[selectedSection] || [];
+      // const newCompleted = [...currentSectionProgress, currentExample];
+      // const uniqueCompleted = Array.from(new Set(newCompleted));
+      // let newLevel = level;
+      // const totalExamples = currentContent.examples.length;
+      // const completedCount = uniqueCompleted.length;
+      // const threshold = currentContent.levelThreshold;
+      // const calculatedLevel = Math.min(MAX_LEVEL, Math.floor(completedCount / threshold) + 1);
+      // if (calculatedLevel > level) {
+      //     newLevel = calculatedLevel;
+      //     setFeedback('Yeay! Kamu naik ke Level ' + newLevel + '! Luar biasa! 🚀');
+      //     setFeedbackColor('purple');
+      // }
+      // // ... similar logic for other level-up messages
+      // const updatedUser = await updateUserProgess(currentUser.username, { ... });
+      // setCurrentUser(updatedUser);
+      // setLevel(newLevel);
+      // --- End of removed logic ---
 
-        const calculatedLevel = Math.min(MAX_LEVEL, Math.floor(completedCount / threshold) + 1);
-
-        if (calculatedLevel > level) {
-            newLevel = calculatedLevel;
-            setFeedback('Selamat! Kamu naik ke Level ' + newLevel + '! 🚀');
-            setFeedbackColor('purple');
-        } else if (completedCount === totalExamples && level < MAX_LEVEL) {
-            newLevel = Math.min(MAX_LEVEL, level + 1);
-            setFeedback('Selamat! Kamu telah menyelesaikan semua contoh di bagian ini dan naik ke Level ' + newLevel + '! 🏆');
-            setFeedbackColor('blue');
-        } else if (completedCount === totalExamples && level === MAX_LEVEL) {
-             setFeedback('Luar biasa! Kamu telah menyelesaikan semua di Level Maksimal! ✨');
-             setFeedbackColor('gold');
+      // Automatically advance to the next question after a short delay for feedback/confetti
+      setTimeout(() => {
+        setIsExploding(false); // Hide confetti
+        if (currentExampleIndex < currentContent.examples.length - 1) {
+          setCurrentExampleIndex(currentExampleIndex + 1);
+        } else {
+          setCurrentExampleIndex(0); // Loop back to the first example if all are done
         }
-
-        const updatedUser = await updateUserProgess(currentUser.username, {
-          writing: {
-            ...currentUser.progress?.writing,
-            [selectedSection]: uniqueCompleted,
-            level: newLevel,
-          }
-        });
-        setCurrentUser(updatedUser);
-        setLevel(newLevel);
-
+        setUserInput(''); // Clear input for the next question
         setTimeout(() => {
-          setIsExploding(false); // Hide confetti after a short delay
-          if (currentExampleIndex < currentContent.examples.length - 1) {
-            setCurrentExampleIndex(currentExampleIndex + 1);
-          } else {
-            setCurrentExampleIndex(0);
-          }
-          setUserInput('');
-          setTimeout(() => {
-            setFeedback('');
-            setFeedbackColor('');
-          }, 1000);
-        }, 1500);
-      } catch (error) {
-        setFeedback('Gagal menyimpan progres: ' + error.message);
-        setFeedbackColor('red');
-        setTimeout(() => { setFeedback(''); setFeedbackColor(''); }, 3000);
-      }
+          setFeedback(''); // Clear feedback message
+          setFeedbackColor('');
+        }, 1000); // Clear feedback after showing it briefly
+      }, 1500); // Wait for confetti to finish before moving to the next question
 
     } else {
-      setFeedback('Coba lagi! Jawabanmu belum tepat. 🤔');
+      // Negative feedback for kids
+      setFeedback('Coba lagi, ya! Jangan menyerah! Kamu pasti bisa! 💪');
       setFeedbackColor('red');
       setIsExploding(false); // Ensure confetti is off for incorrect answers
+      // Do NOT advance to the next question if the answer is incorrect
     }
   };
 
@@ -236,6 +224,9 @@ const WritingPage = ({ currentUser, setCurrentUser }) => {
 
         <h1 className={styles.pageTitle}>Ayo Menulis! ✍️</h1>
 
+        {/* The level indicator will now simply reflect the initial level or a hardcoded one,
+            as dynamic level updates based on user progress are removed.
+            You might consider removing this if levels are no longer tracked at all. */}
         <div className={styles.levelIndicator}>
           Level Menulis: <span className={styles.levelNumber}>{level}</span>
         </div>
