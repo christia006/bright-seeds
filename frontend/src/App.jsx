@@ -7,6 +7,9 @@ import MathPage from './pages/MathPage/MathPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import ReadingPage from './pages/ReadingPage/ReadingPage';
 import WritingPage from './pages/WritingPage/WritingPage';
+import PathFinderPage from './pages/PathFinderPage/PathFinderPage';
+import MiniAIChessPage from './pages/MiniAIChessPage/MiniAIChessPage';
+import WumpusWorldPage from './pages/WumpusWorldPage/WumpusWorldPage'; // Pastikan path ini benar
 
 const App = () => {
   return (
@@ -19,6 +22,9 @@ const App = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/read" element={<ReadingPage />} />
         <Route path="/write" element={<WritingPage />} />
+        <Route path="/pathfinder" element={<PathFinderPage />} />
+        <Route path="/miniaichess" element={<MiniAIChessPage />} />
+        <Route path="/wumpus-world" element={<WumpusWorldPage />} /> 
       </Routes>
     </Router>
   );

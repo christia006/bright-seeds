@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../../components/Header/Header';
-import { getSoundPath } from '../../utils/soundHelper'; // Pastikan path ini benar
+// Pastikan path ini benar
 import styles from './MathPage.module.css';
 import ConfettiExplosion from 'react-confetti-explosion'; // Import Confetti
 import { useNavigate } from 'react-router-dom'; // Import useNavigate untuk navigasi

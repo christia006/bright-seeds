@@ -3,18 +3,35 @@ import { Link, useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import styles from './Dashboard.module.css';
 
+// Error Boundary sederhana
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error, info) {
+    console.error("Error caught in ErrorBoundary:", error, info);
+  }
+  render() {
+    if (this.state.hasError) {
+      return <h2>Something went wrong while loading part of the page.</h2>;
+    }
+    return this.props.children;
+  }
+}
+
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Buat user dummy langsung di sini
-    // In a real application, you would fetch user data from an API or context
+    // Dummy user data
     const dummyUser = {
-      username: "Temanku", // Nama pengguna yang ramah anak
+      username: "Temanku",
       progress: {
-        // Progres tetap ada di sini jika diperlukan untuk fitur lain di masa depan,
-        // tetapi tidak akan ditampilkan sebagai "level" di UI ini.
         reading: { level: 1 },
         writing: { level: 1 },
         math: { level: 1 },
@@ -22,7 +39,8 @@ const Dashboard = () => {
           patternScanner: { highscore: 0, level: "Mudah" },
           memoryTrainer: { highscore: 0, level: "Mudah" },
           puzzleSyaratGanda: { highscore: 0, level: "Mudah" },
-          kodeRahasia: { highscore: 0, level: "Mudah" }
+          kodeRahasia: { highscore: 0, level: "Mudah" },
+          pathFinder: { highscore: 0, level: "Mudah" } // Tambahkan progress untuk Path Finder
         },
         badges: []
       }
@@ -30,20 +48,17 @@ const Dashboard = () => {
     setUser(dummyUser);
   }, []);
 
-  // Fungsi getLevelDisplay dihapus karena tidak lagi digunakan
-
-  // Handler untuk tombol "Keluar" (Logout)
   const handleLogout = () => {
-    // Di aplikasi nyata, Anda akan melakukan logika logout di sini (misalnya, menghapus token, keluar dari Firebase)
-    // Untuk contoh dummy ini, kita hanya menavigasi ke LandingPage
-    navigate('/'); // Navigasi ke path root, mengasumsikan LandingPage dipetakan di sana
+    navigate('/'); // kembali ke halaman utama (LandingPage)
   };
 
-  // Tampilkan pesan memuat saat data pengguna sedang disiapkan
+  // Saat data user belum siap
   if (!user) {
     return (
       <div className={styles.pageContainer}>
-        <Header />
+        <ErrorBoundary>
+          <Header />
+        </ErrorBoundary>
         <div className={styles.contentArea} style={{ marginTop: '80px', textAlign: 'center' }}>
           <p>Memuat data pengguna...</p>
         </div>
@@ -53,48 +68,70 @@ const Dashboard = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <Header />
+      <ErrorBoundary>
+        <Header />
+      </ErrorBoundary>
       <div className={styles.dashboardContent}>
         <h2 className={styles.welcomeMessage}>
           Halo, {user.username}! 👋 Ayo kita belajar dan bermain!
         </h2>
 
         <div className={styles.activityGrid}>
-          {/* Kartu Membaca */}
+          {/* Membaca */}
           <Link to="/read" className={`${styles.activityCard} ${styles.readingCard}`}>
-            <div className={styles.cardIcon}>📖</div>
+            <div className={styles.cardIcon} aria-hidden="true">📖</div>
             <h3>Membaca</h3>
-            <p>Ayo kenali huruf dan kata! 📚</p> {/* Teks baru yang menarik */}
+            <p>Ayo kenali huruf dan kata! 📚</p>
           </Link>
 
-          {/* Kartu Menulis */}
+          {/* Menulis */}
           <Link to="/write" className={`${styles.activityCard} ${styles.writingCard}`}>
-            <div className={styles.cardIcon}>✍️</div>
+            <div className={styles.cardIcon} aria-hidden="true">✍️</div>
             <h3>Menulis</h3>
-            <p>Yuk, belajar menulis namamu! ✏️</p> {/* Teks baru yang menarik */}
+            <p>Yuk, belajar menulis namamu! ✏️</p>
           </Link>
 
-          {/* Kartu Matematika */}
+          {/* Matematika */}
           <Link to="/math" className={`${styles.activityCard} ${styles.mathCard}`}>
-            <div className={styles.cardIcon}>➕</div>
+            <div className={styles.cardIcon} aria-hidden="true">➕</div>
             <h3>Matematika</h3>
-            <p>Mari berhitung angka seru! 🔢</p> {/* Teks baru yang menarik */}
+            <p>Mari berhitung angka seru! 🔢</p>
           </Link>
 
-          {/* Kartu Game */}
+          {/* Game */}
           <Link to="/games" className={`${styles.activityCard} ${styles.gamesCard}`}>
-            <div className={styles.cardIcon}>🎮</div>
+            <div className={styles.cardIcon} aria-hidden="true">🎮</div>
             <h3>Game</h3>
             <p>Waktunya bermain seru! 🎉</p>
           </Link>
 
-          {/* Kartu "Profilku" telah dihapus sesuai permintaan */}
+          {/* Path Finder (NEW) */}
+          <Link to="/pathfinder" className={`${styles.activityCard} ${styles.pathFinderCard}`}>
+            <div className={styles.cardIcon} aria-hidden="true">🗺️</div>
+            <h3>Path Finder</h3>
+            <p>Temukan jalan terpendek di labirin yang rumit!</p>
+          </Link>
+
+            <Link to="/miniaichess" className={`${styles.activityCard} ${styles.miniAIChessCard}`}>
+            <div className={styles.cardIcon} aria-hidden="true">♟️</div>
+            <h3>Mini  Chess</h3>
+            <p>Adu strategi jika kamu cerdas!</p>
+          </Link>
+
+           <Link to="/wumpus-world" className={`${styles.activityCard} ${styles.miniAIChessCard}`}>
+            <div className={styles.cardIcon} aria-hidden="true">🏰</div>
+            <h3>Wumpus World Deluxe</h3>
+            <p>Lab AI klasik yang melatih penalaran & perencanaan!</p>
+          </Link>
+
+
+         
         </div>
 
-        {/* Tombol "Keluar" (Logout) */}
         <button
           onClick={handleLogout}
           className={styles.logoutButton}
+          aria-label="Keluar"
         >
           Keluar <span role="img" aria-label="exit">🚪</span>
         </button>

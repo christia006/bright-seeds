@@ -1,0 +1,582 @@
+/* src/pages/WumpusWorldPage/WumpusWorldPage.module.css */
+
+/* --- Base Layout --- */
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Changed to flex-start to allow header to sit at top */
+    padding: 1rem;
+    background: linear-gradient(to bottom right, #1a202c, #2d3748); /* Dark gradient background */
+    font-family: 'Inter', sans-serif; /* Ensure Inter font is loaded in index.html */
+    color: white;
+}
+
+/* Header is now a separate component, so these styles are not directly used by it but are kept for reference if you merge it back */
+/* .header {
+    width: 100%;
+    background: linear-gradient(to right, #8b5cf6, #6366f1);
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+}
+
+.header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+} */
+
+.contentArea {
+    background-color: #2d3748; /* bg-gray-800 */
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4); /* shadow-2xl */
+    padding: 1.5rem; /* p-6 */
+    width: 100%;
+    max-width: 48rem; /* max-w-4xl */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: 2rem; /* Adjusted margin-top now that header is separate */
+    margin-bottom: 2rem;
+    border: 2px solid #4a5568; /* border-2 border-gray-600 */
+}
+
+.pageTitle {
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 800; /* font-extrabold */
+    margin-bottom: 1rem; /* mb-4 */
+    color: white;
+    letter-spacing: -0.025em; /* tracking-tight */
+}
+
+.gameInfo {
+    font-size: 1.125rem; /* text-lg */
+    margin-bottom: 1.5rem; /* mb-6 */
+    font-weight: 600; /* font-semibold */
+    color: #d1d5db; /* text-gray-300 */
+}
+
+/* --- Chess Board --- */
+.board {
+    display: grid;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* aspect-square */
+    max-width: 32rem; /* max-w-xl */
+    margin-left: auto;
+    margin-right: auto;
+    border: 4px solid #4a5568; /* border-4 border-gray-600 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(0, 0, 0, 0.5); /* shadow-inner-lg */
+    overflow: hidden;
+}
+
+.cell {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.lightSquare {
+    background-color: #4a5568; /* bg-gray-600 */
+}
+
+.darkSquare {
+    background-color: #2d3748; /* bg-gray-700 */
+}
+
+.visitedCell {
+    border: 2px solid #ecc94b; /* border-2 border-yellow-500 */
+}
+
+.agentCell {
+    outline: 4px solid #3b82f6; /* ring-4 ring-blue-500 */
+    outline-offset: 2px; /* ring-offset-2 */
+    outline-color: #2d3748; /* ring-offset-gray-800 */
+    transform: scale(1.05);
+}
+
+/* --- Cell Content & Icons --- */
+.cellContentWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.cellIcon { /* This class is not directly used in JSX, but specific icon classes are */
+    font-size: 1.875rem; /* text-3xl */
+}
+
+.agentIcon {
+    color: #60a5fa; /* text-blue-400 */
+    font-size: 1.875rem; /* text-3xl */
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.wumpusIcon {
+    color: #b91c1c; /* text-red-700 */
+    font-size: 1.875rem; /* text-3xl */
+}
+
+.pitIcon {
+    color: #1f2937; /* text-gray-800 */
+    font-size: 1.875rem; /* text-3xl */
+}
+
+.goldIcon {
+    color: #eab308; /* text-yellow-500 */
+    font-size: 1.875rem; /* text-3xl */
+    animation: bounce 1s infinite;
+}
+
+.startIcon {
+    color: #16a34a; /* text-green-700 */
+    font-size: 1.875rem; /* text-3xl */
+}
+
+.uncertainIcon {
+    color: #a855f7; /* text-purple-500 */
+    font-size: 1.5rem; /* text-2xl */
+}
+
+.wumpusProbIcon {
+    color: #ef4444; /* text-red-500 */
+    font-size: 1.5rem; /* text-2xl */
+}
+
+.pitProbIcon {
+    color: #3b82f6; /* text-blue-500 */
+    font-size: 1.5rem; /* text-2xl */
+}
+
+.safeIcon {
+    color: #22c55e; /* text-green-500 */
+    font-size: 1.5rem; /* text-2xl */
+}
+
+.perceptIconsContainer {
+    position: absolute;
+    top: 0.25rem; /* top-1 */
+    left: 0.25rem; /* left-1 */
+    display: flex;
+    gap: 0.25rem; /* gap-1 */
+}
+
+.perceptStenchIcon {
+    color: #f87171; /* text-red-400 */
+    font-size: 1.25rem; /* text-xl */
+}
+
+.perceptBreezeIcon {
+    color: #60a5fa; /* text-blue-400 */
+    font-size: 1.25rem; /* text-xl */
+}
+
+.perceptGlitterIcon {
+    color: #fcd34d; /* text-yellow-300 */
+    font-size: 1.25rem; /* text-xl */
+}
+
+.perceptScreamIcon {
+    color: #fca5a5; /* text-red-300 */
+    font-size: 1.25rem; /* text-xl */
+}
+
+.aiPathDot {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aiPathDotInner {
+    width: 0.5rem; /* w-2 */
+    height: 0.5rem; /* h-2 */
+    background-color: #a855f7; /* bg-purple-500 */
+    border-radius: 9999px; /* rounded-full */
+    opacity: 0.75;
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.cellTooltip {
+    position: absolute;
+    bottom: 0.25rem; /* bottom-1 */
+    font-size: 0.75rem; /* text-xs */
+    color: #4b5563; /* text-gray-600 */
+    background-color: rgba(255, 255, 255, 0.75); /* bg-white bg-opacity-75 */
+    padding: 0 0.25rem; /* px-1 */
+    border-radius: 0.25rem; /* rounded */
+    display: none; /* hidden */
+}
+
+.group:hover .cellTooltip {
+    display: block;
+}
+
+
+/* --- Agent Status Box --- */
+.agentStatusBox {
+    margin-top: 1.5rem; /* mt-6 */
+    padding: 1rem; /* p-4 */
+    background-color: #4a5568; /* bg-gray-700 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6); /* shadow-inner */
+    text-align: left;
+}
+
+.agentStatusTitle {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 500; /* font-medium */
+    color: white;
+    margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.agentStatusText {
+    color: #d1d5db; /* text-gray-300 */
+}
+
+.feedbackMessage {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 600; /* font-semibold */
+    margin-top: 1rem; /* mt-4 */
+}
+
+
+/* --- Buttons --- */
+.buttonGroup {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem; /* gap-4 */
+    margin-top: 1.5rem; /* mt-6 */
+}
+
+.button {
+    padding: 0.75rem 1.5rem; /* px-6 py-3 */
+    border-radius: 0.75rem; /* rounded-xl */
+    font-weight: 700; /* font-bold */
+    font-size: 1.125rem; /* text-lg */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+    transition: all 0.3s ease-in-out;
+    transform: translateZ(0); /* For smoother transitions */
+    cursor: pointer;
+    border: none; /* Remove default button border */
+}
+
+.button:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05); /* hover:shadow-lg */
+    transform: translateY(-0.125rem) scale(1.02); /* hover:scale-105 */
+}
+
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.2); /* focus:ring-4 */
+}
+
+.buttonPrimary {
+    background-color: #8b5cf6; /* bg-purple-600 */
+    color: white;
+}
+
+.buttonPrimary:hover {
+    background-color: #7c3aed; /* hover:bg-purple-700 */
+}
+
+.buttonPrimary:focus {
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.5); /* focus:ring-purple-300 */
+}
+
+.buttonSecondary {
+    background-color: #14b8a6; /* bg-teal-600 */
+    color: white;
+}
+
+.buttonSecondary:hover {
+    background-color: #0d9488; /* hover:bg-teal-700 */
+}
+
+.buttonSecondary:focus {
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.5); /* focus:ring-teal-300 */
+}
+
+.buttonMove {
+    background-color: #6b7280; /* bg-gray-500 */
+    color: white;
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+    font-size: 1rem; /* text-base */
+    border-radius: 0.5rem; /* rounded-lg */
+}
+
+.buttonMove:hover {
+    background-color: #4b5563; /* hover:bg-gray-600 */
+}
+
+.buttonGrab {
+    background-color: #eab308; /* bg-yellow-500 */
+    color: white;
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+    font-size: 1rem; /* text-base */
+    border-radius: 0.5rem; /* rounded-lg */
+}
+
+.buttonGrab:hover {
+    background-color: #d97706; /* hover:bg-yellow-600 */
+}
+
+.buttonShoot {
+    background-color: #ef4444; /* bg-red-500 */
+    color: white;
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+    font-size: 1rem; /* text-base */
+    border-radius: 0.5rem; /* rounded-lg */
+}
+
+.buttonShoot:hover {
+    background-color: #dc2626; /* hover:bg-red-600 */
+}
+
+.buttonClimb {
+    background-color: #22c55e; /* bg-green-500 */
+    color: white;
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+    font-size: 1rem; /* text-base */
+    border-radius: 0.5rem; /* rounded-lg */
+}
+
+.buttonClimb:hover {
+    background-color: #16a34a; /* hover:bg-green-600 */
+}
+
+.buttonGoToDashboard {
+    margin-top: 2rem; /* mt-8 */
+    background-color: #e5e7eb; /* bg-gray-200 */
+    color: #1f2937; /* text-gray-800 */
+    padding: 1rem 2rem; /* px-8 py-4 */
+}
+
+.buttonGoToDashboard:hover {
+    background-color: #d1d5db; /* hover:bg-gray-300 */
+}
+
+.buttonGoToDashboard:focus {
+    box-shadow: 0 0 0 4px rgba(209, 213, 219, 0.5); /* focus:ring-gray-300 */
+}
+
+/* --- Select Dropdown Styling --- */
+.selectContainer {
+    position: relative;
+    display: inline-block; /* To contain the arrow */
+}
+
+.aiModeSelect {
+    -webkit-appearance: none; /* Remove default arrow */
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 2.5rem; /* Make space for custom arrow */
+}
+
+.selectArrow {
+    position: absolute;
+    inset-y: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding-right: 0.5rem; /* px-2 */
+    pointer-events: none; /* Allow clicks to pass through to select */
+    color: white;
+}
+
+.selectArrowIcon {
+    fill: currentColor;
+    height: 1rem; /* h-4 */
+    width: 1rem; /* w-4 */
+}
+
+.aiThinkingSpinner {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+}
+
+/* --- AI Lab Insights --- */
+.aiLabInsights {
+    margin-top: 2rem; /* mt-8 */
+    padding: 1rem; /* p-4 */
+    background-color: #4a5568; /* bg-gray-700 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6); /* shadow-inner */
+    text-align: left;
+}
+
+.aiLabTitle {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 700; /* font-bold */
+    color: white;
+    margin-bottom: 0.75rem; /* mb-3 */
+}
+
+.aiLabText {
+    color: #d1d5db; /* text-gray-300 */
+    margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.beliefMapGrid {
+    display: grid;
+    gap: 0.25rem; /* gap-1 */
+    margin-bottom: 1rem; /* mb-4 */
+}
+
+.beliefMapCell {
+    font-size: 0.75rem; /* text-xs */
+    padding: 0.25rem; /* p-1 */
+    border-radius: 0.25rem; /* rounded */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 4rem; /* h-16 */
+}
+
+.beliefMapCellDefault {
+    background-color: #1f2937; /* bg-gray-900 */
+}
+
+.beliefMapCellVisited {
+    background-color: #6b7280; /* bg-gray-500 */
+}
+
+.beliefMapCellBothRisk {
+    background-color: #581c87; /* bg-purple-900 */
+}
+
+.beliefMapCellWumpusRisk {
+    background-color: #7f1d1d; /* bg-red-900 */
+}
+
+.beliefMapCellPitRisk {
+    background-color: #1e3a8a; /* bg-blue-900 */
+}
+
+.beliefMapCellSafe {
+    background-color: #14532d; /* bg-green-900 */
+}
+
+.beliefMapCellCoords {
+    font-weight: 700; /* font-bold */
+    color: white;
+}
+
+.beliefMapWumpusProb {
+    color: #f87171; /* text-red-300 */
+}
+
+.beliefMapPitProb {
+    color: #93c5fd; /* text-blue-300 */
+}
+
+.aiExplanationList {
+    list-style-type: disc;
+    list-style-position: inside;
+    color: #d1d5db; /* text-gray-300 */
+}
+
+.aiExplanationNote {
+    font-weight: 700; /* font-bold */
+    margin-top: 0.5rem; /* mt-2 */
+    color: #fcd34d; /* text-yellow-300 */
+}
+
+.aiExplanationSubItem {
+    color: #9ca3af; /* text-gray-400 */
+    margin-left: 1.25rem; /* Indent sub-items */
+}
+
+/* --- Animations --- */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+    50% { transform: none; animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+}
+
+@keyframes ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+/* --- Responsive Adjustments (for Android/smaller screens) --- */
+@media (max-width: 768px) {
+    .contentArea {
+        padding: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .pageTitle {
+        font-size: 1.5rem; /* md:text-4xl */
+    }
+
+    .gameInfo {
+        font-size: 1rem;
+    }
+
+    .board {
+        max-width: 100%; /* max-w-xl */
+    }
+
+    .cellIcon { /* This class is not directly used in JSX, but specific icon classes are */
+        font-size: 1.5rem; /* md:text-4xl */
+    }
+
+    .agentIcon, .wumpusIcon, .pitIcon, .goldIcon, .startIcon {
+        font-size: 1.5rem; /* md:text-4xl */
+    }
+
+    .uncertainIcon, .wumpusProbIcon, .pitProbIcon, .safeIcon {
+        font-size: 1.25rem; /* md:text-2xl */
+    }
+
+    .perceptStenchIcon, .perceptBreezeIcon, .perceptGlitterIcon, .perceptScreamIcon {
+        font-size: 1rem; /* md:text-2xl */
+    }
+
+    .button {
+        font-size: 1rem; /* text-lg */
+        padding: 0.625rem 1.25rem; /* px-5 py-2.5 */
+    }
+
+    .buttonGroup {
+        flex-direction: column; /* sm:flex-row */
+        gap: 0.75rem; /* gap-4 */
+    }
+
+    .aiLabTitle {
+        font-size: 1rem; /* text-xl */
+    }
+
+    .aiLabText {
+        font-size: 0.875rem; /* text-base */
+    }
+
+    .beliefMapCell {
+        height: 3.5rem; /* md:h-20 */
+    }
+}

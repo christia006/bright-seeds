@@ -89,7 +89,14 @@
 .writingCard { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
 .mathCard { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
 .gamesCard { background: linear-gradient(135deg, #f3e5f5, #e1bee7); }
-/* Removed .profileCard styles */
+/* NEW: Path Finder Card Style */
+.pathFinderCard {
+    background: linear-gradient(135deg, #ffe0b2, #ffd54f); /* Warm yellow/orange gradient */
+}
+.pathFinderCard .cardIcon {
+    color: #f57c00; /* Darker orange for icon */
+}
+
 
 /* Logout Button Styles */
 .logoutButton {

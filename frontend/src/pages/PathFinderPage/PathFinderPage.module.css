@@ -1,0 +1,367 @@
+/* PathFinderPage.module.css */
+
+.pathFinderPageContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f0f2f5; /* Soft light gray, modern background */
+    font-family: 'Inter', sans-serif;
+    align-items: center;
+    padding-bottom: 40px;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.contentArea {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 960px; /* Wider content area for larger mazes */
+    width: 100%;
+    margin-top: 80px; /* Space for fixed header */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Increased gap for better spacing */
+}
+
+.pageTitle {
+    font-size: 3.8em; /* Larger, more impactful title */
+    color: #2c3e50; /* Dark blue/charcoal for a modern feel */
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 900;
+    text-shadow: 4px 4px 8px rgba(0,0,0,0.1); /* Subtle, deeper shadow */
+    animation: bounceIn 1.2s ease-out;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.4); opacity: 0; }
+    50% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+.levelIndicator, .hintCount {
+    font-size: 1.8em;
+    color: #34495e; /* Darker gray for info text */
+    font-weight: 700;
+    margin-bottom: 10px; /* Slightly less space */
+    text-align: center;
+    background-color: #ecf0f1; /* Light gray background for info */
+    padding: 10px 25px; /* More padding */
+    border-radius: 18px; /* More rounded */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Softer shadow */
+    border: 1px solid #bdc3c7; /* Subtle border */
+}
+
+.mazeContainer {
+    display: flex;
+    flex-direction: column;
+    border: 6px solid #27ae60; /* Vibrant green border */
+    border-radius: 25px; /* More rounded */
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25); /* Deeper shadow for maze */
+    background-color: #ecf0f1; /* Light background for maze grid */
+    transition: transform 0.3s ease; /* Smooth transition for hover/active */
+}
+
+.mazeContainer:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+}
+
+.mazeRow {
+    display: flex;
+}
+
+.mazeCell {
+    width: 55px; /* Slightly larger default cell size for better touch */
+    height: 55px;
+    background-color: #ffffff; /* Path color */
+    border: 1px solid #dcdcdc; /* Lighter, subtle cell border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6em; /* Slightly larger font for A/B */
+    font-weight: bold;
+    color: #34495e; /* Darker text for A/B */
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.mazeCell:hover {
+    background-color: #e0f7fa; /* Light blueish hover for path */
+    transform: scale(1.03); /* Slight scale on hover */
+}
+
+.wall {
+    background-color: #7f8c8d; /* Darker gray for walls, more modern */
+    cursor: not-allowed;
+    border-color: #616a6b;
+}
+
+.wall:hover {
+    background-color: #7f8c8d; /* No change on hover for walls */
+    transform: none;
+}
+
+.startCell {
+    background-color: #2ecc71; /* Emerald green for start */
+    color: white;
+    border-color: #27ae60;
+}
+
+.endCell {
+    background-color: #e74c3c; /* Alizarin red for end */
+    color: white;
+    border-color: #c0392b;
+}
+
+.userPathCell {
+    background-color: #3498db; /* Peter River blue for user path */
+    border-color: #2980b9;
+}
+
+.solutionPathCell {
+    background-color: #f1c40f; /* Sunflower yellow for solution path */
+    border-color: #f39c12;
+    animation: pulseYellow 1s infinite alternate; /* Pulsing animation for solution */
+}
+
+@keyframes pulseYellow {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(1.05); opacity: 0.8; }
+}
+
+
+.feedbackMessage {
+    font-size: 2em; /* Larger feedback message */
+    font-weight: 800;
+    margin-top: 25px; /* More space */
+    text-align: center;
+    min-height: 2.2em; /* Prevent layout shift */
+    animation: fadeInScale 0.7s ease-out;
+}
+
+@keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.buttonGroup {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px; /* Increased space between buttons */
+    margin-top: 35px; /* More space */
+    width: 100%;
+}
+
+.actionButton {
+    padding: 20px 40px; /* Larger padding for better touch targets */
+    border: none;
+    border-radius: 18px; /* More rounded */
+    font-size: 1.5em; /* Larger font */
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px; /* More space for icon/text */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    width: 85%; /* Wider action buttons */
+    max-width: 320px; /* Max width for action buttons */
+}
+
+.actionButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.primaryButton {
+    background-color: #e67e22; /* Carrot orange */
+    color: white;
+}
+
+.primaryButton:hover:not(:disabled) {
+    background-color: #d35400; /* Darker orange */
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.primaryButton:active:not(:disabled) {
+    background-color: #c0392b;
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.secondaryButton {
+    background-color: #95a5a6; /* Concrete gray */
+    color: white;
+}
+
+.secondaryButton:hover:not(:disabled) {
+    background-color: #7f8c8d;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.secondaryButton:active:not(:disabled) {
+    background-color: #616a6b;
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tertiaryButton {
+    background-color: #3498db; /* Peter River blue */
+    color: white;
+}
+
+.tertiaryButton:hover:not(:disabled) {
+    background-color: #2980b9;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.tertiaryButton:active:not(:disabled) {
+    background-color: #2c3e50;
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.confettiContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.dashboardButtonPathFinder {
+    background-color: #f1c40f; /* Sunflower yellow */
+    color: #2c3e50; /* Dark text for contrast */
+    padding: 20px 40px;
+    border: none;
+    border-radius: 18px;
+    font-size: 1.5em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    margin-top: 40px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05); /* Lighter shadow for text */
+    width: 85%;
+    max-width: 350px;
+}
+
+.dashboardButtonPathFinder:hover {
+    background-color: #f39c12; /* Darker yellow */
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dashboardButtonPathFinder:active {
+    background-color: #e67e22;
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+/* --- Responsive Adjustments for Android --- */
+@media (max-width: 768px) {
+    .contentArea {
+        padding: 15px;
+        gap: 25px;
+    }
+    .pageTitle {
+        font-size: 3em;
+        margin-bottom: 10px;
+    }
+    .levelIndicator, .hintCount {
+        font-size: 1.6em;
+        padding: 8px 20px;
+        border-radius: 15px;
+    }
+    .mazeContainer {
+        border-width: 4px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .mazeCell {
+        width: 45px; /* Smaller cells for tablets */
+        height: 45px;
+        font-size: 1.4em;
+    }
+    .feedbackMessage {
+        font-size: 1.8em;
+        margin-top: 20px;
+    }
+    .buttonGroup {
+        gap: 20px;
+    }
+    .actionButton {
+        padding: 16px 30px;
+        font-size: 1.3em;
+        border-radius: 15px;
+        width: 90%; /* Wider on mobile */
+        max-width: none; /* Remove max-width constraint */
+    }
+    .dashboardButtonPathFinder {
+        width: 90%;
+        max-width: none;
+        font-size: 1.3em;
+        padding: 16px 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contentArea {
+        padding: 10px;
+        gap: 20px;
+    }
+    .pageTitle {
+        font-size: 2.5em;
+        margin-bottom: 8px;
+    }
+    .levelIndicator, .hintCount {
+        font-size: 1.4em;
+        padding: 6px 15px;
+        border-radius: 12px;
+    }
+    .mazeContainer {
+        border-width: 3px;
+        border-radius: 18px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .mazeCell {
+        width: 35px; /* Even smaller cells for phones */
+        height: 35px;
+        font-size: 1.2em;
+        border-width: 0.5px; /* Thinner border for small cells */
+    }
+    .feedbackMessage {
+        font-size: 1.5em;
+        margin-top: 15px;
+    }
+    .buttonGroup {
+        gap: 15px;
+    }
+    .actionButton {
+        padding: 14px 25px;
+        font-size: 1.1em;
+        border-radius: 12px;
+    }
+    .dashboardButtonPathFinder {
+        font-size: 1.1em;
+        padding: 14px 25px;
+    }
+}

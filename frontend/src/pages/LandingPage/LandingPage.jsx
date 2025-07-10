@@ -52,6 +52,25 @@ const LandingPage = () => {
             <h3>Game Edukatif</h3>
             <p>Belajar sambil bermain game yang dirancang khusus untuk anak-anak.</p>
           </div>
+
+           <div className={styles.featureCard}>
+            <span role="img" aria-label="games" className={styles.featureIcon}>🗺️</span>
+            <h3>Path Finder</h3>
+            <p>Temukan jalan terpendek di labirin yang rumit!</p>
+          </div>
+        
+         <div className={styles.featureCard}>
+            <span role="img" aria-label="games" className={styles.featureIcon}>️️♟️ </span>
+            <h3>Mini  Chess</h3>
+            <p>Adu strategi jika kamu cerdas!</p>
+          </div>
+          
+            <div className={styles.featureCard}>
+            <span role="img" aria-label="games" className={styles.featureIcon}>️🏰 </span>
+            <h3>Wumpus World Deluxe</h3>
+            <p>Lab AI klasik yang melatih penalaran & perencanaan!</p>
+          </div>
+        
         </div>
       </section>
 
