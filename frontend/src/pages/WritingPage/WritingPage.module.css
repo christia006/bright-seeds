@@ -1,332 +1,424 @@
+/* WritingPage.module.css */
+
 .writingPageContainer {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #F8F9FA; /* Light gray background */
-  color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #fce4ec; /* Light pink background, very kid-friendly */
+    font-family: 'Inter', sans-serif;
+    align-items: center;
+    padding-bottom: 40px; /* Add some padding at the bottom */
+    overflow-x: hidden; /* Prevent horizontal scroll on mobile */
 }
 
 .contentArea {
-  flex-grow: 1;
-  padding: 20px;
-  max-width: 900px;
-  margin: 80px auto 20px auto;
-  width: 100%;
-  box-sizing: border-box;
-  text-align: center;
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    margin-top: 80px; /* Space for fixed header */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Increased space between elements for better visual separation */
 }
 
 .pageTitle {
-  font-size: 3em;
-  color: #8E24AA; /* Purple */
-  margin-bottom: 25px;
-  font-weight: 800;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    font-size: 3.2em; /* Slightly larger title */
+    color: #f06292; /* Bright pink for title */
+    margin-bottom: 25px; /* More space below title */
+    text-align: center;
+    font-weight: 900; /* Bolder font */
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.15); /* More pronounced shadow */
+    animation: bounceIn 1.2s ease-out; /* Slightly longer animation */
 }
 
-.levelIndicator {
-    font-size: 1.5em;
-    color: #4CAF50; /* Green */
-    font-weight: bold;
-    margin-bottom: 30px;
-    background-color: #E8F5E9; /* Very light green */
-    padding: 10px 20px;
-    border-radius: 25px;
-    display: inline-block;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.levelNumber {
-    background-color: #4CAF50;
-    color: white;
-    padding: 5px 12px;
-    border-radius: 50%;
-    margin-left: 10px;
+@keyframes bounceIn {
+    0% { transform: scale(0.4); opacity: 0; }
+    50% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); }
 }
 
 .sectionSelector {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    justify-content: center;
+    gap: 18px; /* Slightly increased gap */
+    margin-bottom: 35px; /* More space below selector */
+    background-color: #ffffff;
+    padding: 20px; /* More padding */
+    border-radius: 20px; /* More rounded corners */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+    border: 2px solid #ffab91; /* Light orange border */
 }
 
 .sectionButton {
-  background-color: #E1BEE7; /* Light purple */
-  color: #4A148C; /* Dark purple */
-  padding: 12px 25px;
-  border: none;
-  border-radius: 30px;
-  font-size: 1.1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    background-color: #ffccbc; /* Light orange-pink */
+    color: #e91e63; /* Darker pink text */
+    padding: 14px 28px; /* Larger padding for easier tapping */
+    border: none;
+    border-radius: 12px; /* More rounded */
+    font-size: 1.2em; /* Larger font */
+    font-weight: 700; /* Bolder font */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Clear shadow */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Subtle text shadow */
+    flex: 1; /* Allow buttons to grow and shrink */
+    min-width: 120px; /* Minimum width to prevent squishing */
+    max-width: 200px; /* Maximum width to keep them from being too wide */
 }
 
 .sectionButton:hover {
-  background-color: #CE93D8;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    background-color: #ff8a65; /* Brighter orange on hover */
+    transform: translateY(-3px); /* More pronounced lift */
+    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
 }
 
 .sectionButton.active {
-  background-color: #8E24AA; /* Active purple */
-  color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background-color: #f4511e; /* Deep orange for active */
+    color: white; /* White text on active */
+    transform: scale(1.08); /* More pronounced scale */
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+    border: 2px solid #bf360c; /* Stronger border for active */
 }
 
 .writingCard {
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: center;
+    background-color: #ffffff;
+    border-radius: 30px; /* Even more rounded */
+    padding: 40px; /* More padding */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); /* Stronger, deeper shadow */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px; /* Space between elements inside card */
+    position: relative;
+    border: 3px solid #673ab7; /* Purple border for main card */
 }
 
 .cardTitle {
-  font-size: 2.2em;
-  color: #673AB7; /* Deep Purple */
-  margin-bottom: 15px;
-  font-weight: 700;
+    font-size: 2.8em; /* Larger card title */
+    color: #673ab7; /* Deep purple color */
+    margin-bottom: 20px;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
 .instructions {
-  font-size: 1.1em;
-  color: #666;
-  margin-bottom: 25px;
+    font-size: 1.2em; /* Larger instructions text */
+    color: #555;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.7; /* Better readability */
 }
 
 .exampleContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 25px;
-  background-color: #F3E5F5; /* Very light purple */
-  border-radius: 10px;
-  padding: 15px 20px;
-  box-shadow: inset 0 1px 5px rgba(0,0,0,0.05);
-  min-height: 80px; /* Agar tombol tidak melompat-lompat */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* More space */
+    margin-bottom: 25px;
 }
 
-/* Teks contoh yang disembunyikan secara visual */
 .hiddenExampleText {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
+    font-size: 1.3em;
+    color: #888;
+    background-color: #f0f0f0;
+    padding: 12px 25px;
+    border-radius: 12px;
+    border: 1px dashed #ccc;
+    display: none; /* Hide this in production for actual game play */
 }
 
 .speakButton {
-  background-color: #FFC107; /* Amber */
-  border: none;
-  border-radius: 30px; /* Bentuk kapsul */
-  padding: 12px 25px; /* Lebih besar */
-  font-size: 1.5em; /* Ukuran teks lebih besar */
-  font-weight: bold;
-  color: white; /* Teks putih */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px; /* Spasi antara ikon dan teks */
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  flex-grow: 1; /* Agak melebar */
-  max-width: 300px; /* Batasi lebar */
+    background-color: #ff9800; /* Orange for speak button */
+    color: white;
+    padding: 18px 35px; /* Larger padding */
+    border: none;
+    border-radius: 15px; /* More rounded */
+    font-size: 1.5em; /* Larger font */
+    font-weight: 800; /* Bolder */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* More space for icon */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25); /* Stronger shadow */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .speakButton:hover {
-  background-color: #FFB300;
-  transform: scale(1.02); /* Sedikit membesar saat hover */
+    background-color: #fb8c00; /* Darker orange on hover */
+    transform: translateY(-4px); /* More pronounced lift */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
 }
 
-.speakButton span {
-  font-size: 1.8em; /* Ukuran ikon lebih besar */
-  color: white;
+.speakButton:active {
+    background-color: #e65100; /* Even darker on click */
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .writingInput {
-  width: calc(100% - 40px); /* Account for padding */
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 2px solid #D1C4E9; /* Light purple border */
-  border-radius: 10px;
-  font-size: 1.3em;
-  font-family: 'Roboto', sans-serif; /* Consistent font */
-  resize: vertical; /* Allow vertical resize */
-  min-height: 80px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: calc(100% - 60px); /* Adjust for larger padding */
+    max-width: 650px; /* Slightly wider max width */
+    padding: 20px; /* Larger padding */
+    border: 4px solid #64b5f6; /* Thicker light blue border */
+    border-radius: 20px; /* More rounded */
+    font-size: 1.6em; /* Larger font for input */
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical;
+    min-height: 100px; /* Ensure sufficient height on mobile */
 }
 
 .writingInput:focus {
-  outline: none;
-  border-color: #8E24AA; /* Highlight on focus */
-  box-shadow: 0 0 0 3px rgba(142, 36, 170, 0.2);
+    border-color: #2196f3; /* Brighter blue on focus */
+    box-shadow: 0 0 0 6px rgba(33, 150, 243, 0.4); /* More prominent focus shadow */
 }
 
 .feedbackMessage {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: 20px;
-  min-height: 25px; /* Prevent layout shift */
+    font-size: 1.6em; /* Larger feedback message */
+    font-weight: 800; /* Bolder */
+    margin-top: 20px;
+    text-align: center;
+    min-height: 1.8em; /* Prevent layout shift */
+    animation: fadeInScale 0.7s ease-out; /* New animation */
+}
+
+@keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 .buttonGroup {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px; /* More space between buttons */
+    margin-top: 30px;
 }
 
 .submitButton, .skipButton {
-  padding: 12px 30px;
-  border: none;
-  border-radius: 30px;
-  font-size: 1.2em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    padding: 18px 40px; /* Larger padding */
+    border: none;
+    border-radius: 15px; /* More rounded */
+    font-size: 1.4em; /* Larger font */
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .submitButton {
-  background-color: #4CAF50; /* Green */
-  color: white;
+    background-color: #4CAF50; /* Green for submit */
+    color: white;
 }
 
 .submitButton:hover {
-  background-color: #43A047;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    background-color: #43a047;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+
+.submitButton:active {
+    background-color: #388e3c;
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .skipButton {
-  background-color: #FFB300; /* Orange */
-  color: white;
+    background-color: #9e9e9e; /* Grey for skip */
+    color: white;
 }
 
 .skipButton:hover {
-  background-color: #FB8C00;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    background-color: #757575;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
 }
 
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .contentArea {
-    padding: 15px;
-    margin-top: 60px;
-  }
-  .pageTitle {
-    font-size: 2.5em;
-  }
-  .levelIndicator {
-      font-size: 1.3em;
-  }
-  .sectionButton {
-    padding: 10px 20px;
-    font-size: 1em;
-  }
-  .writingCard {
-    padding: 20px;
-  }
-  .cardTitle {
-    font-size: 1.8em;
-  }
-  .instructions {
-    font-size: 1em;
-  }
-  .speakButton {
-    font-size: 1.2em; /* Ukuran teks tombol di mobile */
-    padding: 10px 20px;
-  }
-  .speakButton span {
-    font-size: 1.5em; /* Ukuran ikon di mobile */
-  }
-  .writingInput {
-    font-size: 1.1em;
-    padding: 12px;
-  }
-  .feedbackMessage {
-    font-size: 1.1em;
-  }
-  .submitButton, .skipButton {
-    padding: 10px 20px;
-    font-size: 1.1em;
-  }
-  .buttonGroup {
-      gap: 10px;
-  }
+.skipButton:active {
+    background-color: #616161;
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
-
-/* New styling for confetti container */
 .confettiContainer {
-    position: fixed; /* Fixes it to the viewport */
-    top: 50%; /* Center vertically */
-    left: 50%; /* Center horizontally */
-    transform: translate(-50%, -50%); /* Adjust for its own size */
-    z-index: 1001; /* Above header and content */
-    pointer-events: none; /* Allows clicks to pass through */
-}
-
-/* Existing styles continue... */
-
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  /* ... existing media queries ... */
-}
-
-@media (max-width: 480px) {
-  /* ... existing media queries ... */
-}
-
-@media (max-width: 480px) {
-  .pageTitle {
-    font-size: 2em;
-  }
-  .levelIndicator {
-      font-size: 1.1em;
-      padding: 8px 15px;
-  }
-  .sectionSelector {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .sectionButton {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 250px;
-    margin: 0 auto;
-  }
-  .writingCard {
-    padding: 15px;
-  }
-  .speakButton {
-    font-size: 1em;
-    padding: 8px 15px;
-    gap: 5px;
-  }
-  .speakButton span {
-    font-size: 1.3em;
-  }
-  .writingInput {
-    font-size: 1em;
-    padding: 10px;
-  }
-  .feedbackMessage {
-    font-size: 1em;
-  }
-  .submitButton, .skipButton {
-    font-size: 1em;
-    padding: 8px 15px;
-  }
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Dashboard Button Styles for WritingPage */
+.dashboardButtonWriting {
+    background-color: #2196f3; /* Bright blue */
+    color: white;
+    padding: 18px 35px; /* Larger padding */
+    border: none;
+    border-radius: 15px; /* More rounded */
+    font-size: 1.4em; /* Larger font */
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+    margin-top: 40px; /* More space above */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.dashboardButtonWriting:hover {
+    background-color: #1976d2; /* Darker blue on hover */
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+
+.dashboardButtonWriting:active {
+    background-color: #1565c0; /* Even darker on click */
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Responsive adjustments for smaller screens (Android) */
+@media (max-width: 768px) {
+    .contentArea {
+        padding: 15px;
+        gap: 20px;
+    }
+    .pageTitle {
+        font-size: 2.5em; /* Adjust for tablets */
+        margin-bottom: 20px;
+    }
+    .sectionSelector {
+        /* Modified for horizontal layout on mobile */
+        flex-direction: row; /* Buttons side-by-side */
+        flex-wrap: wrap; /* Allow wrapping if space is tight */
+        justify-content: center; /* Center buttons horizontally */
+        align-items: center; /* Center buttons vertically */
+        gap: 12px;
+        padding: 15px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+    }
+    .sectionButton {
+        /* Removed width: 100% to allow side-by-side */
+        flex: 1 1 auto; /* Allow buttons to grow, shrink, and take auto width */
+        min-width: 100px; /* Ensure a minimum width */
+        max-width: 180px; /* Prevent buttons from becoming too wide */
+        font-size: 1.1em;
+        padding: 12px 20px; /* Adjusted padding */
+        border-radius: 10px;
+    }
+    .writingCard {
+        padding: 30px;
+        gap: 20px;
+        border-radius: 25px;
+    }
+    .cardTitle {
+        font-size: 2.2em;
+    }
+    .instructions {
+        font-size: 1em;
+        margin-bottom: 20px;
+    }
+    .speakButton {
+        font-size: 1.3em;
+        padding: 15px 30px;
+        border-radius: 12px;
+    }
+    .writingInput {
+        width: calc(100% - 40px); /* Adjust for padding */
+        font-size: 1.4em;
+        padding: 15px;
+        border-radius: 15px;
+        min-height: 80px; /* Slightly smaller min-height */
+    }
+    .feedbackMessage {
+        font-size: 1.4em;
+    }
+    .buttonGroup {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 18px;
+    }
+    .submitButton, .skipButton, .dashboardButtonWriting {
+        width: 100%; /* Full width buttons */
+        font-size: 1.2em;
+        padding: 15px 30px;
+        border-radius: 12px;
+    }
+    .dashboardButtonWriting {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contentArea {
+        padding: 10px;
+        gap: 15px;
+    }
+    .pageTitle {
+        font-size: 2em; /* Adjust for phones */
+        margin-bottom: 15px;
+    }
+    .sectionSelector {
+        gap: 8px; /* Smaller gap for very small screens */
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .sectionButton {
+        font-size: 0.9em; /* Smaller font for very small screens */
+        padding: 10px 15px; /* Adjusted padding */
+        min-width: 90px; /* Smaller min-width */
+        max-width: 150px; /* Smaller max-width */
+    }
+    .writingCard {
+        padding: 20px;
+        gap: 15px;
+        border-radius: 20px;
+    }
+    .cardTitle {
+        font-size: 1.8em;
+    }
+    .instructions {
+        font-size: 0.9em;
+        margin-bottom: 15px;
+    }
+    .speakButton {
+        font-size: 1.1em;
+        padding: 12px 25px;
+    }
+    .writingInput {
+        font-size: 1.2em;
+        padding: 12px;
+        min-height: 70px;
+    }
+    .feedbackMessage {
+        font-size: 1.1em;
+    }
+    .buttonGroup {
+        gap: 15px;
+    }
+    .submitButton, .skipButton, .dashboardButtonWriting {
+        font-size: 1.1em;
+        padding: 12px 25px;
+    }
+    .dashboardButtonWriting {
+        margin-top: 25px;
+    }
 }

@@ -1,322 +1,437 @@
+/* MathPage.module.css */
+
 .mathPageContainer {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #F8F9FA; /* Light gray background */
-  color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #e3f2fd; /* Light blue background, calming and kid-friendly */
+    font-family: 'Inter', sans-serif;
+    align-items: center;
+    padding-bottom: 40px;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .contentArea {
-  flex-grow: 1;
-  padding: 20px;
-  max-width: 900px;
-  margin: 80px auto 20px auto;
-  width: 100%;
-  box-sizing: border-box;
-  text-align: center;
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    margin-top: 80px; /* Space for fixed header */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Space between main sections */
 }
 
 .pageTitle {
-  font-size: 3em;
-  color: #FF5722; /* Orange-Red */
-  margin-bottom: 25px;
-  font-weight: 800;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    font-size: 3.5em; /* Larger, more impactful title */
+    color: #42a5f5; /* Bright blue for title */
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 900;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.15);
+    animation: bounceIn 1.2s ease-out;
 }
 
-.levelIndicator {
-    font-size: 1.5em;
-    color: #00796B; /* Teal Green */
-    font-weight: bold;
-    margin-bottom: 30px;
-    background-color: #E0F2F7; /* Very light blue */
-    padding: 10px 20px;
-    border-radius: 25px;
-    display: inline-block;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+@keyframes bounceIn {
+    0% { transform: scale(0.4); opacity: 0; }
+    50% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); }
 }
 
-.levelNumber {
-    background-color: #00796B;
-    color: white;
-    padding: 5px 12px;
-    border-radius: 50%;
-    margin-left: 10px;
-}
+/* Level indicator styles removed */
 
 .sectionSelector {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    justify-content: center;
+    gap: 18px; /* Space between buttons */
+    margin-bottom: 35px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    border: 2px solid #90caf9; /* Light blue border */
 }
 
 .sectionButton {
-  background-color: #BBDEFB; /* Light Blue */
-  color: #1976D2; /* Darker Blue */
-  padding: 12px 25px;
-  border: none;
-  border-radius: 30px;
-  font-size: 1.1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    background-color: #bbdefb; /* Lighter blue */
+    color: #1976d2; /* Darker blue text */
+    padding: 14px 28px; /* Generous padding for touch */
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    flex: 1; /* Allow buttons to grow and shrink */
+    min-width: 130px; /* Minimum width to prevent squishing */
+    max-width: 220px; /* Maximum width to keep them from being too wide */
+    display: flex; /* Use flex to align content (text and emoji) */
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    gap: 8px; /* Space between text and emoji */
 }
 
 .sectionButton:hover {
-  background-color: #90CAF9;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    background-color: #90caf9; /* Medium blue on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
 }
 
 .sectionButton.active {
-  background-color: #2196F3; /* Active Blue */
-  color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background-color: #2196f3; /* Primary blue for active */
+    color: white;
+    transform: scale(1.08);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+    border: 2px solid #1565c0; /* Stronger border for active */
 }
 
 .mathCard {
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: center;
+    background-color: #ffffff;
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    position: relative;
+    border: 3px solid #ffb74d; /* Orange border for main card */
 }
 
 .cardTitle {
-  font-size: 2.2em;
-  color: #3F51B5; /* Indigo */
-  margin-bottom: 15px;
-  font-weight: 700;
+    font-size: 3em; /* Larger card title */
+    color: #ff9800; /* Bright orange color */
+    margin-bottom: 20px;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
 .instructions {
-  font-size: 1.1em;
-  color: #666;
-  margin-bottom: 25px;
+    font-size: 1.3em; /* Larger instructions text */
+    color: #555;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.7;
 }
 
 .questionContainer {
-  display: flex;
-  flex-direction: column; /* Stack button and question */
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 25px;
-  background-color: #E8EAF6; /* Very light indigo */
-  border-radius: 10px;
-  padding: 15px 20px;
-  box-shadow: inset 0 1px 5px rgba(0,0,0,0.05);
-  min-height: 120px; /* Ensure enough space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    width: 100%; /* Ensure it takes full width within card */
 }
 
 .questionText {
-    font-size: 2em;
-    font-weight: bold;
-    color: #424242;
-    margin-top: 15px; /* Space from button */
-    word-break: break-word; /* Ensure long questions wrap */
+    font-size: 2.5em; /* Very large question text for visibility */
+    color: #4a148c; /* Deep purple for question */
+    text-align: center;
+    font-weight: 700;
+    line-height: 1.3;
+    word-break: break-word; /* Ensure long lines break */
+    padding: 0 10px; /* Add some horizontal padding */
 }
 
-
 .speakButton {
-  background-color: #FFC107; /* Amber */
-  border: none;
-  border-radius: 30px;
-  padding: 12px 25px;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  width: fit-content; /* Adjust width to content */
+    background-color: #66bb6a; /* Green for speak button */
+    color: white;
+    padding: 18px 35px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.5em;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .speakButton:hover {
-  background-color: #FFB300;
-  transform: scale(1.02);
+    background-color: #43a047; /* Darker green on hover */
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
 }
 
-.speakButton span {
-  font-size: 1.8em;
-  color: white;
+.speakButton:active {
+    background-color: #388e3c; /* Even darker on click */
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .mathInput {
-  width: calc(100% - 40px); /* Account for padding */
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 2px solid #C5CAE9; /* Light indigo border */
-  border-radius: 10px;
-  font-size: 1.5em; /* Larger font for numbers */
-  font-family: 'Roboto', sans-serif;
-  text-align: center; /* Center align numbers */
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: calc(100% - 60px);
+    max-width: 400px; /* Keep input field narrower for focus */
+    padding: 20px;
+    border: 4px solid #81c784; /* Light green border */
+    border-radius: 20px;
+    font-size: 2em; /* Very large font for input numbers */
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    -moz-appearance: textfield; /* Hide arrows on Firefox */
+}
+
+/* Hide arrows for Webkit (Chrome, Safari, Edge) */
+.mathInput::-webkit-outer-spin-button,
+.mathInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .mathInput:focus {
-  outline: none;
-  border-color: #3F51B5; /* Highlight on focus */
-  box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.2);
+    border-color: #4CAF50; /* Brighter green on focus */
+    box-shadow: 0 0 0 6px rgba(76, 175, 80, 0.4);
 }
 
 .feedbackMessage {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: 20px;
-  min-height: 25px;
+    font-size: 1.8em; /* Larger feedback message */
+    font-weight: 800;
+    margin-top: 20px;
+    text-align: center;
+    min-height: 2em; /* Prevent layout shift */
+    animation: fadeInScale 0.7s ease-out;
+}
+
+@keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 .buttonGroup {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 30px;
 }
 
 .submitButton, .skipButton {
-  padding: 12px 30px;
-  border: none;
-  border-radius: 30px;
-  font-size: 1.2em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    padding: 18px 40px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.4em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .submitButton {
-  background-color: #4CAF50; /* Green */
-  color: white;
+    background-color: #ff5722; /* Deep orange for submit */
+    color: white;
 }
 
 .submitButton:hover {
-  background-color: #43A047;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    background-color: #e64a19;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+
+.submitButton:active {
+    background-color: #d84315;
+    transform: translateY(0);
+    box_shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .skipButton {
-  background-color: #FFB300; /* Orange */
-  color: white;
+    background-color: #9e9e9e; /* Grey for skip */
+    color: white;
 }
 
 .skipButton:hover {
-  background-color: #FB8C00;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    background-color: #757575;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
 }
 
-/* Confetti Container */
+.skipButton:active {
+    background-color: #616161;
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
 .confettiContainer {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1001; /* Ensure it's above other content */
-    pointer-events: none; /* Allows clicks to pass through */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 10;
 }
 
-/* Media Queries for Responsiveness */
+/* Dashboard Button Styles for MathPage */
+.dashboardButtonMath {
+    background-color: #8bc34a; /* Light green for dashboard */
+    color: white;
+    padding: 18px 35px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.4em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+    margin-top: 40px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.dashboardButtonMath:hover {
+    background-color: #689f38; /* Darker green on hover */
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+
+.dashboardButtonMath:active {
+    background-color: #558b2f; /* Even darker on click */
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Responsive adjustments for smaller screens (Android) */
 @media (max-width: 768px) {
-  .contentArea {
-    padding: 15px;
-    margin-top: 60px;
-  }
-  .pageTitle {
-    font-size: 2.5em;
-  }
-  .levelIndicator {
-      font-size: 1.3em;
-  }
-  .sectionButton {
-    padding: 10px 20px;
-    font-size: 1em;
-  }
-  .mathCard {
-    padding: 20px;
-  }
-  .cardTitle {
-    font-size: 1.8em;
-  }
-  .instructions {
-    font-size: 1em;
-  }
-  .questionText {
-      font-size: 1.5em;
-  }
-  .speakButton {
-    font-size: 1.2em;
-    padding: 10px 20px;
-  }
-  .speakButton span {
-    font-size: 1.5em;
-  }
-  .mathInput {
-    font-size: 1.2em;
-    padding: 12px;
-  }
-  .feedbackMessage {
-    font-size: 1.1em;
-  }
-  .submitButton, .skipButton {
-    padding: 10px 20px;
-    font-size: 1.1em;
-  }
-  .buttonGroup {
-      gap: 10px;
-  }
+    .contentArea {
+        padding: 15px;
+        gap: 20px;
+    }
+    .pageTitle {
+        font-size: 2.8em; /* Adjust for tablets */
+        margin-bottom: 20px;
+    }
+    .sectionSelector {
+        flex-direction: row; /* Keep buttons side-by-side */
+        flex-wrap: wrap; /* Allow wrapping if needed */
+        gap: 12px;
+        padding: 15px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+    }
+    .sectionButton {
+        flex: 1 1 auto; /* Allow buttons to grow/shrink */
+        min-width: 100px; /* Ensure minimum width */
+        max-width: 180px; /* Prevent buttons from being too wide */
+        font-size: 1.1em;
+        padding: 12px 20px;
+        border-radius: 10px;
+    }
+    .mathCard {
+        padding: 30px;
+        gap: 20px;
+        border-radius: 25px;
+    }
+    .cardTitle {
+        font-size: 2.5em;
+    }
+    .instructions {
+        font-size: 1.1em;
+        margin-bottom: 20px;
+    }
+    .questionText {
+        font-size: 2em; /* Smaller question text on tablets */
+    }
+    .speakButton {
+        font-size: 1.3em;
+        padding: 15px 30px;
+        border-radius: 12px;
+    }
+    .mathInput {
+        width: calc(100% - 40px);
+        font-size: 1.6em;
+        padding: 15px;
+        border-radius: 15px;
+    }
+    .feedbackMessage {
+        font-size: 1.5em;
+    }
+    .buttonGroup {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 18px;
+    }
+    .submitButton, .skipButton, .dashboardButtonMath {
+        width: 100%; /* Full width buttons */
+        font-size: 1.2em;
+        padding: 15px 30px;
+        border-radius: 12px;
+    }
+    .dashboardButtonMath {
+        margin-top: 30px;
+    }
 }
 
 @media (max-width: 480px) {
-  .pageTitle {
-    font-size: 2em;
-  }
-  .levelIndicator {
-      font-size: 1.1em;
-      padding: 8px 15px;
-  }
-  .sectionSelector {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .sectionButton {
-    width: 100%;
-    max-width: 250px;
-    margin: 0 auto;
-  }
-  .mathCard {
-    padding: 15px;
-  }
-  .questionText {
-      font-size: 1.3em;
-  }
-  .speakButton {
-    font-size: 1em;
-    padding: 8px 15px;
-    gap: 5px;
-  }
-  .speakButton span {
-    font-size: 1.3em;
-  }
-  .mathInput {
-    font-size: 1.1em;
-    padding: 10px;
-  }
-  .feedbackMessage {
-    font-size: 1em;
-  }
-  .submitButton, .skipButton {
-    font-size: 1em;
-    padding: 8px 15px;
-  }
+    .contentArea {
+        padding: 10px;
+        gap: 15px;
+    }
+    .pageTitle {
+        font-size: 2.2em; /* Adjust for phones */
+        margin-bottom: 15px;
+    }
+    .sectionSelector {
+        gap: 8px; /* Smaller gap for very small screens */
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .sectionButton {
+        font-size: 0.95em; /* Smaller font for very small screens */
+        padding: 10px 15px;
+        min-width: 90px; /* Smaller min-width */
+        max-width: 150px; /* Smaller max-width */
+    }
+    .mathCard {
+        padding: 20px;
+        gap: 15px;
+        border-radius: 20px;
+    }
+    .cardTitle {
+        font-size: 2em;
+    }
+    .instructions {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+    .questionText {
+        font-size: 1.8em; /* Even smaller question text on phones */
+    }
+    .speakButton {
+        font-size: 1.1em;
+        padding: 12px 25px;
+    }
+    .mathInput {
+        font-size: 1.4em;
+        padding: 12px;
+    }
+    .feedbackMessage {
+        font-size: 1.2em;
+    }
+    .buttonGroup {
+        gap: 15px;
+    }
+    .submitButton, .skipButton, .dashboardButtonMath {
+        font-size: 1.1em;
+        padding: 12px 25px;
+    }
+    .dashboardButtonMath {
+        margin-top: 25px;
+    }
 }

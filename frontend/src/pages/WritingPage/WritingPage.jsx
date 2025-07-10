@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import Header from '../../components/Header/Header';
-import { getSoundPath } from '../../utils/soundHelper';
+import { getSoundPath } from '../../utils/soundHelper'; // Pastikan path ini benar
 import styles from './WritingPage.module.css';
-import ConfettiExplosion from 'react-confetti-explosion'; // Import the confetti component
+import ConfettiExplosion from 'react-confetti-explosion'; // Untuk efek konfeti
 
+// Data untuk konten menulis (huruf, kata, kalimat)
 const writingContent = {
   letters: {
     title: "Menulis Huruf",
@@ -17,7 +19,6 @@ const writingContent = {
       'ba', 'ca', 'da', 'ea', 'fa', 'ga', 'ha', 'ia', 'ja', 'ka'
     ],
     soundType: 'letter',
-    levelThreshold: 5
   },
   words: {
     title: "Menulis Kata",
@@ -30,7 +31,6 @@ const writingContent = {
       'cantik', 'pandai', 'rajin', 'malas', 'sedih', 'senang', 'marah', 'takut', 'lapar', 'haus'
     ],
     soundType: 'word',
-    levelThreshold: 5
   },
   sentences: {
     title: "Menulis Kalimat",
@@ -68,60 +68,60 @@ const writingContent = {
       'kami sangat bahagia.'
     ],
     soundType: 'sentence',
-    levelThreshold: 3
   },
 };
 
-const MAX_LEVEL = 20;
+const WritingPage = () => {
+  const [selectedSection, setSelectedSection] = useState('letters'); // Bagian yang sedang dipilih (huruf, kata, kalimat)
+  const [currentExampleIndex, setCurrentExampleIndex] = useState(0); // Indeks contoh soal saat ini
+  const [userInput, setUserInput] = useState(''); // Input dari pengguna
+  const [feedback, setFeedback] = useState(''); // Pesan umpan balik
+  const [feedbackColor, setFeedbackColor] = useState(''); // Warna pesan umpan balik
+  const [isExploding, setIsExploding] = useState(false); // State untuk mengaktifkan konfeti
 
-const WritingPage = ({ currentUser, setCurrentUser }) => {
-  const [selectedSection, setSelectedSection] = useState('letters');
-  const [currentExampleIndex, setCurrentExampleIndex] = useState(0);
-  const [userInput, setUserInput] = useState('');
-  const [feedback, setFeedback] = useState('');
-  const [feedbackColor, setFeedbackColor] = useState('');
-  // Level state is still here, but its update logic is simplified
-  const [level, setLevel] = useState(currentUser?.progress?.writing?.level || 1);
-  const [isExploding, setIsExploding] = useState(false); // New state for confetti
+  const audioRef = useRef(new Audio()); // Referensi untuk elemen audio
+  const navigate = useNavigate(); // Hook untuk navigasi antar halaman
 
-  const audioRef = useRef(new Audio());
+  const currentContent = writingContent[selectedSection]; // Konten berdasarkan bagian yang dipilih
+  const currentExample = currentContent.examples[currentExampleIndex]; // Contoh soal saat ini
 
-  const currentContent = writingContent[selectedSection];
-  const currentExample = currentContent.examples[currentExampleIndex];
-
+  // Efek samping saat bagian (letters, words, sentences) berubah
   useEffect(() => {
-    setUserInput('');
-    setFeedback('');
-    setFeedbackColor('');
-    setCurrentExampleIndex(0);
-    setIsExploding(false); // Reset confetti when section changes
+    setUserInput(''); // Bersihkan input
+    setFeedback(''); // Bersihkan umpan balik
+    setFeedbackColor(''); // Bersihkan warna umpan balik
+    setCurrentExampleIndex(0); // Reset indeks contoh ke awal
+    setIsExploding(false); // Pastikan konfeti mati
   }, [selectedSection]);
 
+  // Fungsi untuk memutar suara dari file atau fallback ke Web Speech API
   const playSound = () => {
-    if (!currentExample) return;
+    if (!currentExample) return; // Jika tidak ada contoh, jangan lakukan apa-apa
 
     const soundText = currentExample.toLowerCase();
-    const soundPath = getSoundPath(soundText, currentContent.soundType);
+    const soundPath = getSoundPath(soundText, currentContent.soundType); // Dapatkan path suara
 
     if (soundPath) {
       audioRef.current.src = soundPath;
       audioRef.current.play().catch(e => {
         console.warn("Error playing sound from file, falling back to Web Speech API:", e);
-        playWebSpeech(currentExample);
+        playWebSpeech(currentExample); // Fallback jika file suara gagal diputar
       });
     } else {
       console.warn("No specific sound file found, falling back to Web Speech API for:", currentExample);
-      playWebSpeech(currentExample);
+      playWebSpeech(currentExample); // Fallback jika tidak ada file suara
     }
   };
 
+  // Fungsi untuk memutar teks menggunakan Web Speech API (Text-to-Speech)
   const playWebSpeech = (text) => {
     if ('speechSynthesis' in window) {
       const msg = new SpeechSynthesisUtterance(text);
-      msg.lang = 'id-ID';
-      msg.rate = 0.7;
-      msg.pitch = 1.0;
+      msg.lang = 'id-ID'; // Atur bahasa ke Bahasa Indonesia
+      msg.rate = 0.7; // Atur kecepatan bicara agar lebih ramah anak
+      msg.pitch = 1.0; // Atur pitch standar
 
+      // Coba temukan suara Bahasa Indonesia
       const voices = window.speechSynthesis.getVoices();
       const indoVoice = voices.find(voice => voice.lang === 'id-ID' && voice.name.includes('Google Bahasa Indonesia'));
       if (indoVoice) {
@@ -130,107 +130,89 @@ const WritingPage = ({ currentUser, setCurrentUser }) => {
 
       window.speechSynthesis.speak(msg);
     } else {
-      alert("Browser Anda tidak mendukung Web Speech API.");
+      console.error("Browser Anda tidak mendukung Web Speech API."); // Log error
+      setFeedback("Maaf, browser Anda tidak mendukung fitur suara."); // Beri umpan balik ke pengguna
+      setFeedbackColor("orange");
     }
   };
 
+  // Handler saat pengguna menekan tombol "Periksa"
   const handleSubmit = async () => {
-    const trimmedInput = userInput.trim().toLowerCase();
-    const trimmedExample = currentExample.trim().toLowerCase();
+    const trimmedInput = userInput.trim().toLowerCase(); // Bersihkan dan ubah ke huruf kecil
+    const trimmedExample = currentExample.trim().toLowerCase(); // Bersihkan dan ubah ke huruf kecil
 
     if (trimmedInput === trimmedExample) {
-      // Positive feedback for kids
+      // Umpan balik positif untuk anak-anak
       setFeedback('Hebat! Betul sekali! Lanjut ke tantangan berikutnya! ✨');
       setFeedbackColor('green');
-      setIsExploding(true); // Trigger confetti on correct answer
+      setIsExploding(true); // Aktifkan konfeti
 
-      // --- Removed user progress update logic ---
-      // The section below would typically update user progress on a backend or global state.
-      // Since the request is to remove saving, this block is commented/removed.
-
-      // Example of removed level calculation logic:
-      // const currentSectionProgress = currentUser.progress?.writing?.[selectedSection] || [];
-      // const newCompleted = [...currentSectionProgress, currentExample];
-      // const uniqueCompleted = Array.from(new Set(newCompleted));
-      // let newLevel = level;
-      // const totalExamples = currentContent.examples.length;
-      // const completedCount = uniqueCompleted.length;
-      // const threshold = currentContent.levelThreshold;
-      // const calculatedLevel = Math.min(MAX_LEVEL, Math.floor(completedCount / threshold) + 1);
-      // if (calculatedLevel > level) {
-      //     newLevel = calculatedLevel;
-      //     setFeedback('Yeay! Kamu naik ke Level ' + newLevel + '! Luar biasa! 🚀');
-      //     setFeedbackColor('purple');
-      // }
-      // // ... similar logic for other level-up messages
-      // const updatedUser = await updateUserProgess(currentUser.username, { ... });
-      // setCurrentUser(updatedUser);
-      // setLevel(newLevel);
-      // --- End of removed logic ---
-
-      // Automatically advance to the next question after a short delay for feedback/confetti
+      // Lanjutkan ke soal berikutnya setelah jeda singkat untuk umpan balik/konfeti
       setTimeout(() => {
-        setIsExploding(false); // Hide confetti
+        setIsExploding(false); // Matikan konfeti
         if (currentExampleIndex < currentContent.examples.length - 1) {
-          setCurrentExampleIndex(currentExampleIndex + 1);
+          setCurrentExampleIndex(currentExampleIndex + 1); // Lanjut ke contoh berikutnya
         } else {
-          setCurrentExampleIndex(0); // Loop back to the first example if all are done
+          // Jika semua contoh selesai, kembali ke contoh pertama
+          setCurrentExampleIndex(0);
+          setFeedback('Kamu sudah menyelesaikan semua tantangan di bagian ini! Hebat! 🎉');
+          setFeedbackColor('purple');
         }
-        setUserInput(''); // Clear input for the next question
+        setUserInput(''); // Bersihkan input untuk soal berikutnya
         setTimeout(() => {
-          setFeedback(''); // Clear feedback message
+          setFeedback(''); // Bersihkan pesan umpan balik
           setFeedbackColor('');
-        }, 1000); // Clear feedback after showing it briefly
-      }, 1500); // Wait for confetti to finish before moving to the next question
+        }, 1000); // Bersihkan umpan balik setelah ditampilkan sebentar
+      }, 1500); // Tunggu konfeti selesai sebelum pindah soal
 
     } else {
-      // Negative feedback for kids
+      // Umpan balik negatif untuk anak-anak
       setFeedback('Coba lagi, ya! Jangan menyerah! Kamu pasti bisa! 💪');
       setFeedbackColor('red');
-      setIsExploding(false); // Ensure confetti is off for incorrect answers
-      // Do NOT advance to the next question if the answer is incorrect
+      setIsExploding(false); // Pastikan konfeti mati untuk jawaban salah
+      // TIDAK lanjut ke soal berikutnya jika jawaban salah
     }
   };
 
+  // Handler untuk melewati soal saat ini
   const handleSkip = () => {
-    setIsExploding(false); // Ensure confetti is off when skipping
+    setIsExploding(false); // Pastikan konfeti mati saat melewati
     if (currentExampleIndex < currentContent.examples.length - 1) {
-      setCurrentExampleIndex(currentExampleIndex + 1);
+      setCurrentExampleIndex(currentExampleIndex + 1); // Lanjut ke contoh berikutnya
     } else {
-      setCurrentExampleIndex(0);
+      setCurrentExampleIndex(0); // Kembali ke contoh pertama jika semua selesai
     }
-    setUserInput('');
-    setFeedback('');
-    setFeedbackColor('');
+    setUserInput(''); // Bersihkan input
+    setFeedback(''); // Bersihkan umpan balik
+    setFeedbackColor(''); // Bersihkan warna umpan balik
+  };
+
+  // Handler untuk navigasi ke Dashboard
+  const handleGoToDashboard = () => {
+    navigate('/dashboard'); // Navigasi ke halaman Dashboard
   };
 
   return (
     <div className={styles.writingPageContainer}>
       <Header />
       <div className={styles.contentArea}>
+        {/* Konfeti akan muncul di sini */}
         {isExploding && (
             <div className={styles.confettiContainer}>
-                {/* Adjust the force, duration, and other props for desired effect */}
                 <ConfettiExplosion
                     force={0.8}
-                    duration={3000} // milliseconds
-                    particleCount={100}
-                    width={1000}
-                    height={1000} // Adjust height to cover more screen area
-                    colors={['#FFC107', '#4CAF50', '#8E24AA', '#FF5722']} // Kid-friendly colors
+                    duration={3000} // Durasi konfeti dalam milidetik
+                    particleCount={100} // Jumlah partikel
+                    width={1000} // Lebar area konfeti
+                    height={1000} // Tinggi area konfeti
+                    colors={['#FFC107', '#4CAF50', '#8E24AA', '#FF5722']} // Warna-warna cerah ramah anak
                 />
             </div>
         )}
 
         <h1 className={styles.pageTitle}>Ayo Menulis! ✍️</h1>
 
-        {/* The level indicator will now simply reflect the initial level or a hardcoded one,
-            as dynamic level updates based on user progress are removed.
-            You might consider removing this if levels are no longer tracked at all. */}
-        <div className={styles.levelIndicator}>
-          Level Menulis: <span className={styles.levelNumber}>{level}</span>
-        </div>
-
+        {/* Bagian pemilih kategori (Huruf, Kata, Kalimat) */}
         <div className={styles.sectionSelector}>
           <button
             onClick={() => setSelectedSection('letters')}
@@ -252,19 +234,22 @@ const WritingPage = ({ currentUser, setCurrentUser }) => {
           </button>
         </div>
 
+        {/* Kartu utama untuk aktivitas menulis */}
         <div className={styles.writingCard}>
           <h2 className={styles.cardTitle}>{currentContent.title}</h2>
           <p className={styles.instructions}>{currentContent.instructions}</p>
 
           <div className={styles.exampleContainer}>
-            <p className={styles.hiddenExampleText}>
+            {/* Teks contoh yang harus ditulis (bisa disembunyikan di produksi) */}
+            {/* <p className={styles.hiddenExampleText}>
                 Kata yang harus kamu tulis: "{currentExample}"
-            </p>
+            </p> */}
             <button onClick={playSound} className={styles.speakButton}>
               <span role="img" aria-label="speaker">🔊</span> Dengar Suara
             </button>
           </div>
 
+          {/* Area input teks */}
           <textarea
             className={styles.writingInput}
             value={userInput}
@@ -273,10 +258,12 @@ const WritingPage = ({ currentUser, setCurrentUser }) => {
             rows="3"
           />
 
+          {/* Pesan umpan balik */}
           <div className={styles.feedbackMessage} style={{ color: feedbackColor }}>
             {feedback}
           </div>
 
+          {/* Grup tombol aksi */}
           <div className={styles.buttonGroup}>
             <button onClick={handleSubmit} className={styles.submitButton}>
               Periksa ✅
@@ -286,6 +273,14 @@ const WritingPage = ({ currentUser, setCurrentUser }) => {
             </button>
           </div>
         </div>
+
+        {/* Tombol Dashboard */}
+        <button
+          onClick={handleGoToDashboard}
+          className={styles.dashboardButtonWriting}
+        >
+          <span role="img" aria-label="dashboard">🏠</span> Dashboard Utama
+        </button>
       </div>
     </div>
   );
