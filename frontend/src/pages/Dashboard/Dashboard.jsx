@@ -112,11 +112,7 @@ const Dashboard = () => {
             <p>Temukan jalan terpendek di labirin yang rumit!</p>
           </Link>
 
-            <Link to="/miniaichess" className={`${styles.activityCard} ${styles.miniAIChessCard}`}>
-            <div className={styles.cardIcon} aria-hidden="true">♟️</div>
-            <h3>Mini  Chess</h3>
-            <p>Adu strategi jika kamu cerdas!</p>
-          </Link>
+        
 
            <Link to="/wumpus-world" className={`${styles.activityCard} ${styles.miniAIChessCard}`}>
             <div className={styles.cardIcon} aria-hidden="true">🏰</div>

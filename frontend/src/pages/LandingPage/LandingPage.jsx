@@ -59,11 +59,7 @@ const LandingPage = () => {
             <p>Temukan jalan terpendek di labirin yang rumit!</p>
           </div>
         
-         <div className={styles.featureCard}>
-            <span role="img" aria-label="games" className={styles.featureIcon}>️️♟️ </span>
-            <h3>Mini  Chess</h3>
-            <p>Adu strategi jika kamu cerdas!</p>
-          </div>
+      
           
             <div className={styles.featureCard}>
             <span role="img" aria-label="games" className={styles.featureIcon}>️🏰 </span>
