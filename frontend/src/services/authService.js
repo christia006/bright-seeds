@@ -1,15 +1,15 @@
 import axios from 'axios';
 
-// PERBAIKAN PENTING: Ganti placeholder URL backend dengan URL frontend Vercel Anda + /api
-// Karena vercel.json merutekan /api ke backend di domain yang sama
-const API_URL = import.meta.env.PROD ? 'https://bright-seeds.vercel.app/api' : '/api'; // <--- INI PERBAIKANNYA
+// API_URL sekarang cukup '/api' karena Vercel akan merutekan ini
+// dari domain frontend ke serverless functions di folder `api`.
+const API_URL = '/api'; // <--- PERBAIKAN DI SINI
 
 export const register = async (username, password) => {
     try {
         const response = await axios.post(`${API_URL}/register`, { username, password });
         return response.data;
     } catch (error) {
-        throw error.response.data.message || 'Registration failed.';
+        throw error.response?.data?.message || 'Pendaftaran gagal. Periksa jaringan atau konfigurasi server.';
     }
 };
 
@@ -19,7 +19,7 @@ export const login = async (username, password) => {
         localStorage.setItem('currentUser', JSON.stringify(response.data.user));
         return response.data;
     } catch (error) {
-        throw error.response.data.message || 'Login failed.';
+        throw error.response?.data?.message || 'Login gagal. Periksa jaringan atau konfigurasi server.';
     }
 };
 

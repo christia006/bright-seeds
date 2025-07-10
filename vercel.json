@@ -7,16 +7,21 @@
       "config": { "outputDirectory": "dist" } 
     },
     {
-      "src": "backend/server.js",
+  
+      "src": "frontend/api/**/*.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
+     
+      
+     
       "src": "/api/(.*)",
-      "dest": "backend/server.js"
+      "dest": "frontend/api/$1" 
     },
     {
+     
       "src": "/(.*)",
       "dest": "frontend/$1"
     }

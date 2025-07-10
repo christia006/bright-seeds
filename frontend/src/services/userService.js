@@ -1,26 +1,24 @@
 import axios from 'axios';
-import { getCurrentUser } from './authService';
+// import { getCurrentUser } from './authService'; // Ini tidak diperlukan di sini
 
-// PERBAIKAN PENTING: Ganti placeholder URL backend dengan URL frontend Vercel Anda + /api
-// Karena vercel.json merutekan /api ke backend di domain yang sama
-const API_URL = import.meta.env.PROD ? 'https://bright-seeds.vercel.app/api' : '/api'; // <--- INI PERBAIKANNYA
+// API_URL sekarang cukup '/api'
+const API_URL = '/api'; // <--- PERBAIKAN DI SINI
 
 export const fetchUserProfile = async (username) => {
     try {
         const response = await axios.get(`${API_URL}/users/${username}`);
         return response.data.user;
     } catch (error) {
-        throw error.response.data.message || 'Failed to fetch user profile.';
+        throw error.response?.data?.message || 'Gagal mengambil profil pengguna. Periksa jaringan atau konfigurasi server.';
     }
 };
 
 export const updateUserProgess = async (username, progressData) => {
     try {
         const response = await axios.put(`${API_URL}/users/${username}/progress`, { progress: progressData });
-        // Update local storage with new user data including progress
         localStorage.setItem('currentUser', JSON.stringify(response.data.user));
         return response.data.user;
     } catch (error) {
-        throw error.response.data.message || 'Failed to update user progress.';
+        throw error.response?.data?.message || 'Gagal memperbarui progres pengguna. Periksa jaringan atau konfigurasi server.';
     }
 };
