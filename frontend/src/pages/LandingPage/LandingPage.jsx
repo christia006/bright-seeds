@@ -22,7 +22,7 @@ const LandingPage = ({ currentUser }) => {
               </Link>
             ) : (
               // Jika belum ada pengguna, arahkan ke halaman Login
-              <Link to="/login" className={`${styles.ctaButton} ${styles.loginButton}`}>
+              <Link to="/dashboard" className={`${styles.ctaButton} ${styles.loginButton}`}>
                 Masuk Sekarang! 👋
               </Link>
             )}
