@@ -1,9 +1,10 @@
+// brightseeds-app/frontend/src/pages/LandingPage/LandingPage.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../../components/Header/Header'; // Sesuaikan path jika LandingPage punya folder sendiri
-import styles from './LandingPage.module.css'; // Import CSS Module
+import Header from '../../components/Header/Header';
+import styles from './LandingPage.module.css';
 
-const LandingPage = ({ currentUser }) => {
+const LandingPage = () => {
   return (
     <div className={styles.landingPageContainer}>
       <Header />
@@ -14,23 +15,14 @@ const LandingPage = ({ currentUser }) => {
             Tempat seru untuk anak-anak belajar membaca, menulis, dan berhitung dengan cara yang menyenangkan!
           </p>
           <div className={styles.buttonGroup}>
-            {/* Hanya ada satu tombol 'Masuk' atau 'Lanjut Belajar' */}
-            {currentUser ? (
-              // Jika sudah ada pengguna, arahkan langsung ke Dashboard
-              <Link to="/dashboard" className={`${styles.ctaButton} ${styles.dashboardButton}`}>
-                Lanjut Belajar! ✨
-              </Link>
-            ) : (
-              // Jika belum ada pengguna, arahkan ke halaman Login
-              <Link to="/dashboard" className={`${styles.ctaButton} ${styles.loginButton}`}>
-                Masuk Sekarang! 👋
-              </Link>
-            )}
+            <Link to="/dashboard" className={`${styles.ctaButton} ${styles.dashboardButton}`}>
+              Lanjut Belajar! ✨
+            </Link>
           </div>
         </div>
         <div className={styles.heroImageContainer}>
           <img
-            src="/images/Anak.png" // Pastikan gambar ini ada di public/images
+            src="/images/Anak.png"
             alt="Anak-anak belajar dengan gembira"
             className={styles.heroImage}
           />
@@ -65,16 +57,9 @@ const LandingPage = ({ currentUser }) => {
 
       <section className={styles.callToActionSection}>
         <h2 className={styles.sectionTitle}>Siap untuk Petualangan Belajar? ✨</h2>
-        {/* Hanya ada satu tombol 'Mulai Petualanganmu!' atau 'Masuk Sekarang!' */}
-        {currentUser ? (
-          <Link to="/dashboard" className={`${styles.ctaButton} ${styles.dashboardButton}`}>
-            Mulai Petualanganmu! 🚀
-          </Link>
-        ) : (
-          <Link to="/login" className={styles.ctaButton}>
-            Masuk Sekarang! 🎉
-          </Link>
-        )}
+        <Link to="/dashboard" className={`${styles.ctaButton} ${styles.dashboardButton}`}>
+          Mulai Petualanganmu! 🚀
+        </Link>
       </section>
     </div>
   );
