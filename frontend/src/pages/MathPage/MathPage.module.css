@@ -1,437 +1,413 @@
-/* MathPage.module.css */
-
+/* General Styling */
 .mathPageContainer {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    background-color: #e3f2fd; /* Light blue background, calming and kid-friendly */
-    font-family: 'Inter', sans-serif;
     align-items: center;
-    padding-bottom: 40px;
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f8ff, #e6f7ff); /* Soft gradient background */
+    font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif; /* Playful font */
+    color: #333;
+    padding-bottom: 50px; /* Space for the dashboard button */
 }
 
+/* Content Area */
 .contentArea {
-    flex-grow: 1;
+    width: 90%;
+    max-width: 900px;
+    margin-top: 20px;
     padding: 20px;
-    max-width: 800px;
-    width: 100%;
-    margin-top: 80px; /* Space for fixed header */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px; /* Space between main sections */
+    gap: 25px; /* Space between sections */
+    position: relative; /* For confetti positioning */
 }
 
+/* Page Title */
 .pageTitle {
-    font-size: 3.5em; /* Larger, more impactful title */
-    color: #42a5f5; /* Bright blue for title */
-    margin-bottom: 25px;
+    font-size: 2.8em; /* Larger for impact */
+    color: #4CAF50; /* Green theme */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
     text-align: center;
-    font-weight: 900;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.15);
-    animation: bounceIn 1.2s ease-out;
+    animation: bounceIn 1s ease-out; /* Little animation */
 }
 
-@keyframes bounceIn {
-    0% { transform: scale(0.4); opacity: 0; }
-    50% { transform: scale(1.15); opacity: 1; }
-    100% { transform: scale(1); }
-}
-
-/* Level indicator styles removed */
-
+/* Section Selector */
 .sectionSelector {
     display: flex;
-    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
     justify-content: center;
-    gap: 18px; /* Space between buttons */
-    margin-bottom: 35px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-    border: 2px solid #90caf9; /* Light blue border */
+    gap: 15px;
+    margin-bottom: 25px;
+    width: 100%;
 }
 
 .sectionButton {
-    background-color: #bbdefb; /* Lighter blue */
-    color: #1976d2; /* Darker blue text */
-    padding: 14px 28px; /* Generous padding for touch */
+    background-color: #87CEFA; /* Light blue */
+    color: white;
     border: none;
-    border-radius: 12px;
+    padding: 15px 25px;
+    border-radius: 30px; /* Pill shape */
     font-size: 1.2em;
-    font-weight: 700;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    flex: 1; /* Allow buttons to grow and shrink */
-    min-width: 130px; /* Minimum width to prevent squishing */
-    max-width: 220px; /* Maximum width to keep them from being too wide */
-    display: flex; /* Use flex to align content (text and emoji) */
-    align-items: center; /* Vertically center content */
-    justify-content: center; /* Horizontally center content */
-    gap: 8px; /* Space between text and emoji */
+    min-width: 150px; /* Ensure buttons are not too small */
 }
 
 .sectionButton:hover {
-    background-color: #90caf9; /* Medium blue on hover */
+    background-color: #6495ED; /* Darker blue on hover */
     transform: translateY(-3px);
-    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .sectionButton.active {
-    background-color: #2196f3; /* Primary blue for active */
-    color: white;
-    transform: scale(1.08);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
-    border: 2px solid #1565c0; /* Stronger border for active */
+    background-color: #FF6347; /* Tomato red for active state */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    border: 3px solid #E63946;
 }
 
+/* Math Card */
 .mathCard {
     background-color: #ffffff;
-    border-radius: 30px;
-    padding: 40px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    text-align: center;
     width: 100%;
+    max-width: 600px; /* Limit card width */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 25px;
-    position: relative;
-    border: 3px solid #ffb74d; /* Orange border for main card */
+    gap: 20px; /* Spacing inside the card */
+    position: relative; /* For confetti */
 }
 
 .cardTitle {
-    font-size: 3em; /* Larger card title */
-    color: #ff9800; /* Bright orange color */
-    margin-bottom: 20px;
-    font-weight: 800;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    font-size: 2.2em;
+    color: #FF69B4; /* Hot pink */
+    margin-bottom: 10px;
 }
 
 .instructions {
-    font-size: 1.3em; /* Larger instructions text */
+    font-size: 1.1em;
     color: #555;
-    text-align: center;
-    margin-bottom: 25px;
-    line-height: 1.7;
+    margin-bottom: 20px;
 }
 
+/* Question Area */
 .questionContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    margin-bottom: 25px;
-    width: 100%; /* Ensure it takes full width within card */
-}
-
-.questionText {
-    font-size: 2.5em; /* Very large question text for visibility */
-    color: #4a148c; /* Deep purple for question */
-    text-align: center;
-    font-weight: 700;
-    line-height: 1.3;
-    word-break: break-word; /* Ensure long lines break */
-    padding: 0 10px; /* Add some horizontal padding */
+    gap: 15px;
 }
 
 .speakButton {
-    background-color: #66bb6a; /* Green for speak button */
+    background-color: #FFA07A; /* Light salmon */
     color: white;
-    padding: 18px 35px;
     border: none;
-    border-radius: 15px;
-    font-size: 1.5em;
-    font-weight: 800;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1.1em;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 12px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    gap: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .speakButton:hover {
-    background-color: #43a047; /* Darker green on hover */
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+    background-color: #FF7F50; /* Coral */
+    transform: translateY(-2px);
 }
 
-.speakButton:active {
-    background-color: #388e3c; /* Even darker on click */
-    transform: translateY(0);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+.questionText {
+    font-size: 2.5em; /* Larger question text */
+    font-weight: bold;
+    color: #4CAF50;
+    margin: 15px 0;
+    word-break: break-word; /* Ensure long emojis wrap */
 }
 
+/* Input Field */
 .mathInput {
-    width: calc(100% - 60px);
-    max-width: 400px; /* Keep input field narrower for focus */
-    padding: 20px;
-    border: 4px solid #81c784; /* Light green border */
-    border-radius: 20px;
-    font-size: 2em; /* Very large font for input numbers */
+    padding: 15px;
+    width: 80%;
+    max-width: 300px;
+    border: 3px solid #87CEFA; /* Light blue border */
+    border-radius: 15px;
+    font-size: 1.8em; /* Large font for easy input */
     text-align: center;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    -moz-appearance: textfield; /* Hide arrows on Firefox */
-}
-
-/* Hide arrows for Webkit (Chrome, Safari, Edge) */
-.mathInput::-webkit-outer-spin-button,
-.mathInput::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+    color: #333;
+    font-weight: bold;
 }
 
 .mathInput:focus {
-    border-color: #4CAF50; /* Brighter green on focus */
-    box-shadow: 0 0 0 6px rgba(76, 175, 80, 0.4);
+    border-color: #FF6347; /* Tomato red on focus */
+    box-shadow: 0 0 10px rgba(255, 99, 71, 0.4);
 }
 
+/* Feedback Message */
 .feedbackMessage {
-    font-size: 1.8em; /* Larger feedback message */
-    font-weight: 800;
-    margin-top: 20px;
-    text-align: center;
-    min-height: 2em; /* Prevent layout shift */
-    animation: fadeInScale 0.7s ease-out;
+    margin-top: 15px;
+    font-size: 1.3em;
+    font-weight: bold;
+    min-height: 30px; /* Reserve space to prevent layout shift */
 }
 
-@keyframes fadeInScale {
-    0% { opacity: 0; transform: scale(0.8); }
-    100% { opacity: 1; transform: scale(1); }
-}
-
+/* Button Group */
 .buttonGroup {
     display: flex;
-    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap; /* Allow buttons to wrap */
     justify-content: center;
-    gap: 25px;
-    margin-top: 30px;
 }
 
 .submitButton, .skipButton {
-    padding: 18px 40px;
-    border: none;
-    border-radius: 15px;
-    font-size: 1.4em;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-}
-
-.submitButton {
-    background-color: #ff5722; /* Deep orange for submit */
+    background-color: #00BCD4; /* Cyan */
     color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .submitButton:hover {
-    background-color: #e64a19;
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
-}
-
-.submitButton:active {
-    background-color: #d84315;
-    transform: translateY(0);
-    box_shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    background-color: #0097A7; /* Darker cyan */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .skipButton {
-    background-color: #9e9e9e; /* Grey for skip */
-    color: white;
+    background-color: #FFC107; /* Amber */
 }
 
 .skipButton:hover {
-    background-color: #757575;
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+    background-color: #FFA000; /* Darker amber */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-.skipButton:active {
-    background-color: #616161;
-    transform: translateY(0);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-}
-
+/* Confetti Styling */
 .confettiContainer {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 10;
+    overflow: hidden; /* Keep confetti within bounds */
+    pointer-events: none; /* Allow interaction with elements behind it */
+    z-index: 1000; /* Ensure it's on top */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Dashboard Button Styles for MathPage */
-.dashboardButtonMath {
-    background-color: #8bc34a; /* Light green for dashboard */
-    color: white;
-    padding: 18px 35px;
-    border: none;
+/* Numbers List Grid */
+.numbersGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Responsive grid for numbers */
+    gap: 10px;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f7fef7; /* Light background for the grid */
     border-radius: 15px;
-    font-size: 1.4em;
-    font-weight: 700;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.numberButton {
+    background-color: #add8e6; /* Light blue for number buttons */
+    color: #333;
+    border: 2px solid #87cefa;
+    border-radius: 10px;
+    padding: 10px 5px;
+    font-size: 1.5em;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
-    margin-top: 40px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    min-height: 70px; /* Ensure consistent height */
+    position: relative;
+}
+
+.numberButton:hover {
+    background-color: #87cefa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.numberSpeakIcon {
+    font-size: 0.7em;
+    margin-top: 5px;
+    color: #007bff; /* Blue for the speaker icon */
+}
+
+
+/* Dashboard Button at the bottom */
+.dashboardButtonMath {
+    background-color: #66BB6A; /* Green */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 1.4em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 30px; /* Space from the math card */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .dashboardButtonMath:hover {
-    background-color: #689f38; /* Darker green on hover */
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+    background-color: #4CAF50; /* Darker green */
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
 }
 
-.dashboardButtonMath:active {
-    background-color: #558b2f; /* Even darker on click */
-    transform: translateY(0);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+/* Animations */
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 
-/* Responsive adjustments for smaller screens (Android) */
+/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-    .contentArea {
-        padding: 15px;
-        gap: 20px;
-    }
     .pageTitle {
-        font-size: 2.8em; /* Adjust for tablets */
-        margin-bottom: 20px;
+        font-size: 2.2em;
     }
-    .sectionSelector {
-        flex-direction: row; /* Keep buttons side-by-side */
-        flex-wrap: wrap; /* Allow wrapping if needed */
-        gap: 12px;
-        padding: 15px;
-        border-radius: 15px;
-        margin-bottom: 25px;
-    }
+
     .sectionButton {
-        flex: 1 1 auto; /* Allow buttons to grow/shrink */
-        min-width: 100px; /* Ensure minimum width */
-        max-width: 180px; /* Prevent buttons from being too wide */
         font-size: 1.1em;
         padding: 12px 20px;
-        border-radius: 10px;
+        min-width: unset; /* Remove min-width to allow more flexible wrapping */
+        flex-grow: 1; /* Allow buttons to grow to fill space */
     }
-    .mathCard {
-        padding: 30px;
-        gap: 20px;
-        border-radius: 25px;
-    }
+
     .cardTitle {
-        font-size: 2.5em;
+        font-size: 1.8em;
     }
+
     .instructions {
-        font-size: 1.1em;
-        margin-bottom: 20px;
+        font-size: 1em;
     }
+
     .questionText {
-        font-size: 2em; /* Smaller question text on tablets */
+        font-size: 2em;
     }
-    .speakButton {
-        font-size: 1.3em;
-        padding: 15px 30px;
-        border-radius: 12px;
-    }
+
     .mathInput {
-        width: calc(100% - 40px);
-        font-size: 1.6em;
-        padding: 15px;
-        border-radius: 15px;
-    }
-    .feedbackMessage {
         font-size: 1.5em;
+        width: 90%;
     }
-    .buttonGroup {
-        flex-direction: column; /* Stack buttons vertically */
-        gap: 18px;
+
+    .submitButton, .skipButton {
+        font-size: 1.1em;
+        padding: 10px 20px;
     }
-    .submitButton, .skipButton, .dashboardButtonMath {
-        width: 100%; /* Full width buttons */
-        font-size: 1.2em;
-        padding: 15px 30px;
-        border-radius: 12px;
-    }
+
     .dashboardButtonMath {
-        margin-top: 30px;
+        font-size: 1.2em;
+        padding: 12px 25px;
+    }
+
+    .numbersGrid {
+        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+        gap: 8px;
+    }
+
+    .numberButton {
+        font-size: 1.3em;
+        min-height: 60px;
+        padding: 8px 3px;
     }
 }
 
 @media (max-width: 480px) {
-    .contentArea {
-        padding: 10px;
-        gap: 15px;
-    }
     .pageTitle {
-        font-size: 2.2em; /* Adjust for phones */
-        margin-bottom: 15px;
+        font-size: 1.8em;
     }
+
     .sectionSelector {
-        gap: 8px; /* Smaller gap for very small screens */
-        padding: 10px;
-        border-radius: 10px;
-        margin-bottom: 20px;
+        flex-direction: column; /* Stack buttons vertically on very small screens */
+        align-items: stretch;
     }
+
     .sectionButton {
-        font-size: 0.95em; /* Smaller font for very small screens */
-        padding: 10px 15px;
-        min-width: 90px; /* Smaller min-width */
-        max-width: 150px; /* Smaller max-width */
-    }
-    .mathCard {
-        padding: 20px;
-        gap: 15px;
-        border-radius: 20px;
-    }
-    .cardTitle {
-        font-size: 2em;
-    }
-    .instructions {
         font-size: 1em;
-        margin-bottom: 15px;
+        padding: 10px 15px;
     }
+
+    .cardTitle {
+        font-size: 1.6em;
+    }
+
     .questionText {
-        font-size: 1.8em; /* Even smaller question text on phones */
+        font-size: 1.8em;
     }
-    .speakButton {
-        font-size: 1.1em;
-        padding: 12px 25px;
-    }
+
     .mathInput {
-        font-size: 1.4em;
+        font-size: 1.3em;
         padding: 12px;
     }
+
     .feedbackMessage {
-        font-size: 1.2em;
-    }
-    .buttonGroup {
-        gap: 15px;
-    }
-    .submitButton, .skipButton, .dashboardButtonMath {
         font-size: 1.1em;
-        padding: 12px 25px;
     }
+
+    .buttonGroup {
+        flex-direction: column; /* Stack action buttons vertically */
+        gap: 10px;
+    }
+
+    .submitButton, .skipButton {
+        width: 100%; /* Make them full width */
+        font-size: 1em;
+        padding: 12px;
+    }
+
     .dashboardButtonMath {
-        margin-top: 25px;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        width: 90%;
+    }
+
+    .numbersGrid {
+        grid-template-columns: repeat(auto-fit, minmax(45px, 1fr));
+        gap: 6px;
+    }
+
+    .numberButton {
+        font-size: 1.2em;
+        min-height: 55px;
+        padding: 6px 2px;
     }
 }

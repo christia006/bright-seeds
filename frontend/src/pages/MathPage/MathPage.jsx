@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../../components/Header/Header';
-// Pastikan path ini benar
-import styles from './MathPage.module.css';
+import styles from './MathPage.module.css'; // Pastikan path ini benar
 import ConfettiExplosion from 'react-confetti-explosion'; // Import Confetti
 import { useNavigate } from 'react-router-dom'; // Import useNavigate untuk navigasi
 
@@ -59,12 +58,21 @@ const generateSubtractionQuestion = () => {
     };
 };
 
+// Helper function untuk menghasilkan daftar angka 1-100
+const generateNumbersList = () => {
+    const numbers = [];
+    for (let i = 1; i <= 100; i++) {
+        numbers.push({ number: i, soundText: `${i}` });
+    }
+    return numbers;
+};
+
 const mathContent = {
     counting: {
         title: "Menghitung Objek",
         instructions: "Hitung objek-objek lucu ini dan ketikkan jawabannya!",
         generateQuestion: generateCountingQuestion,
-        showSoundButton: true, // Tambahkan tombol sound untuk counting agar anak bisa mendengar soalnya
+        showSoundButton: true,
     },
     addition: {
         title: "Penjumlahan Seru",
@@ -78,6 +86,12 @@ const mathContent = {
         generateQuestion: generateSubtractionQuestion,
         showSoundButton: true,
     },
+    numbersList: {
+        title: "Daftar Angka 1-100",
+        instructions: "Klik angka untuk mendengarnya atau lihat urutannya!",
+        generateContent: generateNumbersList, // Gunakan generateContent untuk ini
+        showSoundButton: false, // Tidak ada tombol sound soal utama di sini
+    }
 };
 
 // Daftar sound efek untuk jawaban benar (pastikan file audio ada di path /sounds/feedback/)
@@ -98,39 +112,36 @@ const getSoundPath = (fileName, type) => {
         case 'feedback':
             return `/sounds/feedback/${fileName}.mp3`;
         case 'number':
-            // Assuming you have specific audio files for numbers if needed
             return `/sounds/numbers/${fileName}.mp3`;
         case 'math_question':
-            // Assuming you have specific audio files for parts of math questions or full questions
-            // This case might require more specific logic if 'soundText' is a full sentence
-            // For now, we'll try to match exact phrases or fall back
-            // You might need to preprocess `fileName` to match actual audio file names
-            // For simplicity, let's assume specific question sounds if you have them,
-            // otherwise, the Web Speech API fallback is good.
-            // Example: if you have 'ada-berapa-apel-ini.mp3'
             const formattedFileName = fileName.replace(/ /g, '-').toLowerCase();
             return `/sounds/questions/${formattedFileName}.mp3`;
         default:
-            return null; // Or a default sound if desired
+            return null;
     }
 };
 
-const MathPage = () => { // Hapus props currentUser, setCurrentUser
+const MathPage = () => {
     const [selectedSection, setSelectedSection] = useState('counting');
     const [currentQuestion, setCurrentQuestion] = useState(null);
+    const [numbersData, setNumbersData] = useState([]); // State baru untuk daftar angka
     const [userInput, setUserInput] = useState('');
     const [feedback, setFeedback] = useState('');
     const [feedbackColor, setFeedbackColor] = useState('');
-
-    // Confetti state
     const [isExploding, setIsExploding] = useState(false);
 
     const audioRef = useRef(new Audio());
-    const navigate = useNavigate(); // Inisialisasi hook useNavigate
+    const navigate = useNavigate();
 
-    // Effect untuk memuat soal awal saat komponen dimuat atau bagian berubah
+    // Effect untuk memuat soal awal atau daftar angka saat komponen dimuat atau bagian berubah
     useEffect(() => {
-        loadNewQuestion();
+        if (selectedSection === 'numbersList') {
+            setNumbersData(mathContent[selectedSection].generateContent());
+            setCurrentQuestion(null); // Pastikan soal matematika disembunyikan
+        } else {
+            loadNewQuestion();
+            setNumbersData([]); // Pastikan daftar angka disembunyikan
+        }
     }, [selectedSection]);
 
     // Fungsi untuk memuat soal baru
@@ -140,7 +151,7 @@ const MathPage = () => { // Hapus props currentUser, setCurrentUser
         setUserInput('');
         setFeedback('');
         setFeedbackColor('');
-        setIsExploding(false); // Pastikan konfeti mati saat memuat soal baru
+        setIsExploding(false);
     };
 
     // General sound player untuk berbagai jenis (soal, angka, umpan balik)
@@ -148,21 +159,18 @@ const MathPage = () => { // Hapus props currentUser, setCurrentUser
         if (!textToSpeak) return;
 
         let path;
-        // getSoundPath harus cukup pintar untuk menangani berbagai jenis suara
-        // Asumsi getSoundPath akan mengembalikan path yang benar berdasarkan textToSpeak dan soundType
         if (soundType === 'positive-feedback' || soundType === 'negative-feedback') {
-            path = getSoundPath(textToSpeak, 'feedback'); // textToSpeak adalah nama file audio di sini
+            path = getSoundPath(textToSpeak, 'feedback');
         } else if (soundType === 'number') {
             path = getSoundPath(textToSpeak, 'number');
         } else {
-            path = getSoundPath(textToSpeak, 'math_question'); // Untuk soal matematika
+            path = getSoundPath(textToSpeak, 'math_question');
         }
 
         if (path) {
             audioRef.current.src = path;
             audioRef.current.play().catch(e => {
                 console.warn(`Error playing sound from file (${path}), falling back to Web Speech API:`, e);
-                // Fallback ke Web Speech API hanya untuk suara soal/angka, bukan untuk umpan balik
                 if (soundType !== 'positive-feedback' && soundType !== 'negative-feedback') {
                     playWebSpeech(textToSpeak);
                 }
@@ -180,7 +188,7 @@ const MathPage = () => { // Hapus props currentUser, setCurrentUser
         if ('speechSynthesis' in window) {
             const msg = new SpeechSynthesisUtterance(text);
             msg.lang = 'id-ID';
-            msg.rate = 0.7; // Kecepatan bicara lebih lambat untuk anak-anak
+            msg.rate = 0.7;
             msg.pitch = 1.0;
 
             const voices = window.speechSynthesis.getVoices();
@@ -202,26 +210,25 @@ const MathPage = () => { // Hapus props currentUser, setCurrentUser
     // Handler untuk jawaban benar
     const handleCorrectAnswer = () => {
         const randomPositiveSound = POSITIVE_FEEDBACK_SOUNDS[getRandomNumber(0, POSITIVE_FEEDBACK_SOUNDS.length - 1)];
-        playSound(randomPositiveSound, 'positive-feedback'); // Putar suara umpan balik positif
+        playSound(randomPositiveSound, 'positive-feedback');
         setFeedback('Hebat! Jawabanmu benar! 🎉 Lanjut ke soal berikutnya!');
         setFeedbackColor('green');
-        setIsExploding(true); // Aktifkan konfeti
+        setIsExploding(true);
 
-        // Otomatis memuat soal berikutnya setelah jeda singkat
         setTimeout(() => {
-            setIsExploding(false); // Matikan konfeti
-            loadNewQuestion(); // Muat soal baru
-            setTimeout(() => { setFeedback(''); setFeedbackColor(''); }, 1000); // Bersihkan umpan balik
-        }, 3500); // Jeda yang cukup untuk animasi konfeti dan pesan
+            setIsExploding(false);
+            loadNewQuestion();
+            setTimeout(() => { setFeedback(''); setFeedbackColor(''); }, 1000);
+        }, 3500);
     };
 
     // Handler untuk jawaban salah
     const handleIncorrectAnswer = () => {
         const randomNegativeSound = NEGATIVE_FEEDBACK_SOUNDS[getRandomNumber(0, NEGATIVE_FEEDBACK_SOUNDS.length - 1)];
-        playSound(randomNegativeSound, 'negative-feedback'); // Putar suara umpan balik negatif
+        playSound(randomNegativeSound, 'negative-feedback');
         setFeedback('Coba lagi! Jawabanmu belum tepat. 🤔 Jangan menyerah!');
         setFeedbackColor('red');
-        setIsExploding(false); // Pastikan konfeti mati
+        setIsExploding(false);
     };
 
     // Handler saat pengguna menekan tombol "Periksa"
@@ -244,36 +251,34 @@ const MathPage = () => { // Hapus props currentUser, setCurrentUser
 
     // Handler untuk melewati soal
     const handleSkip = () => {
-        setIsExploding(false); // Matikan konfeti jika melewati
-        loadNewQuestion(); // Muat soal baru
+        setIsExploding(false);
+        loadNewQuestion();
     };
 
     // Handler untuk navigasi ke Dashboard
     const handleGoToDashboard = () => {
-        navigate('/dashboard'); // Navigasi ke halaman Dashboard
+        navigate('/dashboard');
     };
 
     return (
         <div className={styles.mathPageContainer}>
             <Header />
             <div className={styles.contentArea}>
-                {/* Konfeti akan muncul di sini */}
                 {isExploding && (
                     <div className={styles.confettiContainer}>
                         <ConfettiExplosion
-                            force={1.5} // Kekuatan ledakan lebih tinggi
-                            duration={7000} // Durasi konfeti lebih lama
-                            particleCount={400} // Lebih banyak partikel
-                            width={3000} // Area sebaran lebih luas
-                            height={3000} // Area sebaran lebih tinggi
-                            colors={['#FFD700', '#FF4500', '#32CD32', '#1E90FF', '#9370DB', '#FF69B4', '#ADFF2F', '#FFEA00', '#00BCD4', '#FF6344']} // Warna-warna cerah dan beragam
+                            force={1.5}
+                            duration={7000}
+                            particleCount={400}
+                            width={3000}
+                            height={3000}
+                            colors={['#FFD700', '#FF4500', '#32CD32', '#1E90FF', '#9370DB', '#FF69B4', '#ADFF2F', '#FFEA00', '#00BCD4', '#FF6344']}
                         />
                     </div>
                 )}
 
                 <h1 className={styles.pageTitle}>Ayo Berhitung! 🔢✨</h1>
 
-                {/* Bagian pemilih kategori (Menghitung Objek, Penjumlahan, Pengurangan) */}
                 <div className={styles.sectionSelector}>
                     <button
                         onClick={() => setSelectedSection('counting')}
@@ -293,52 +298,70 @@ const MathPage = () => { // Hapus props currentUser, setCurrentUser
                     >
                         Pengurangan ➖
                     </button>
+                    <button
+                        onClick={() => setSelectedSection('numbersList')}
+                        className={`${styles.sectionButton} ${selectedSection === 'numbersList' ? styles.active : ''}`}
+                    >
+                        Daftar Angka 1-100 💯
+                    </button>
                 </div>
 
-                {/* Kartu utama untuk aktivitas matematika */}
                 <div className={styles.mathCard}>
                     <h2 className={styles.cardTitle}>{mathContent[selectedSection].title}</h2>
                     <p className={styles.instructions}>{mathContent[selectedSection].instructions}</p>
 
-                    {currentQuestion && (
-                        <div className={styles.questionContainer}>
-                            {/* Tampilkan tombol sound jika showSoundButton adalah true */}
-                            {mathContent[selectedSection].showSoundButton && (
-                                <button onClick={() => playSound(currentQuestion.soundText, 'math_question')} className={styles.speakButton}>
-                                    <span role="img" aria-label="speaker">🔊</span> Dengar Soal
+                    {/* Conditional rendering for Math Questions vs. Numbers List */}
+                    {selectedSection !== 'numbersList' && currentQuestion && (
+                        <>
+                            <div className={styles.questionContainer}>
+                                {mathContent[selectedSection].showSoundButton && (
+                                    <button onClick={() => playSound(currentQuestion.soundText, 'math_question')} className={styles.speakButton}>
+                                        <span role="img" aria-label="speaker">🔊</span> Dengar Soal
+                                    </button>
+                                )}
+                                <p className={styles.questionText}>{currentQuestion.question}</p>
+                            </div>
+
+                            <input
+                                type="number"
+                                className={styles.mathInput}
+                                value={userInput}
+                                onChange={(e) => setUserInput(e.target.value)}
+                                placeholder="Tulis jawabanmu di sini..."
+                                inputMode="numeric"
+                            />
+
+                            <div className={styles.feedbackMessage} style={{ color: feedbackColor }}>
+                                {feedback}
+                            </div>
+
+                            <div className={styles.buttonGroup}>
+                                <button onClick={handleSubmit} className={styles.submitButton}>
+                                    Periksa ✅
                                 </button>
-                            )}
-                            <p className={styles.questionText}>{currentQuestion.question}</p>
-                        </div>
+                                <button onClick={handleSkip} className={styles.skipButton}>
+                                    Lewati ⏭️
+                                </button>
+                            </div>
+                        </>
                     )}
 
-                    {/* Area input angka */}
-                    <input
-                        type="number"
-                        className={styles.mathInput}
-                        value={userInput}
-                        onChange={(e) => setUserInput(e.target.value)}
-                        placeholder="Tulis jawabanmu di sini..."
-                        inputMode="numeric" // Keyboard numerik di perangkat sentuh
-                    />
-
-                    {/* Pesan umpan balik */}
-                    <div className={styles.feedbackMessage} style={{ color: feedbackColor }}>
-                        {feedback}
-                    </div>
-
-                    {/* Grup tombol aksi */}
-                    <div className={styles.buttonGroup}>
-                        <button onClick={handleSubmit} className={styles.submitButton}>
-                            Periksa ✅
-                        </button>
-                        <button onClick={handleSkip} className={styles.skipButton}>
-                            Lewati ⏭️
-                        </button>
-                    </div>
+                    {selectedSection === 'numbersList' && numbersData.length > 0 && (
+                        <div className={styles.numbersGrid}>
+                            {numbersData.map((item) => (
+                                <button
+                                    key={item.number}
+                                    className={styles.numberButton}
+                                    onClick={() => playSound(item.soundText, 'number')}
+                                >
+                                    {item.number}
+                                    <span className={styles.numberSpeakIcon} role="img" aria-label="speaker">🔊</span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
-                {/* Tombol Dashboard */}
                 <button
                     onClick={handleGoToDashboard}
                     className={styles.dashboardButtonMath}
