@@ -1,6 +1,6 @@
-const fs = require('fs').promises;
-const path = require('path');
-const bcrypt = require('bcryptjs');
+import fs from 'fs/promises';
+import path from 'path';
+import bcrypt from 'bcryptjs';
 
 const USERS_DB_PATH = path.join(process.cwd(), 'backend', 'data', 'users.json');
 
@@ -14,7 +14,7 @@ async function readUsers() {
   }
 }
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   try {
     if (req.method !== 'POST') {
       return res.status(405).json({ message: 'Metode tidak diizinkan.' });
