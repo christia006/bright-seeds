@@ -30,7 +30,7 @@ const PS_EMOJIS = [
     '🌞', '🌛', '☁️', '⚡', '💧', '🔥', '🌊', '🌲', '🌳', '🌻', '🌷', '🍄', '🌾'
 ];
 const PS_PATTERN_LENGTHS = [3, 4, 5, 6]; // Panjang pola yang lebih bervariasi
-const PS_SEQUENCE_DISPLAY_LENGTHS = [5, 6, 7, 8, 9, 10]; // Panjang sequence yang ditampilkan
+const PS_SEQUENCE_DISPLAY_LENGTHS = [3, 6, 7, 8, 9, 10]; // Panjang sequence yang ditampilkan
 
 const getEmojiName = (emoji) => {
     const emojiMap = {
@@ -57,7 +57,7 @@ const MT_EMOJIS = [
     '🌞', '🌛', '☁️', '⚡', '💧', '🔥', '🌊', '🌲', '🌳', '🌻', '🌷', '🍄', '🌾',
     '👑', '💎', '💰', '🔑', '🔒', '🔔', '📚', '✏️', '✂️', '📏', '📎', '📌', '🗓️', '⏰'
 ];
-const MT_SEQUENCE_LENGTHS = [3, 4, 5, 6, 7, 8]; // Panjang sequence yang lebih bervariasi
+const MT_SEQUENCE_LENGTHS = [3, 4, 3, 4, 3, 4]; // Panjang sequence yang lebih bervariasi
 
 // --- Data & Logic untuk Puzzle Syarat Ganda ---
 const PSG_PUZZLES = [
@@ -218,24 +218,27 @@ const GamesPage = () => {
         }
     }, [subGame]);
 
-    const generateMtNewSequence = () => {
-        const length = getRandomElement(MT_SEQUENCE_LENGTHS);
-        const newSeq = Array.from({ length }, () => getRandomElement(MT_EMOJIS));
+   
+const generateMtNewSequence = () => {
+    const length = getRandomElement(MT_SEQUENCE_LENGTHS);
+    const newSeq = Array.from({ length }, () => getRandomElement(MT_EMOJIS));
 
-        setMtCurrentSequence(newSeq);
-        setMtUserRecall([]);
-        setMtGamePhase('memorize');
-        setMtFeedback('Ingat urutan ini baik-baik!');
-        setMtFeedbackColor('blue');
-        setMtIsExploding(false);
+    setMtCurrentSequence(newSeq);
+    setMtUserRecall([]);
+    setMtGamePhase('memorize');
+    setMtFeedback('Ingat urutan ini baik-baik!');
+    setMtFeedbackColor('blue');
+    setMtIsExploding(false);
 
-        const displayDuration = Math.max(1500, 3000 - (length * 200)); // Durasi tampilan
-        setTimeout(() => {
-            setMtGamePhase('recall');
-            setMtFeedback('Sekarang, coba urutkan kembali!');
-            setMtFeedbackColor('black');
-        }, displayDuration + (length * 300)); // Tambah jeda per emoji
-    };
+    // Set displayDuration to 10 seconds (10000 milliseconds)
+    const displayDuration = 10000;
+
+    setTimeout(() => {
+        setMtGamePhase('recall');
+        setMtFeedback('Sekarang, coba urutkan kembali!');
+        setMtFeedbackColor('black');
+    }, displayDuration); // Remove the additional delay per emoji if you want a strict 10s
+};
 
     const handleMtEmojiClick = (emoji) => {
         if (mtGamePhase === 'recall') {
