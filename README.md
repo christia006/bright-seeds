@@ -33,6 +33,7 @@ Mendampingi anak pra-SD agar:
 - Siap berpikir logis sambil bermain.
 
 ---
+Link deploy : https://bright-seeds.vercel.app/
 
 ✨ **Dibuat dengan semangat mendidik generasi cerdas.**  
 Selamat datang di BrightSeeds! 🌱
