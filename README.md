@@ -1,111 +1,39 @@
-# BrightSeeds
+# 🌱 BrightSeeds
 
-**BrightSeeds** adalah platform edukasi interaktif untuk anak pra-SD.  
-Membantu anak yang **belum bisa membaca lancar**, **belum bisa menulis dengan baik**, dan **belum bisa berhitung dengan konsep angka yang lebih besar**, melalui latihan terstruktur dan permainan logika.
-
----
-
-## 🎯 **Apa yang Dilatih**
-
-### ✅ Membaca
-- Kebanyakan anak pra-SD belum mengenal semua huruf dengan baik.
-- Belum bisa mengeja suku kata dengan lancar.
-- Belum bisa membaca kalimat sederhana.
-
-### ✅ Menulis
-- Biasanya belum bisa menulis huruf dengan benar.
-- Gerakan tangan masih kaku untuk menulis di garis lurus.
-- Belum paham membuat kata atau kalimat tertulis.
-
-### ✅ Berhitung
-- Umumnya hanya hafal angka 1–10 atau sampai 20.
-- Belum paham operasi hitung seperti penjumlahan atau pengurangan tertulis.
-- Belum bisa membedakan konsep “lebih besar” atau “lebih kecil” dengan tepat.
+**BrightSeeds** adalah platform edukasi interaktif untuk anak pra-SD yang **belum lancar membaca**, **belum mahir menulis**, dan **belum memahami konsep berhitung lebih besar**.  
+Menggabungkan latihan terstruktur dan permainan logika seru untuk mempersiapkan anak siap sekolah.
 
 ---
 
-## 🕹️ **Mini Games**
-
-### 🎮 Project “Pattern Scanner”
-**Fungsi:** Deteksi pola berulang (pattern recognition).  
-**Contoh:**  
-Buat rantai manik-manik: merah-biru-kuning-merah-biru-…  
-Anak menebak warna berikutnya.  
-Juga bisa dengan pola angka.
+## 🎮 Mini Games Seru
+- **Pattern Scanner** – Tebak pola warna/angka selanjutnya.
+- **Memory Trainer** – Latih daya ingat dengan mengingat urutan benda.
+- **Puzzle Syarat Ganda** – Susun posisi sesuai syarat logika (AND/OR).
+- **Kode Rahasia** – Membaca pesan sandi huruf–angka.
+- **Path Finder**, **Mini Chess**, **Wumpus World Deluxe** – Asah strategi & penalaran.
 
 ---
 
-### 🎮 Project “Memory Trainer”
-**Fungsi:** Melatih ingatan & kemampuan memanggil data (data storage & recall).  
-**Contoh:**  
-Tunjukkan 5 benda → tutup kain → anak sebut urutan benda.  
-Tingkatkan: urutkan dari besar ke kecil.
+## 🔑 Fitur
+
+- **Dashboard**: Akses latihan dan game edukatif setelah login.
 
 ---
 
-### 🎮 Puzzle Syarat Ganda
-**Konsep:** Memecahkan masalah dengan syarat kombinasi (AND, OR).  
-**Latihan logika:** Filter data, penempatan sesuai aturan.  
-**Contoh:**  
-Buat 5 kartu orang (A, B, C, D, E) & 5 tempat duduk.  
-Atur:  
-- “A tidak boleh duduk di samping B.”  
-- “C harus duduk di ujung.”  
-Anak atur posisi sesuai aturan.
-
-
-
-
-### 🎮 Project “Kode Rahasia”
-**Fungsi:** Melatih membaca simbol dan mencocokkan pola sandi huruf ke angka.  
-**Langkah:**  
-1️⃣ Guru/Orang tua bikin tabel sandi: 
-
-A = 1
-B = 2
-C = 3
-D = 4
-...
-Z = 26
-
-yaml
-Salin
-Edit
-2️⃣ Buat pesan rahasia, misalnya **“HELLO”** → **8-5-12-12-15**  
-3️⃣ Anak membaca angka, lalu mencocokkan huruf:  
-- 8 → H  
-- 5 → E  
-- 12 → L  
-- 12 → L  
-- 15 → O  
-4️⃣ Anak menuliskan kembali huruf → jawaban terbaca.
----
-
-## 🔒 **Fitur Login & Register**
-
-- Pengguna dapat **mendaftar** dengan username & password.
-- **Login** dengan username & password.
-- Setelah login, masuk ke **halaman utama** untuk latihan & bermain.
+## 🛠️ Teknologi
+- **Frontend**: React + Vite
+- **Deploy**: Vercel
 
 ---
 
-## 🗂️ **Teknologi**
-
-- **Frontend:** React + Vite
-- **Backend:** Node.js + Express
-- **Database:** File JSON lokal (bukan Postgres)
-- **Deploy:** **Hanya menggunakan Vercel**
-
----
-
-## 🚀 **Tujuan**
-
-BrightSeeds mendampingi anak pra-SD agar:
-- Siap membaca.
-- Siap menulis.
+## 🎯 Tujuan
+Mendampingi anak pra-SD agar:
+- Siap membaca & menulis.
 - Siap berhitung.
-- Siap berpikir logis melalui permainan yang menyenangkan.
+- Siap berpikir logis sambil bermain.
 
 ---
+Link deploy : https://bright-seeds.vercel.app/
 
-**✨ Dibuat dengan semangat mendidik generasi cerdas.**
+✨ **Dibuat dengan semangat mendidik generasi cerdas.**  
+Selamat datang di BrightSeeds! 🌱
