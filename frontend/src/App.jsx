@@ -1,24 +1,16 @@
-// brightseeds-app/frontend/src/App.jsx
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage/LandingPage';
-import Dashboard from './pages/Dashboard/Dashboard'; // Import komponen Dashboard
-import { getCurrentUser, logout } from './services/authService';
-// ... import halaman lain
+import Dashboard from './pages/Dashboard/Dashboard';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Saat buka root '/', langsung redirect ke dashboard */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
-        {/* Dashboard langsung bisa diakses */}
+        {/* Landing page di root */}
+        <Route path="/" element={<LandingPage />} />
+        {/* Dashboard page */}
         <Route path="/dashboard" element={<Dashboard />} />
-
-        {/* Kalau ada rute lain, tambahkan di sini */}
-        {/* Contoh: */}
-        {/* <Route path="/reading" element={<ReadingPage />} /> */}
       </Routes>
     </Router>
   );

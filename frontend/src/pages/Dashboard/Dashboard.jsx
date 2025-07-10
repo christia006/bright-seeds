@@ -1,51 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../../components/Header/Header'; // Perbaikan path
-import { getCurrentUser } from '../../services/authService';
+import Header from '../../components/Header/Header'; // Sesuaikan path
 import styles from './Dashboard.module.css'; // Import CSS Module
 
-const Dashboard = ({ currentUser, setCurrentUser }) => {
-  const [user, setUser] = useState(currentUser);
+const Dashboard = () => {
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (currentUser) {
-      setUser(currentUser);
-    } else {
-      const storedUser = getCurrentUser();
-      if (storedUser) {
-        setUser(storedUser);
-        setCurrentUser(storedUser);
+    // Buat user dummy langsung di sini
+    const dummyUser = {
+      username: "Teman",
+      progress: {
+        reading: { level: 1 },
+        writing: { level: 1 },
+        math: { level: 1 },
+        games: {
+          patternScanner: { highscore: 0, level: "Mudah" },
+          memoryTrainer: { highscore: 0, level: "Mudah" },
+          puzzleSyaratGanda: { highscore: 0, level: "Mudah" },
+          kodeRahasia: { highscore: 0, level: "Mudah" }
+        },
+        badges: []
       }
+    };
+    setUser(dummyUser);
+  }, []);
+
+  const getLevelDisplay = (activityProgress) => {
+    if (activityProgress && activityProgress.level) {
+      return `Level ${activityProgress.level} ✨`;
     }
-  }, [currentUser, setCurrentUser]);
+    return `Mulai Belajar! 🚀`;
+  };
 
   if (!user) {
     return (
       <div className={styles.pageContainer}>
         <Header />
-        <div className={styles.contentArea} style={{marginTop: '80px', textAlign: 'center'}}>
+        <div className={styles.contentArea} style={{ marginTop: '80px', textAlign: 'center' }}>
           <p>Memuat data pengguna...</p>
         </div>
       </div>
     );
   }
 
-  const getLevelDisplay = (activityProgress) => {
-    if (activityProgress && activityProgress.level) {
-      return `Level ${activityProgress.level} ✨`;
-    }
-    if (activityProgress && activityProgress.completed && activityProgress.completed.length > 0) {
-        return `Sudah Mulai! ⭐`;
-    }
-    return `Mulai Belajar! 🚀`;
-  };
-
   return (
     <div className={styles.pageContainer}>
       <Header />
-      <div className={styles.dashboardContent}> {/* Gunakan styles.dashboardContent */}
+      <div className={styles.dashboardContent}>
         <h2 className={styles.welcomeMessage}>
-          Halo, {user.username}!👋 Ayo kita belajar dan bermain!
+          Halo, {user.username}! 👋 Ayo kita belajar dan bermain!
         </h2>
 
         <div className={styles.activityGrid}>

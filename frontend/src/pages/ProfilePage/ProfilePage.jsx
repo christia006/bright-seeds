@@ -1,67 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import Header from '../../components/Header/Header'; // Sesuaikan path
-import { fetchUserProfile } from '../../services/userService';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import React, { useState, useEffect } from 'react';
+import Header from '../../components/Header/Header'; // Pastikan path sesuai struktur proyek
 import styles from './ProfilePage.module.css'; // Import CSS Module
 
-const ProfilePage = ({ currentUser, onLogout, setCurrentUser }) => {
-  const [localUser, setLocalUser] = useState(currentUser);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const ProfilePage = () => {
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const getUserProfile = async () => {
-      if (currentUser && currentUser.username) {
-        try {
-          setLoading(true);
-          const updatedUser = await fetchUserProfile(currentUser.username);
-          setLocalUser(updatedUser);
-          setCurrentUser(updatedUser); // Keep App.jsx state in sync
-        } catch (err) {
-          setError('Gagal memuat data profil.');
-          console.error('Error fetching profile:', err);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setLoading(false);
-        setError('Tidak ada pengguna yang login.');
+    // Dummy user data langsung di sini
+    const dummyUser = {
+      username: "Guest",
+      progress: {
+        reading: { level: 1, letters: ['a', 'b'], syllables: ['ba'], sentences: ['Ini kalimat'] },
+        writing: { level: 1, letters: ['c'], words: ['cat'], sentences: ['Saya menulis'] },
+        math: { level: 1, numbers: [1,2], counting: [3], arithmetic: [4+1] },
+        games: {
+          patternScanner: { highscore: 0, level: "Mudah" },
+          memoryTrainer: { highscore: 0, level: "Mudah" },
+          puzzleSyaratGanda: { highscore: 0, level: "Mudah" },
+          kodeRahasia: { highscore: 0, level: "Mudah" }
+        },
+        badges: ["🌟 Pemula", "🎓 Belajar Rajin"]
       }
     };
-    getUserProfile();
-  }, [currentUser?.username, setCurrentUser]);
+    setUser(dummyUser);
+  }, []);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  if (error) {
+  if (!user) {
     return (
       <div className={styles.pageContainer}>
         <Header />
         <div className={styles.contentArea}>
-          <div className={styles.card}>
-            <p className={styles.errorMessage}>{error}</p>
-          </div>
+          <p className={styles.infoMessage}>Memuat data pengguna...</p>
         </div>
       </div>
     );
   }
 
-  if (!localUser) {
-    return (
-      <div className={styles.pageContainer}>
-        <Header />
-        <div className={styles.contentArea}>
-          <div className={styles.card}>
-            <p className={styles.infoMessage}>Data pengguna tidak tersedia. Silakan login kembali.</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const { username, progress } = localUser;
+  const { username, progress } = user;
 
   return (
     <div className={styles.pageContainer}>
@@ -134,7 +109,7 @@ const ProfilePage = ({ currentUser, onLogout, setCurrentUser }) => {
             )}
           </div>
 
-          <button onClick={onLogout} className={`${styles.actionButton} ${styles.logoutButton}`}>
+          <button onClick={() => alert('Keluar Akun (dummy)')} className={`${styles.actionButton} ${styles.logoutButton}`}>
             Keluar Akun <span role="img" aria-label="logout">👋</span>
           </button>
         </div>
@@ -143,5 +118,4 @@ const ProfilePage = ({ currentUser, onLogout, setCurrentUser }) => {
   );
 };
 
-// --- INI ADALAH BAGIAN PENTINGNYA ---
 export default ProfilePage;
