@@ -7,37 +7,37 @@ import styles from './ReadingPage.module.css';
 
 // Pengenalan Huruf (A-Z)
 const LETTERS_QUESTIONS = [
-    { letter: 'A', audio: '/sounds/a.mp3' },
-    { letter: 'B', audio: '/sounds/b.mp3' },
-    { letter: 'C', audio: '/sounds/c.mp3' },
-    { letter: 'D', audio: '/sounds/d.mp3' },
-    { letter: 'E', audio: '/sounds/e.mp3' },
-    { letter: 'F', audio: '/sounds/f.mp3' },
-    { letter: 'G', audio: '/sounds/g.mp3' },
-    { letter: 'H', audio: '/sounds/h.mp3' },
-    { letter: 'I', audio: '/sounds/i.mp3' },
-    { letter: 'J', audio: '/sounds/j.mp3' },
-    { letter: 'K', audio: '/sounds/k.mp3' },
-    { letter: 'L', audio: '/sounds/l.mp3' },
-    { letter: 'M', audio: '/sounds/m.mp3' },
-    { letter: 'N', audio: '/sounds/n.mp3' },
-    { letter: 'O', audio: '/sounds/o.mp3' },
-    { letter: 'P', audio: '/sounds/p.mp3' },
-    { letter: 'Q', audio: '/sounds/q.mp3' },
-    { letter: 'R', audio: '/sounds/r.mp3' },
-    { letter: 'S', audio: '/sounds/s.mp3' },
-    { letter: 'T', audio: '/sounds/t.mp3' },
-    { letter: 'U', audio: '/sounds/u.mp3' },
-    { letter: 'V', audio: '/sounds/v.mp3' },
-    { letter: 'W', audio: '/sounds/w.mp3' },
-    { letter: 'X', audio: '/sounds/x.mp3' },
-    { letter: 'Y', audio: '/sounds/y.mp3' },
-    { letter: 'Z', audio: '/sounds/z.mp3' },
+    { letter: 'A', audio: '/sound/a.mp3' },
+    { letter: 'B', audio: '/sound/b.mp3' },
+    { letter: 'C', audio: '/sound/c.mp3' },
+    { letter: 'D', audio: '/sound/d.mp3' },
+    { letter: 'E', audio: '/sound/e.mp3' },
+    { letter: 'F', audio: '/sound/f.mp3' },
+    { letter: 'G', audio: '/sound/g.mp3' },
+    { letter: 'H', audio: '/sound/h.mp3' },
+    { letter: 'I', audio: '/sound/i.mp3' },
+    { letter: 'J', audio: '/sound/j.mp3' },
+    { letter: 'K', audio: '/sound/k.mp3' },
+    { letter: 'L', audio: '/sound/l.mp3' },
+    { letter: 'M', audio: '/sound/m.mp3' },
+    { letter: 'N', audio: '/sound/n.mp3' },
+    { letter: 'O', audio: '/sound/o.mp3' },
+    { letter: 'P', audio: '/sound/p.mp3' },
+    { letter: 'Q', audio: '/sound/q.mp3' },
+    { letter: 'R', audio: '/sound/r.mp3' },
+    { letter: 'S', audio: '/sound/s.mp3' },
+    { letter: 'T', audio: '/sound/t.mp3' },
+    { letter: 'U', audio: '/sound/u.mp3' },
+    { letter: 'V', audio: '/sound/v.mp3' },
+    { letter: 'W', audio: '/sound/w.mp3' },
+    { letter: 'X', audio: '/sound/x.mp3' },
+    { letter: 'Y', audio: '/sound/y.mp3' },
+    { letter: 'Z', audio: '/sound/z.mp3' },
 ];
 
 // Mengeja Kata (30 soal, satu kata lebih dari 4 huruf)
 const SYLLABLE_QUESTIONS = [
-    { word: 'Meja', audio: '/sounds/meja.mp3' },
+    { word: 'Meja', audio: '/sound/meja.mp3' },
     { word: 'Buku', audio: '/sounds/buku.mp3' },
     { word: 'Kursi', audio: '/sounds/kursi.mp3' },
     { word: 'Pensil', audio: '/sounds/pensil.mp3' },
@@ -67,12 +67,27 @@ const SYLLABLE_QUESTIONS = [
     { word: 'Gigi', audio: '/sounds/gigi.mp3' },
     { word: 'Mobil', audio: '/sounds/mobil.mp3' },
     { word: 'Motor', audio: '/sounds/motor.mp3' },
+
+
+
+
+
+
+
+
+    
 ];
 
 // Membaca Kalimat Sederhana (30 soal, progresif)
 const SENTENCE_QUESTIONS = [
-    { sentence: 'Ini bola.', audio: '/sounds/kalimat1.mp3' },
-    { sentence: 'Kucing makan.', audio: '/sounds/kalimat2.mp3' },
+    { sentence: 'Ini bola.', audio: '/sound/kalimat1.mp3' },
+    
+
+
+
+
+
+     { sentence: 'Kucing makan.', audio: '/sounds/kalimat2.mp3' },
     { sentence: 'Bunga itu indah.', audio: '/sounds/kalimat3.mp3' },
     { sentence: 'Ayah membaca buku.', audio: '/sounds/kalimat4.mp3' },
     { sentence: 'Ibu memasak nasi.', audio: '/sounds/kalimat5.mp3' },
@@ -101,6 +116,7 @@ const SENTENCE_QUESTIONS = [
     { sentence: 'Mobil itu melaju pelan.', audio: '/sounds/kalimat28.mp3' },
     { sentence: 'Rumah saya dekat sekolah.', audio: '/sounds/kalimat29.mp3' },
     { sentence: 'Kami makan bersama keluarga.', audio: '/sounds/kalimat30.mp3' },
+    
 ];
 
 const POSITIVE_MESSAGES = [
@@ -136,7 +152,74 @@ const ReadingPage = () => {
     const [isListening, setIsListening] = useState(false);
     const speechRecognitionRef = useRef(null);
 
-    const audioRef = useRef(null); // Untuk memutar audio
+    const audioRef = useRef(null); // Untuk memutar audio pertanyaan (huruf, kata, kalimat)
+    const clickAudioRef = useRef(null); // Untuk memutar audio klik tombol
+    const correctSoundRef = useRef(null); // Untuk memutar audio jawaban benar
+    const incorrectSoundRef = useRef(null); // Untuk memutar audio jawaban salah
+    const backgroundMusicRef = useRef(null); // Ref baru untuk musik latar
+
+    // Efek samping untuk inisialisasi suara klik, suara jawaban, dan musik latar
+    useEffect(() => {
+        if (!clickAudioRef.current) {
+            clickAudioRef.current = new Audio('/sound/tombol.mp3'); // Pastikan path ini benar
+            clickAudioRef.current.volume = 0.8; // Atur volume untuk suara klik
+        }
+        if (!correctSoundRef.current) {
+            correctSoundRef.current = new Audio('/sound/benar.mp3'); // Path untuk suara benar
+            correctSoundRef.current.volume = 1.0;
+        }
+        if (!incorrectSoundRef.current) {
+            incorrectSoundRef.current = new Audio('/sound/salah.mp3'); // Path untuk suara salah
+            incorrectSoundRef.current.volume = 1.0;
+        }
+        // Inisialisasi musik latar
+        if (!backgroundMusicRef.current) {
+            backgroundMusicRef.current = new Audio('/sound/membaca.mp3'); // Path untuk musik latar
+            backgroundMusicRef.current.loop = true; // Agar musik berulang
+            backgroundMusicRef.current.volume = 0.3; // Sesuaikan volume agar tidak terlalu keras
+        }
+
+        // Memulai musik latar saat komponen dimuat
+        const playBackgroundMusic = () => {
+            if (backgroundMusicRef.current) {
+                backgroundMusicRef.current.play().catch(e => console.error("Gagal memutar musik latar:", e));
+            }
+        };
+
+        playBackgroundMusic();
+
+        // Menghentikan musik saat komponen di-unmount
+        return () => {
+            if (backgroundMusicRef.current) {
+                backgroundMusicRef.current.pause();
+                backgroundMusicRef.current.currentTime = 0;
+            }
+        };
+    }, []); // Array dependensi kosong agar hanya berjalan sekali saat mount
+
+    // Fungsi untuk memutar suara klik
+    const playClickSound = () => {
+        if (clickAudioRef.current) {
+            clickAudioRef.current.currentTime = 0; // Setel ulang ke awal jika sudah diputar
+            clickAudioRef.current.play().catch(e => console.error("Gagal memutar suara klik:", e));
+        }
+    };
+
+    // Fungsi untuk memutar suara jawaban benar
+    const playCorrectSound = () => {
+        if (correctSoundRef.current) {
+            correctSoundRef.current.currentTime = 0;
+            correctSoundRef.current.play().catch(e => console.error("Gagal memutar suara benar:", e));
+        }
+    };
+
+    // Fungsi untuk memutar suara jawaban salah
+    const playIncorrectSound = () => {
+        if (incorrectSoundRef.current) {
+            incorrectSoundRef.current.currentTime = 0;
+            incorrectSoundRef.current.play().catch(e => console.error("Gagal memutar suara salah:", e));
+        }
+    };
 
     useEffect(() => {
         if (!('webkitSpeechRecognition' in window)) {
@@ -166,6 +249,7 @@ const ReadingPage = () => {
                                   Math.abs(normalizedTranscript.length - normalizedExpectedWord.length) <= 2);
 
                 if (isCorrect) {
+                    playCorrectSound(); // Play correct sound
                     const positiveMsg = POSITIVE_MESSAGES[Math.floor(Math.random() * POSITIVE_MESSAGES.length)];
                     setMessage(positiveMsg);
                     setMessageColor('green');
@@ -174,6 +258,7 @@ const ReadingPage = () => {
                         moveToNextWord();
                     }, 1500);
                 } else {
+                    playIncorrectSound(); // Play incorrect sound
                     const negativeMsg = NEGATIVE_MESSAGES[Math.floor(Math.random() * NEGATIVE_MESSAGES.length)];
                     setMessage(`${negativeMsg} Kamu mengucapkan: "${transcript}". Seharusnya "${expectedWord.toUpperCase()}"`);
                     setMessageColor('red');
@@ -185,6 +270,7 @@ const ReadingPage = () => {
                 const normalizedExpected = expectedSentence.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ").trim();
 
                 if (normalizedTranscript === normalizedExpected) {
+                    playCorrectSound(); // Play correct sound
                     const positiveMsg = POSITIVE_MESSAGES[Math.floor(Math.random() * POSITIVE_MESSAGES.length)];
                     setMessage(positiveMsg);
                     setMessageColor('green');
@@ -193,6 +279,7 @@ const ReadingPage = () => {
                         moveToNextSentence();
                     }, 2000);
                 } else {
+                    playIncorrectSound(); // Play incorrect sound
                     const negativeMsg = NEGATIVE_MESSAGES[Math.floor(Math.random() * NEGATIVE_MESSAGES.length)];
                     setMessage(`${negativeMsg} Kamu mengucapkan: "${transcript}". Seharusnya "${expectedSentence}"`);
                     setMessageColor('red');
@@ -231,6 +318,7 @@ const ReadingPage = () => {
     };
 
     const startListening = () => {
+        playClickSound(); // Play sound when starting to listen
         if (speechRecognitionRef.current && !isListening) {
             setIsListening(true);
             setMessage('🎙️ Mendengarkan... Ucapkan dengan jelas!');
@@ -258,6 +346,7 @@ const ReadingPage = () => {
     }, [currentWordIndex, subSection]);
 
     const moveToNextWord = async () => {
+        playClickSound(); // Play sound when moving to next word
         if (currentWordIndex < SYLLABLE_QUESTIONS.length - 1) {
             setCurrentWordIndex(prevIndex => prevIndex + 1);
             setMessage('');
@@ -291,6 +380,7 @@ const ReadingPage = () => {
     }, [currentSentenceIndex, subSection]);
 
     const moveToNextSentence = async () => {
+        playClickSound(); // Play sound when moving to next sentence
         if (currentSentenceIndex < SENTENCE_QUESTIONS.length - 1) {
             setCurrentSentenceIndex(prevIndex => prevIndex + 1);
             setMessage('');
@@ -307,6 +397,7 @@ const ReadingPage = () => {
 
     // Handler for navigating to Dashboard
     const handleGoToDashboard = () => {
+        playClickSound(); // Play sound on Dashboard button click
         navigate('/dashboard'); // Assuming your Dashboard route is '/dashboard'
     };
 
@@ -318,7 +409,6 @@ const ReadingPage = () => {
                     <div className={styles.card}>
                         <h3>🔤 Pengenalan Huruf (A-Z)</h3>
                     
-
                         <div className={styles.letterGrid}>
                             {LETTERS_QUESTIONS.map((item, index) => (
                                 <div
@@ -326,6 +416,7 @@ const ReadingPage = () => {
                                     className={styles.letterBox}
                                     onClick={() => {
                                         playAudio(item.audio);
+                                        playClickSound(); // Play sound when clicking a letter box
                                     }}
                                 >
                                     {item.letter}
@@ -338,6 +429,7 @@ const ReadingPage = () => {
                         {message && <p style={{ color: messageColor, fontWeight: 'bold', marginTop: '15px' }}>{message}</p>}
 
                         <button onClick={() => {
+                            playClickSound(); // Play sound when returning to menu
                             setSubSection(null);
                             setMessage(''); // Pastikan pesan dihapus saat kembali ke menu utama
                         }} className={`${styles.actionButton} ${styles.secondaryButton}`}>
@@ -371,6 +463,7 @@ const ReadingPage = () => {
                         </p>
 
                         <button onClick={() => {
+                            playClickSound(); // Play sound when returning to menu
                             setSubSection(null);
                             setCurrentWordIndex(0);
                             setMessage('');
@@ -410,6 +503,7 @@ const ReadingPage = () => {
                         </p>
 
                         <button onClick={() => {
+                            playClickSound(); // Play sound when returning to menu
                             setSubSection(null);
                             setCurrentSentenceIndex(0);
                             setMessage('');
@@ -430,13 +524,22 @@ const ReadingPage = () => {
                         <h3>Ayo Belajar Membaca! 🤓</h3>
                         <p className={styles.descriptionText}>Pilih petualangan membaca yang ingin kamu mulai:</p>
                         <div className={styles.menuGrid}>
-                            <button onClick={() => setSubSection('letters')} className={styles.menuCard}>
+                            <button onClick={() => {
+                                playClickSound(); // Play sound when clicking menu card
+                                setSubSection('letters');
+                            }} className={styles.menuCard}>
                                 Pengenalan Huruf <span role="img" aria-label="letters">🅰️🅱️🆎</span>
                             </button>
-                            <button onClick={() => setSubSection('syllables')} className={styles.menuCard}>
+                            <button onClick={() => {
+                                playClickSound(); // Play sound when clicking menu card
+                                setSubSection('syllables');
+                            }} className={styles.menuCard}>
                                 Mengeja Kata <span role="img" aria-label="syllables">K🅰️T🅰️</span>
                             </button>
-                            <button onClick={() => setSubSection('sentences')} className={styles.menuCard}>
+                            <button onClick={() => {
+                                playClickSound(); // Play sound when clicking menu card
+                                setSubSection('sentences');
+                            }} className={styles.menuCard}>
                                 Membaca Kalimat Sederhana <span role="img" aria-label="sentences">📚✨</span>
                             </button>
                         </div>

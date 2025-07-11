@@ -1,167 +1,292 @@
 /* Dashboard.module.css */
 
+/* Mengimpor font Inter dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+/* Kontainer Utama Halaman */
 .pageContainer {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #f0f2f5; /* Light background */
-    font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #e0f7fa, #e8eaf6); /* Gradien latar belakang cerah */
+  font-family: 'Inter', sans-serif; /* Pastikan font Inter digunakan */
+  color: #333;
+  padding: 1rem; /* Padding keseluruhan untuk responsivitas */
+  box-sizing: border-box; /* Pastikan padding tidak menambah lebar total */
+  position: relative; /* Penting untuk positioning absolut tombol sound */
 }
 
+/* Area Konten Dashboard */
 .dashboardContent {
-    flex-grow: 1;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 80px auto 20px auto; /* Adjust margin-top to account for fixed header */
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 95%; /* Konten melebar hingga 95% dari lebar parent */
+  max-width: 1400px; /* Batasi lebar maksimum agar tidak terlalu lebar di layar super besar */
+  margin: 2rem auto; /* Pusatkan konten dengan margin otomatis */
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 25px; /* Sudut membulat */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
 }
 
+/* Pesan Selamat Datang */
 .welcomeMessage {
-    font-size: 2.2em;
-    color: #333;
-    margin-bottom: 40px;
-    text-align: center;
-    font-weight: 700;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  font-size: 2.5rem; /* Ukuran font besar */
+  font-weight: 800; /* Sangat tebal */
+  color: #6a1b9a; /* Warna ungu cerah */
+  margin-bottom: 2.5rem;
+  text-align: center;
+  line-height: 1.3;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* Sedikit bayangan teks */
 }
 
+/* Grid Aktivitas */
 .activityGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    width: 100%;
-    max-width: 1000px; /* Limit grid width for better aesthetics */
-    margin-bottom: 40px; /* Space before logout button */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Kolom responsif */
+  gap: 1.5rem; /* Jarak antar kartu */
+  width: 100%; /* Pastikan grid mengisi lebar dashboardContent */
+  max-width: 100%; /* Hapus batasan max-width sebelumnya */
+  margin-bottom: 3rem;
 }
 
+/* Kartu Aktivitas Dasar */
 .activityCard {
-    background-color: #ffffff;
-    border-radius: 20px;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    text-decoration: none;
-    color: #333;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden; /* For pseudo-elements */
+  background-color: #f0f4f8; /* Latar belakang kartu yang lembut */
+  border-radius: 20px; /* Sudut membulat */
+  padding: 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Bayangan kartu */
+  transition: all 0.3s ease-in-out; /* Transisi halus untuk hover */
+  border: 2px solid transparent; /* Border transparan untuk efek hover */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px; /* Tinggi minimum kartu */
 }
 
 .activityCard:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px) scale(1.02); /* Efek melayang dan sedikit membesar */
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15); /* Bayangan lebih dalam saat hover */
+  border-color: #8e24aa; /* Warna border saat hover */
 }
 
 .activityCard h3 {
-    font-size: 1.8em;
-    margin-top: 15px;
-    margin-bottom: 10px;
-    font-weight: 600;
-    color: #444;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-top: 0.8rem;
+  margin-bottom: 0.5rem;
+  color: #4a148c; /* Warna judul kartu */
 }
 
 .activityCard p {
-    font-size: 1.1em;
-    color: #666;
-    line-height: 1.5;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.4;
 }
 
+/* Ikon Kartu */
 .cardIcon {
-    font-size: 3.5em;
-    margin-bottom: 10px;
-    transition: transform 0.3s ease;
+  font-size: 3.5rem; /* Ukuran ikon emoji besar */
+  margin-bottom: 0.5rem;
+  animation: bounceIcon 2s infinite ease-in-out; /* Animasi ikon */
 }
 
-.activityCard:hover .cardIcon {
-    transform: scale(1.1);
+/* Warna Spesifik untuk Setiap Kartu */
+.readingCard { background-color: #e3f2fd; border-color: #90caf9; }
+.readingCard:hover { border-color: #2196f3; }
+
+.writingCard { background-color: #e8f5e9; border-color: #a5d6a7; }
+.writingCard:hover { border-color: #4caf50; }
+
+.mathCard { background-color: #fffde7; border-color: #ffe082; }
+.mathCard:hover { border-color: #ffc107; }
+
+.gamesCard { background-color: #ffebee; border-color: #ef9a9a; }
+.gamesCard:hover { border-color: #f44336; }
+
+.pathFinderCard { background-color: #e1f5fe; border-color: #81d4fa; }
+.pathFinderCard:hover { border-color: #03a9f4; }
+
+.miniAIChessCard { background-color: #f3e5f5; border-color: #ce93d8; }
+.miniAIChessCard:hover { border-color: #9c27b0; }
+
+
+/* Grup Tombol Logout dan Sound */
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* Jarak antara tombol */
+  margin-top: 2rem; /* Jarak dari grid aktivitas */
+  justify-content: center; /* Pusatkan grup tombol */
 }
 
-/* Specific card colors and subtle gradients */
-.readingCard { background: linear-gradient(135deg, #e0f7fa, #b2ebf2); }
-.writingCard { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
-.mathCard { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
-.gamesCard { background: linear-gradient(135deg, #f3e5f5, #e1bee7); }
-/* NEW: Path Finder Card Style */
-.pathFinderCard {
-    background: linear-gradient(135deg, #ffe0b2, #ffd54f); /* Warm yellow/orange gradient */
-}
-.pathFinderCard .cardIcon {
-    color: #f57c00; /* Darker orange for icon */
-}
-
-
-/* Logout Button Styles */
+/* Tombol Logout */
 .logoutButton {
-    background-color: #f44336; /* Red for logout */
-    color: white;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-weight: 600;
-    margin-top: 30px; /* Space above the button */
+  background: linear-gradient(to right, #ff7043, #ff5722); /* Gradien oranye cerah */
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.8rem 2.5rem;
+  border: none;
+  border-radius: 50px; /* Sangat membulat */
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(255, 87, 34, 0.3); /* Bayangan tombol */
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 150px; /* Lebar minimum */
+  justify-content: center;
 }
 
 .logoutButton:hover {
-    background-color: #d32f2f; /* Darker red on hover */
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  transform: translateY(-5px) scale(1.05); /* Efek melayang dan membesar */
+  box-shadow: 0 12px 25px rgba(255, 87, 34, 0.4);
+  background: linear-gradient(to right, #ff5722, #e64a19); /* Gradien sedikit lebih gelap */
 }
 
-.logoutButton:active {
-    background-color: #c62828; /* Even darker on click */
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+/* Tombol Kontrol Musik */
+.musicToggleButton {
+  padding: 0.6rem; /* Padding lebih kecil */
+  background-color: #ff80ab; /* Warna pink cerah */
+  color: white;
+  border-radius: 50%; /* Bentuk bulat sempurna */
+  box-shadow: 0 4px 10px rgba(255, 128, 171, 0.4); /* Bayangan lembut */
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  border: 3px solid #ffffff; /* Border putih tebal */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px; /* Ukuran tetap untuk sentuhan */
+  height: 48px; /* Ukuran tetap untuk sentuhan */
+  z-index: 10;
 }
 
-/* Responsive adjustments */
+.musicToggleButton:hover {
+  transform: scale(1.15) rotate(10deg); /* Efek membesar dan sedikit berputar */
+  background-color: #ff4081; /* Warna pink lebih gelap saat hover */
+  box-shadow: 0 6px 15px rgba(255, 64, 129, 0.5);
+}
+
+.musicToggleButton svg {
+  width: 24px; /* Ukuran ikon SVG */
+  height: 24px;
+}
+
+
+/* Media Queries untuk Responsivitas */
 @media (max-width: 768px) {
-    .welcomeMessage {
-        font-size: 1.8em;
-    }
-    .activityGrid {
-        grid-template-columns: 1fr; /* Stack cards on small screens */
-        padding: 0 15px;
-    }
-    .activityCard {
-        padding: 25px;
-    }
-    .activityCard h3 {
-        font-size: 1.5em;
-    }
-    .activityCard p {
-        font-size: 1em;
-    }
-    .cardIcon {
-        font-size: 3em;
-    }
-    .logoutButton {
-        width: 90%; /* Make button wider on small screens */
-        font-size: 1.1em;
-        padding: 12px 25px;
-    }
+  .welcomeMessage {
+    font-size: 2rem; /* Ukuran font lebih kecil di tablet/ponsel */
+    margin-bottom: 2rem;
+  }
+
+  .activityGrid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Kolom lebih kecil */
+    gap: 1rem;
+  }
+
+  .activityCard {
+    padding: 1rem;
+    min-height: 150px;
+  }
+
+  .activityCard h3 {
+    font-size: 1.4rem;
+  }
+
+  .cardIcon {
+    font-size: 3rem;
+  }
+
+  .logoutButton {
+    font-size: 1rem;
+    padding: 0.7rem 2rem;
+  }
+
+  .buttonGroup {
+    gap: 1rem; /* Jarak antar tombol lebih kecil di mobile */
+  }
+
+  .musicToggleButton {
+    width: 40px;
+    height: 40px;
+    padding: 0.5rem;
+  }
+
+  .musicToggleButton svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 @media (max-width: 480px) {
-    .welcomeMessage {
-        font-size: 1.5em;
-    }
-    .dashboardContent {
-        padding: 15px;
-    }
+  .pageContainer {
+    padding: 0.5rem;
+  }
+
+  .dashboardContent {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+
+  .welcomeMessage {
+    font-size: 1.8rem; /* Ukuran font lebih kecil di ponsel */
+    margin-bottom: 1.5rem;
+  }
+
+  .activityGrid {
+    grid-template-columns: 1fr; /* Satu kolom di ponsel sangat kecil */
+    gap: 0.8rem;
+  }
+
+  .activityCard {
+    padding: 0.8rem;
+    min-height: 120px;
+  }
+
+  .activityCard h3 {
+    font-size: 1.2rem;
+  }
+
+  .cardIcon {
+    font-size: 2.5rem;
+  }
+
+  .logoutButton {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.5rem;
+  }
+
+  .buttonGroup {
+    flex-direction: column; /* Tombol bertumpuk di layar sangat kecil */
+    gap: 0.8rem;
+  }
+
+  .musicToggleButton {
+    width: 36px;
+    height: 36px;
+    padding: 0.4rem;
+  }
+
+  .musicToggleButton svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Animasi */
+@keyframes bounceIcon {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-5px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(-2px); }
 }

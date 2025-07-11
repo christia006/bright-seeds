@@ -94,7 +94,7 @@ const mathContent = {
     }
 };
 
-// Define getSoundPath function here
+// Define getSoundPath function here (this function is not used for 'benar.mp3' and 'salah.mp3' directly)
 const getSoundPath = (fileName, type) => {
     switch (type) {
         case 'feedback':
@@ -118,8 +118,52 @@ const MathPage = () => {
     const [feedbackColor, setFeedbackColor] = useState('');
     const [isExploding, setIsExploding] = useState(false);
 
-    const audioRef = useRef(new Audio());
+    const audioRef = useRef(new Audio()); // Untuk memutar audio pertanyaan (dari getSoundPath atau TTS)
+    const clickAudioRef = useRef(null); // Untuk memutar audio klik tombol
+    const correctSoundRef = useRef(null); // Untuk memutar audio jawaban benar
+    const incorrectSoundRef = useRef(null); // Untuk memutar audio jawaban salah
+
     const navigate = useNavigate();
+
+    // Efek samping untuk inisialisasi suara klik dan suara jawaban
+    useEffect(() => {
+        if (!clickAudioRef.current) {
+            clickAudioRef.current = new Audio('/sound/tombol.mp3'); // Path untuk suara tombol
+            clickAudioRef.current.volume = 0.8;
+        }
+        if (!correctSoundRef.current) {
+            correctSoundRef.current = new Audio('/sound/benar.mp3'); // Path untuk suara benar
+            correctSoundRef.current.volume = 1.0;
+        }
+        if (!incorrectSoundRef.current) {
+            incorrectSoundRef.current = new Audio('/sound/salah.mp3'); // Path untuk suara salah
+            incorrectSoundRef.current.volume = 1.0;
+        }
+    }, []);
+
+    // Fungsi untuk memutar suara klik
+    const playClickSound = () => {
+        if (clickAudioRef.current) {
+            clickAudioRef.current.currentTime = 0; // Setel ulang ke awal jika sudah diputar
+            clickAudioRef.current.play().catch(e => console.error("Gagal memutar suara klik:", e));
+        }
+    };
+
+    // Fungsi untuk memutar suara jawaban benar
+    const playCorrectSound = () => {
+        if (correctSoundRef.current) {
+            correctSoundRef.current.currentTime = 0;
+            correctSoundRef.current.play().catch(e => console.error("Gagal memutar suara benar:", e));
+        }
+    };
+
+    // Fungsi untuk memutar suara jawaban salah
+    const playIncorrectSound = () => {
+        if (incorrectSoundRef.current) {
+            incorrectSoundRef.current.currentTime = 0;
+            incorrectSoundRef.current.play().catch(e => console.error("Gagal memutar suara salah:", e));
+        }
+    };
 
     // Effect untuk memuat soal awal atau daftar angka saat komponen dimuat atau bagian berubah
     useEffect(() => {
@@ -147,7 +191,7 @@ const MathPage = () => {
         if (!textToSpeak) return;
 
         let path;
-        if (soundType === 'feedback') { // Handle specific feedback sound type
+        if (soundType === 'feedback') { // Handle specific feedback sound type (though we're now using direct calls for benar/salah)
             path = getSoundPath(textToSpeak, 'feedback');
         } else if (soundType === 'number') {
             path = getSoundPath(textToSpeak, 'number');
@@ -198,7 +242,7 @@ const MathPage = () => {
 
     // Handler untuk jawaban benar
     const handleCorrectAnswer = () => {
-        playSound('benar-pula', 'feedback'); // Play specific correct feedback sound
+        playCorrectSound(); // Play specific correct feedback sound
         setFeedback('Hebat! Jawabanmu benar! 🎉 Lanjut ke soal berikutnya!');
         setFeedbackColor('green');
         setIsExploding(true);
@@ -212,7 +256,7 @@ const MathPage = () => {
 
     // Handler untuk jawaban salah
     const handleIncorrectAnswer = () => {
-        playSound('coba-lagi-ya', 'feedback'); // Play specific incorrect feedback sound
+        playIncorrectSound(); // Play specific incorrect feedback sound
         setFeedback('Coba lagi! Jawabanmu belum tepat. 🤔 Jangan menyerah!');
         setFeedbackColor('red');
         setIsExploding(false);
@@ -220,6 +264,7 @@ const MathPage = () => {
 
     // Handler saat pengguna menekan tombol "Periksa"
     const handleSubmit = () => {
+        playClickSound(); // Play click sound on submit
         if (!currentQuestion) return;
 
         const parsedInput = parseInt(userInput.trim());
@@ -238,12 +283,14 @@ const MathPage = () => {
 
     // Handler untuk melewati soal
     const handleSkip = () => {
+        playClickSound(); // Play click sound on skip
         setIsExploding(false);
         loadNewQuestion();
     };
 
     // Handler untuk navigasi ke Dashboard
     const handleGoToDashboard = () => {
+        playClickSound(); // Play click sound on Dashboard button click
         navigate('/dashboard');
     };
 
@@ -268,25 +315,25 @@ const MathPage = () => {
 
                 <div className={styles.sectionSelector}>
                     <button
-                        onClick={() => setSelectedSection('counting')}
+                        onClick={() => { playClickSound(); setSelectedSection('counting'); }}
                         className={`${styles.sectionButton} ${selectedSection === 'counting' ? styles.active : ''}`}
                     >
                         Menghitung Objek 🍎
                     </button>
                     <button
-                        onClick={() => setSelectedSection('addition')}
+                        onClick={() => { playClickSound(); setSelectedSection('addition'); }}
                         className={`${styles.sectionButton} ${selectedSection === 'addition' ? styles.active : ''}`}
                     >
                         Penjumlahan ➕
                     </button>
                     <button
-                        onClick={() => setSelectedSection('subtraction')}
+                        onClick={() => { playClickSound(); setSelectedSection('subtraction'); }}
                         className={`${styles.sectionButton} ${selectedSection === 'subtraction' ? styles.active : ''}`}
                     >
                         Pengurangan ➖
                     </button>
                     <button
-                        onClick={() => setSelectedSection('numbersList')}
+                        onClick={() => { playClickSound(); setSelectedSection('numbersList'); }}
                         className={`${styles.sectionButton} ${selectedSection === 'numbersList' ? styles.active : ''}`}
                     >
                         Daftar Angka 1-100 💯
@@ -302,7 +349,7 @@ const MathPage = () => {
                         <>
                             <div className={styles.questionContainer}>
                                 {mathContent[selectedSection].showSoundButton && (
-                                    <button onClick={() => playSound(currentQuestion.soundText, 'math_question')} className={styles.speakButton}>
+                                    <button onClick={() => { playClickSound(); playSound(currentQuestion.soundText, 'math_question'); }} className={styles.speakButton}>
                                         <span role="img" aria-label="speaker">🔊</span> Dengar Soal
                                     </button>
                                 )}
@@ -339,7 +386,7 @@ const MathPage = () => {
                                 <button
                                     key={item.number}
                                     className={styles.numberButton}
-                                    onClick={() => playSound(item.soundText, 'number')}
+                                    onClick={() => { playClickSound(); playSound(item.soundText, 'number'); }}
                                 >
                                     {item.number}
                                     <span className={styles.numberSpeakIcon} role="img" aria-label="speaker">🔊</span>

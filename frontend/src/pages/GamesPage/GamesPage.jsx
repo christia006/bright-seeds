@@ -63,7 +63,7 @@ const MT_SEQUENCE_LENGTHS = [3, 4, 3, 4, 3, 4]; // Panjang sequence yang lebih b
 const PSG_PUZZLES = [
     // Tambahan puzzle untuk mencapai 50+
     { id: 1, question: "Kucing 🐈 harus di tengah. Anjing 🐕 tidak boleh di samping Burung 🐦.", options: ["🐈", "🐕", "🐦"], slots: 3, answer: "🐕🐈🐦" },
-    { id: 2, question: "Apel 🍎 di paling kiri. Pisang 🍌 di samping Jeruk 🍊.", options: ["🍎", "🍌", "🍊"], slots: 3, answer: "🍎🍊🍌" },
+        { id: 2, question: "Apel 🍎 di paling kiri. Pisang 🍌 di samping Jeruk 🍊.", options: ["🍎", "🍌", "🍊"], slots: 3, answer: "🍎🍊🍌" },
     { id: 3, question: "Buku 📚 di tengah. Pensil ✏️ di ujung kanan.", options: ["📚", "✏️", "✂️"], slots: 3, answer: "✂️📚✏️" },
     { id: 4, question: "Mobil 🚗 di paling kanan. Sepeda 🚲 bukan di samping Motor 🏍️.", options: ["🚗", "🚲", "🏍️"], slots: 3, answer: "🚲🏍️🚗" },
     { id: 5, question: "Bunga 🌸 di ujung kiri. Kupu-kupu 🦋 di samping Lebah 🐝.", options: ["🌸", "🦋", "🐝"], slots: 3, answer: "🌸🐝🦋" },
@@ -115,15 +115,17 @@ const PSG_PUZZLES = [
     { id: 50, question: "Pulau 🏝️ di tengah. Laut 🌊 di ujung kiri. Kapal 🚢 di samping Ikan 🐠. Gunung ⛰️ di ujung kanan.", options: ["🏝️", "🌊", "🚢", "🐠", "⛰️"], slots: 5, answer: "🌊🚢🐠🏝️⛰️" },
     { id: 51, question: "Bunga Mawar 🌹 di paling kiri. Bunga Melati 🌼 di samping Bunga Tulip 🌷. Bunga Anggrek  orchid di ujung kanan. Bunga Matahari 🌻 bukan di samping Mawar.", options: ["🌹", "🌼", "🌷", "orchid", "🌻"], slots: 5, answer: "🌹🌻🌼🌷orchid" },
     { id: 52, question: "Kamera 📸 di tengah. Lensa 렌즈 di ujung kiri. Flash ⚡ di samping Tripod tripod. Foto 🖼️ di ujung kanan.", options: ["📸", "렌즈", "⚡", "tripod", "🖼️"], slots: 5, answer: "렌즈⚡tripod📸🖼️" },
+
+
+
+
+
 ];
 
 // --- Data & Logic untuk Kode Rahasia ---
 const KR_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const KR_KATA_RAHASIA = [
-  'MERDEKA', 'GEMBIRA', 'PETUALANG',
-    // Kata-kata lebih panjang dan "menjebak"
-    'KECERDASAN', 'PETUALANGAN', 'KEBAHAGIAAN', 'KEMANDIRIAN', 'KEJUJURAN', 'PERDAMAIAN', 'PERSATUAN',
-    'KEMAKMURAN', 'KESEIMBANGAN', 'KEBERHASILAN', 'KEDISIPLINAN', 'KESABARAN', 'KASIHAYANG', 'KEINDAHAN',
+    'MERDEKA', 'GEMBIRA', 'PETUALANG',    'KEMAKMURAN', 'KESEIMBANGAN', 'KEBERHASILAN', 'KEDISIPLINAN', 'KESABARAN', 'KASIHAYANG', 'KEINDAHAN',
     'KERJAKERAS', 'KEJUARAAN', 'KEMENANGAN', 'KEUNIKAN', 'KEKUATAN', 'KEGEMBIRAAN', 'KEDAMAIAN',
     'KEMURNIAN', 'KESUCIAN', 'KESEMPURNAAN', 'KETERAMPILAN', 'KEMAMPUAN', 'KETERBUKAAN', 'KEJUJURAN',
     'KEBERANIAN', 'KECERIAAN', 'KEBAIKAN', 'KEHANGATAN', 'KEISTIMEWAAN', 'KEBERKAHAN', 'KEKUATAN','KEABADIAN',
@@ -225,12 +227,82 @@ const KR_KATA_RAHASIA = [
 'KESERUPAAN',
 'KEUNIKAN'
 
+    // Kata-kata lebih panjang dan "menjebak"
+    
 
 ];
 
 const GamesPage = () => {
     const [subGame, setSubGame] = useState(null); // State untuk mengontrol game mana yang aktif
     const navigate = useNavigate(); // Inisialisasi hook useNavigate
+
+    // Refs untuk suara
+    const clickAudioRef = useRef(null);
+    const correctSoundRef = useRef(null);
+    const incorrectSoundRef = useRef(null);
+    const backgroundMusicRef = useRef(null); // Ref baru untuk musik latar
+
+    // Efek samping untuk inisialisasi suara
+    useEffect(() => {
+        if (!clickAudioRef.current) {
+            clickAudioRef.current = new Audio('/sound/tombol.mp3');
+            clickAudioRef.current.volume = 0.8;
+        }
+        if (!correctSoundRef.current) {
+            correctSoundRef.current = new Audio('/sound/benar.mp3');
+            correctSoundRef.current.volume = 1.0;
+        }
+        if (!incorrectSoundRef.current) {
+            incorrectSoundRef.current = new Audio('/sound/salah.mp3');
+            incorrectSoundRef.current.volume = 1.0;
+        }
+        if (!backgroundMusicRef.current) {
+            backgroundMusicRef.current = new Audio('/sound/game.mp3'); // Path untuk musik latar
+            backgroundMusicRef.current.loop = true; // Agar musik berulang
+            backgroundMusicRef.current.volume = 0.3; // Sesuaikan volume agar tidak terlalu keras
+        }
+
+        // Memulai musik latar saat komponen dimuat
+        const playBackgroundMusic = () => {
+            if (backgroundMusicRef.current) {
+                backgroundMusicRef.current.play().catch(e => console.error("Gagal memutar musik latar:", e));
+            }
+        };
+
+        playBackgroundMusic();
+
+        // Menghentikan musik saat komponen di-unmount
+        return () => {
+            if (backgroundMusicRef.current) {
+                backgroundMusicRef.current.pause();
+                backgroundMusicRef.current.currentTime = 0;
+            }
+        };
+    }, []); // Array dependensi kosong agar hanya berjalan sekali saat mount
+
+    // Fungsi untuk memutar suara klik
+    const playClickSound = () => {
+        if (clickAudioRef.current) {
+            clickAudioRef.current.currentTime = 0;
+            clickAudioRef.current.play().catch(e => console.error("Gagal memutar suara klik:", e));
+        }
+    };
+
+    // Fungsi untuk memutar suara jawaban benar
+    const playCorrectSound = () => {
+        if (correctSoundRef.current) {
+            correctSoundRef.current.currentTime = 0;
+            correctSoundRef.current.play().catch(e => console.error("Gagal memutar suara benar:", e));
+        }
+    };
+
+    // Fungsi untuk memutar suara jawaban salah
+    const playIncorrectSound = () => {
+        if (incorrectSoundRef.current) {
+            incorrectSoundRef.current.currentTime = 0;
+            incorrectSoundRef.current.play().catch(e => console.error("Gagal memutar suara salah:", e));
+        }
+    };
 
     // --- State & Logic untuk Pattern Scanner ---
     const [psCurrentPattern, setPsCurrentPattern] = useState([]);
@@ -281,7 +353,9 @@ const GamesPage = () => {
     };
 
     const handlePsAnswerClick = (clickedEmoji) => { // Mengubah handlePsSubmit menjadi handlePsAnswerClick
+        playClickSound(); // Play click sound
         if (clickedEmoji === psCorrectAnswerEmoji) {
+            playCorrectSound(); // Play correct sound
             setPsFeedback('Hebat! Jawabanmu benar! 🎉 Lanjut ke soal berikutnya!');
             setPsFeedbackColor('green');
             setPsScore(prev => prev + 10);
@@ -292,6 +366,7 @@ const GamesPage = () => {
                 generatePsNewQuestion();
             }, 2500); // Jeda untuk konfeti
         } else {
+            playIncorrectSound(); // Play incorrect sound
             setPsFeedback(`Aduh, salah. Jawaban yang benar adalah ${getEmojiName(psCorrectAnswerEmoji)} ${psCorrectAnswerEmoji}. Coba lagi! 🤔`);
             setPsFeedbackColor('red');
             setPsScore(prev => Math.max(0, prev - 5)); // Kurangi skor, minimal 0
@@ -313,7 +388,7 @@ const GamesPage = () => {
         }
     }, [subGame]);
 
-   
+    
 const generateMtNewSequence = () => {
     const length = getRandomElement(MT_SEQUENCE_LENGTHS);
     const newSeq = Array.from({ length }, () => getRandomElement(MT_EMOJIS));
@@ -336,21 +411,25 @@ const generateMtNewSequence = () => {
 };
 
     const handleMtEmojiClick = (emoji) => {
+        playClickSound(); // Play click sound
         if (mtGamePhase === 'recall') {
             setMtUserRecall(prev => [...prev, emoji]);
         }
     };
 
     const checkMtAnswer = () => {
+        playClickSound(); // Play click sound
         if (mtUserRecall.length !== mtCurrentSequence.length) {
             setMtFeedback('Urutanmu belum lengkap! 🤔');
             setMtFeedbackColor('orange');
+            playIncorrectSound(); // Play incorrect sound for incomplete answer
             return;
         }
 
         const isCorrect = mtUserRecall.every((emoji, index) => emoji === mtCurrentSequence[index]);
 
         if (isCorrect) {
+            playCorrectSound(); // Play correct sound
             setMtFeedback('Luar biasa! Ingatanmu hebat! 🎉 Lanjut ke soal berikutnya!');
             setMtFeedbackColor('green');
             setMtScore(prev => prev + 20);
@@ -361,6 +440,7 @@ const generateMtNewSequence = () => {
                 generateMtNewSequence();
             }, 2500); // Jeda untuk konfeti
         } else {
+            playIncorrectSound(); // Play incorrect sound
             setMtFeedback(`Aduh, salah. Urutan yang benar adalah: ${mtCurrentSequence.join(' ')}. Coba lagi! 🤔`);
             setMtFeedbackColor('red');
             setMtScore(prev => Math.max(0, prev - 10)); // Kurangi skor, minimal 0
@@ -396,6 +476,7 @@ const generateMtNewSequence = () => {
     };
 
     const handlePsgSolvePuzzle = () => {
+        playClickSound(); // Play click sound
         if (!psgUserInput.trim()) {
             setPsgFeedback('Tulis jawabanmu dulu ya! 🤔');
             setPsgFeedbackColor('orange');
@@ -410,6 +491,7 @@ const generateMtNewSequence = () => {
         const normalizedAnswer = normalizeEmojiString(psgCurrentPuzzle.answer);
 
         if (normalizedInput === normalizedAnswer) {
+            playCorrectSound(); // Play correct sound
             setPsgFeedback('Hebat! Kamu berhasil memecahkan teka-teki ini! 🎉 Lanjut ke soal berikutnya!');
             setPsgFeedbackColor('green');
             setPsgScore(prev => prev + 50);
@@ -420,6 +502,7 @@ const generateMtNewSequence = () => {
                 generatePsgNewPuzzle();
             }, 2500); // Jeda untuk konfeti
         } else {
+            playIncorrectSound(); // Play incorrect sound
             setPsgFeedback('Aduh, jawaban salah. Coba lagi! 🤔');
             setPsgFeedbackColor('red');
             setPsgScore(prev => Math.max(0, prev - 20)); // Kurangi skor, minimal 0
@@ -460,6 +543,7 @@ const generateMtNewSequence = () => {
     };
 
     const handleKrSubmit = () => {
+        playClickSound(); // Play click sound
         if (!krUserInput.trim()) {
             setKrFeedback('Tulis jawabanmu dulu ya! 🤔');
             setKrFeedbackColor('orange');
@@ -467,6 +551,7 @@ const generateMtNewSequence = () => {
         }
 
         if (krUserInput.toUpperCase() === krCorrectAnswerText) {
+            playCorrectSound(); // Play correct sound
             setKrFeedback('Luar biasa! Kode rahasia terpecahkan! 🎉 Lanjut ke soal berikutnya!');
             setKrFeedbackColor('green');
             setKrScore(prev => prev + 15);
@@ -477,6 +562,7 @@ const generateMtNewSequence = () => {
                 generateKrNewQuestion();
             }, 2500); // Jeda untuk konfeti
         } else {
+            playIncorrectSound(); // Play incorrect sound
             setKrFeedback(`Ups, kode salah. Coba lagi! 🤔 (Hint: A=1, B=2, dst)`);
             setKrFeedbackColor('red');
             setKrScore(prev => Math.max(0, prev - 7)); // Kurangi skor, minimal 0
@@ -498,6 +584,7 @@ const generateMtNewSequence = () => {
 
     // Handler untuk navigasi ke Dashboard
     const handleGoToDashboard = () => {
+        playClickSound(); // Play click sound on dashboard button
         navigate('/dashboard'); // Navigasi ke halaman Dashboard
     };
 
@@ -543,6 +630,7 @@ const generateMtNewSequence = () => {
                         <p className={styles.feedbackMessage} style={{ color: psFeedbackColor }}>{psFeedback}</p>
                         {/* Tombol Periksa dihapus karena sudah ada klik pada pilihan */}
                         <button onClick={() => {
+                            playClickSound(); // Play click sound
                             setSubGame(null);
                             setPsScore(0); // Reset skor saat kembali
                         }} className={`${styles.actionButton} ${styles.secondaryButton}`}>Kembali ke Menu</button>
@@ -591,6 +679,7 @@ const generateMtNewSequence = () => {
                         <p className={styles.gameScore}>Skor: {mtScore}</p>
                         <p className={styles.feedbackMessage} style={{ color: mtFeedbackColor }}>{mtFeedback}</p>
                         <button onClick={() => {
+                            playClickSound(); // Play click sound
                             setSubGame(null);
                             setMtScore(0); // Reset skor saat kembali
                         }} className={`${styles.actionButton} ${styles.secondaryButton}`}>Kembali ke Menu</button>
@@ -624,7 +713,7 @@ const generateMtNewSequence = () => {
                                 </div>
                                 <div className={styles.optionsContainer}>
                                     {psgCurrentPuzzle.options.map((option, idx) => (
-                                        <button key={idx} className={styles.optionButton} onClick={() => setPsgUserInput(prev => prev + option)}>
+                                        <button key={idx} className={styles.optionButton} onClick={() => { playClickSound(); setPsgUserInput(prev => prev + option); }}>
                                             {option}
                                         </button>
                                     ))}
@@ -637,7 +726,7 @@ const generateMtNewSequence = () => {
                                     placeholder="Susun di sini (contoh: 🍎🍊🍌)"
                                     onKeyPress={(e) => { if (e.key === 'Enter') handlePsgSolvePuzzle(); }}
                                 />
-                                <button onClick={() => setPsgUserInput('')} className={styles.clearButton}>Bersihkan</button>
+                                <button onClick={() => { playClickSound(); setPsgUserInput(''); }} className={styles.clearButton}>Bersihkan</button>
                             </div>
                         ) : (
                             <p className={styles.feedbackMessage}>Memuat puzzle...</p>
@@ -646,6 +735,7 @@ const generateMtNewSequence = () => {
                         <p className={styles.feedbackMessage} style={{ color: psgFeedbackColor }}>{psgFeedback}</p>
                         <button onClick={handlePsgSolvePuzzle} className={`${styles.actionButton} ${styles.primaryButton}`}>Periksa ✅</button>
                         <button onClick={() => {
+                            playClickSound(); // Play click sound
                             setSubGame(null);
                             setPsgScore(0); // Reset skor saat kembali
                         }} className={`${styles.actionButton} ${styles.secondaryButton}`}>Kembali ke Menu</button>
@@ -684,6 +774,7 @@ const generateMtNewSequence = () => {
                         <p className={styles.feedbackMessage} style={{ color: krFeedbackColor }}>{krFeedback}</p>
                         <button onClick={handleKrSubmit} className={`${styles.actionButton} ${styles.primaryButton}`}>Pecahkan Kode ✅</button>
                         <button onClick={() => {
+                            playClickSound(); // Play click sound
                             setSubGame(null);
                             setKrScore(0); // Reset skor saat kembali
                         }} className={`${styles.actionButton} ${styles.secondaryButton}`}>Kembali ke Menu</button>
@@ -695,22 +786,22 @@ const generateMtNewSequence = () => {
                         <h3 className={styles.gameTitle}>Pilih Game Seru! 🎉</h3>
                         <p className={styles.descriptionText}>Ayo mainkan game yang kamu suka dan asah otakmu!</p>
                         <div className={styles.gameMenuGrid}>
-                            <button onClick={() => setSubGame('patternScanner')} className={styles.menuCard}>
+                            <button onClick={() => { playClickSound(); setSubGame('patternScanner'); }} className={styles.menuCard}>
                                 <span role="img" aria-label="pattern scanner">🎨</span>
                                 <h4>Pattern Scanner</h4>
                                 <p>Tebak pola warna!</p>
                             </button>
-                            <button onClick={() => setSubGame('memoryTrainer')} className={styles.menuCard}>
+                            <button onClick={() => { playClickSound(); setSubGame('memoryTrainer'); }} className={styles.menuCard}>
                                 <span role="img" aria-label="memory trainer">🧠</span>
                                 <h4>Memory Trainer</h4>
                                 <p>Uji ingatanmu!</p>
                             </button>
-                            <button onClick={() => setSubGame('puzzleSyaratGanda')} className={styles.menuCard}>
+                            <button onClick={() => { playClickSound(); setSubGame('puzzleSyaratGanda'); }} className={styles.menuCard}>
                                 <span role="img" aria-label="puzzle">🧩</span>
                                 <h4>Puzzle Syarat Ganda</h4>
                                 <p>Susun benda sesuai petunjuk!</p>
                             </button>
-                            <button onClick={() => setSubGame('kodeRahasia')} className={styles.menuCard}>
+                            <button onClick={() => { playClickSound(); setSubGame('kodeRahasia'); }} className={styles.menuCard}>
                                 <span role="img" aria-label="secret code">🔒</span>
                                 <h4>Kode Rahasia</h4>
                                 <p>Pecahkan kode angka!</p>

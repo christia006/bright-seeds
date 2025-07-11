@@ -47,36 +47,67 @@ const writingContent = {
         title: "Menulis Kalimat",
         instructions: "Dengarkan kalimat yang diucapkan, lalu ketikkan kalimat tersebut di kolom jawaban. Perhatikan spasi dan tanda baca.",
         examples: [
-            'ini adalah apel merah.',
-            'buku itu ada di meja.',
-            'anak itu bermain bola.',
-            'aku suka minum susu.',
-            'ibu membuatkan roti.',
-            'kucing itu tidur di sofa.',
-            'rumahku sangat besar.',
-            'mobil berwarna biru.',
-            'ikan berenang di air.',
-            'burung terbang tinggi.',
-            'dia sedang membaca buku.',
-            'kami pergi ke sekolah.',
-            'ayah minum kopi panas.',
-            'kakak memasak nasi goreng.',
-            'adik menggambar pemandangan.',
-            'bunga mawar sangat indah.',
-            'langit terlihat biru cerah.',
-            'pohon besar banyak daunnya.',
-            'malam hari ada bintang.',
-            'bulan bersinar terang.',
-            'anak-anak suka bermain di taman.',
-            'ayah bekerja setiap hari.',
-            'ibu memasak makanan enak.',
-            'guru mengajar di kelas.',
-            'kami belajar di sekolah.',
-            'dia suka makan nasi.',
-            'saya minum air putih.',
-            'mereka pergi ke pasar.',
-            'dia adalah teman baikku.',
-            'kami sangat bahagia.'
+            'Rachel Cantik',
+            'bella nyanyi di rumah budi',
+            'bapak joget pakai sarung',
+            'rachel makan roti jatuh',
+            'kak angel lompat sambil nangis',
+            'mamak baca koran terbalik',
+            'bou mery takut balon meletus',
+            'kakak aulia lari keliling kursi',
+            'bapak jatuh dari bangku',
+            'bella ketawa sampai nangis',
+            'rachel siram bunga kebanyakan air',
+            'kak angel joget balon sabun',
+            'mamak nyanyi suara cempreng',
+            'bou mery makan donat besar',
+            'bapak beli bakso pedas banget',
+            'kakak aulia main boneka kelinci',
+            'rachel tidur sambil ngorok',
+            'bella lompat ke kasur empuk',
+            'bapak baca buku kebalik',
+            'mamak makan mie kepedasan',
+            'kak angel baca buku pink',
+            'bou mery nyanyi sambil lompat',
+            'bella takut boneka panda',
+            'kakak aulia joget di teras',
+            'rachel ketawa keras banget',
+            'bapak lompat sambil pegang sandal',
+            'mamak siram bunga pagi',
+            'bou mery joget di dapur',
+            'kak angel nyanyi nada tinggi',
+            'bella baca buku tebal',
+            'rachel makan roti coklat',
+            'bapak tidur sambil ngorok',
+            'kakak aulia lompat jungkir balik',
+            'mamak jatuh duduk lucu',
+            'bou mery baca buku tipis',
+            'kak angel main balon sabun',
+            'rachel joget keliling rumah',
+            'bella makan donat warna-warni',
+            'bapak ketawa sambil pegang perut',
+            'kakak aulia siram bunga kuning',
+            'mamak beli donat kepedasan',
+            'bou mery lompat ke sofa',
+            'rachel nyanyi sambil ketawa',
+            'kak angel lompat di kasur',
+            'bapak makan mie panas banget',
+            'bella joget sambil ketawa',
+            'mamak lari keliling rumah',
+            'kakak aulia baca buku besar',
+            'rachel takut kucing gendut',
+            'bou mery ketawa jungkir balik',
+            'bapak nyanyi suara sumbang',
+            'kak angel tidur sambil senyum',
+            'bella siram bunga sore',
+            'mamak joget balon sabun',
+            'kakak aulia lompat sambil ketawa',
+            'bapak baca buku tipis',
+            'rachel lompat sambil tertawa',
+            'bou mery makan mie kebanyakan',
+            'kak angel ketawa ngakak keras',
+            'bella nyanyi suara cempreng',
+            'mamak makan roti isi coklat'
         ],
         soundType: 'sentence',
     },
@@ -100,11 +131,55 @@ const WritingPage = () => {
     const [feedbackColor, setFeedbackColor] = useState('');
     const [isExploding, setIsExploding] = useState(false);
 
-    const audioRef = useRef(new Audio());
+    const audioRef = useRef(new Audio()); // Untuk memutar audio pertanyaan (dari getSoundPath atau TTS)
+    const clickAudioRef = useRef(null); // Untuk memutar audio klik tombol
+    const correctSoundRef = useRef(null); // Untuk memutar audio jawaban benar
+    const incorrectSoundRef = useRef(null); // Untuk memutar audio jawaban salah
+
     const navigate = useNavigate();
 
     const currentContent = writingContent[selectedSection];
     const currentExample = currentContent.examples[currentExampleIndex];
+
+    // Efek samping untuk inisialisasi suara klik dan suara jawaban
+    useEffect(() => {
+        if (!clickAudioRef.current) {
+            clickAudioRef.current = new Audio('/sound/tombol.mp3'); // Path untuk suara tombol
+            clickAudioRef.current.volume = 0.8;
+        }
+        if (!correctSoundRef.current) {
+            correctSoundRef.current = new Audio('/sound/benar.mp3'); // Path untuk suara benar
+            correctSoundRef.current.volume = 1.0;
+        }
+        if (!incorrectSoundRef.current) {
+            incorrectSoundRef.current = new Audio('/sound/salah.mp3'); // Path untuk suara salah
+            incorrectSoundRef.current.volume = 1.0;
+        }
+    }, []);
+
+    // Fungsi untuk memutar suara klik
+    const playClickSound = () => {
+        if (clickAudioRef.current) {
+            clickAudioRef.current.currentTime = 0; // Setel ulang ke awal jika sudah diputar
+            clickAudioRef.current.play().catch(e => console.error("Gagal memutar suara klik:", e));
+        }
+    };
+
+    // Fungsi untuk memutar suara jawaban benar
+    const playCorrectSound = () => {
+        if (correctSoundRef.current) {
+            correctSoundRef.current.currentTime = 0;
+            correctSoundRef.current.play().catch(e => console.error("Gagal memutar suara benar:", e));
+        }
+    };
+
+    // Fungsi untuk memutar suara jawaban salah
+    const playIncorrectSound = () => {
+        if (incorrectSoundRef.current) {
+            incorrectSoundRef.current.currentTime = 0;
+            incorrectSoundRef.current.play().catch(e => console.error("Gagal memutar suara salah:", e));
+        }
+    };
 
     // Efek samping saat bagian (letters, words, sentences) berubah
     useEffect(() => {
@@ -113,6 +188,10 @@ const WritingPage = () => {
         setFeedbackColor('');
         setCurrentExampleIndex(0);
         setIsExploding(false);
+        // Memastikan suara diputar saat bagian baru dipilih
+        if (currentContent.examples[0]) {
+            playSound();
+        }
     }, [selectedSection]);
 
     // Efek samping untuk memutar suara saat currentExample berubah
@@ -152,7 +231,7 @@ const WritingPage = () => {
 
             const voices = window.speechSynthesis.getVoices();
             // Pastikan voices dimuat sebelum mencoba mencari
-            voices.onvoiceschanged = () => {
+            window.speechSynthesis.onvoiceschanged = () => {
                 const indoVoice = voices.find(voice => voice.lang === 'id-ID' && voice.name.includes('Google Bahasa Indonesia'));
                 if (indoVoice) {
                     msg.voice = indoVoice;
@@ -162,7 +241,7 @@ const WritingPage = () => {
 
             // Jika voices sudah dimuat, langsung panggil speak
             if (voices.length > 0) {
-                 const indoVoice = voices.find(voice => voice.lang === 'id-ID' && voice.name.includes('Google Bahasa Indonesia'));
+                const indoVoice = voices.find(voice => voice.lang === 'id-ID' && voice.name.includes('Google Bahasa Indonesia'));
                 if (indoVoice) {
                     msg.voice = indoVoice;
                 }
@@ -178,10 +257,12 @@ const WritingPage = () => {
 
     // Handler saat pengguna menekan tombol "Periksa"
     const handleSubmit = async () => {
+        playClickSound(); // Play click sound on submit
         const trimmedInput = userInput.trim().toLowerCase();
         const trimmedExample = currentExample.trim().toLowerCase();
 
         if (trimmedInput === trimmedExample) {
+            playCorrectSound(); // Play correct sound
             setFeedback('Hebat! Betul sekali! Lanjut ke tantangan berikutnya! ✨');
             setFeedbackColor('green');
             setIsExploding(true);
@@ -196,7 +277,6 @@ const WritingPage = () => {
                     setFeedbackColor('purple');
                 }
                 setUserInput('');
-                // playSound(); // Panggil playSound untuk soal berikutnya
                 setTimeout(() => {
                     setFeedback('');
                     setFeedbackColor('');
@@ -204,6 +284,7 @@ const WritingPage = () => {
             }, 1500);
 
         } else {
+            playIncorrectSound(); // Play incorrect sound
             setFeedback('Coba lagi, ya! Jangan menyerah! Kamu pasti bisa! 💪');
             setFeedbackColor('red');
             setIsExploding(false);
@@ -212,6 +293,7 @@ const WritingPage = () => {
 
     // Handler untuk melewati soal saat ini
     const handleSkip = () => {
+        playClickSound(); // Play click sound on skip
         setIsExploding(false);
         if (currentExampleIndex < currentContent.examples.length - 1) {
             setCurrentExampleIndex(currentExampleIndex + 1);
@@ -221,11 +303,11 @@ const WritingPage = () => {
         setUserInput('');
         setFeedback('');
         setFeedbackColor('');
-        // playSound(); // Panggil playSound untuk soal berikutnya
     };
 
     // Handler untuk navigasi ke Dashboard
     const handleGoToDashboard = () => {
+        playClickSound(); // Play click sound on dashboard button
         navigate('/dashboard');
     };
 
@@ -250,19 +332,19 @@ const WritingPage = () => {
 
                 <div className={styles.sectionSelector}>
                     <button
-                        onClick={() => setSelectedSection('letters')}
+                        onClick={() => { playClickSound(); setSelectedSection('letters'); }}
                         className={`${styles.sectionButton} ${selectedSection === 'letters' ? styles.active : ''}`}
                     >
                         Menulis Huruf
                     </button>
                     <button
-                        onClick={() => setSelectedSection('words')}
+                        onClick={() => { playClickSound(); setSelectedSection('words'); }}
                         className={`${styles.sectionButton} ${selectedSection === 'words' ? styles.active : ''}`}
                     >
                         Menulis Kata
                     </button>
                     <button
-                        onClick={() => setSelectedSection('sentences')}
+                        onClick={() => { playClickSound(); setSelectedSection('sentences'); }}
                         className={`${styles.sectionButton} ${selectedSection === 'sentences' ? styles.active : ''}`}
                     >
                         Menulis Kalimat
@@ -274,7 +356,7 @@ const WritingPage = () => {
                     <p className={styles.instructions}>{currentContent.instructions}</p>
 
                     <div className={styles.exampleContainer}>
-                        <button onClick={playSound} className={styles.speakButton}>
+                        <button onClick={() => { playClickSound(); playSound(); }} className={styles.speakButton}>
                             <span role="img" aria-label="speaker">🔊</span> Dengar Suara
                         </button>
                     </div>

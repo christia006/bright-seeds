@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../../components/Header/Header';
-import styles from './PathFinderPage.module.css';
+import styles from './PathFinderPage.module.css'; // Perhatikan ini harusnya PathFinderPage.module.css
 import ConfettiExplosion from 'react-confetti-explosion';
 import { useNavigate } from 'react-router-dom';
 
@@ -498,6 +498,7 @@ const MAZES = [
         [0,1,0,1,0,1,0,1,0,1,0],
         [0,0,0,0,0,0,0,0,0,0,'B']
     ], start: [0,0], end: [10,10] }
+    
 ];
 
 const PathFinderPage = () => {
@@ -514,6 +515,75 @@ const PathFinderPage = () => {
     const [hintCount, setHintCount] = useState(3); // Batasan bantuan: 3 kali
 
     const navigate = useNavigate();
+
+    // Refs untuk suara
+    const clickAudioRef = useRef(null);
+    const correctSoundRef = useRef(null);
+    const incorrectSoundRef = useRef(null);
+    const backgroundMusicRef = useRef(null); // Ref baru untuk musik latar
+
+    // Efek samping untuk inisialisasi suara
+    useEffect(() => {
+        if (!clickAudioRef.current) {
+            clickAudioRef.current = new Audio('/sound/tombol.mp3');
+            clickAudioRef.current.volume = 0.8;
+        }
+        if (!correctSoundRef.current) {
+            correctSoundRef.current = new Audio('/sound/benar.mp3');
+            correctSoundRef.current.volume = 1.0;
+        }
+        if (!incorrectSoundRef.current) {
+            incorrectSoundRef.current = new Audio('/sound/salah.mp3');
+            incorrectSoundRef.current.volume = 1.0;
+        }
+        // Inisialisasi musik latar
+        if (!backgroundMusicRef.current) {
+            backgroundMusicRef.current = new Audio('/sound/labirin.mp3'); // Path untuk musik latar
+            backgroundMusicRef.current.loop = true; // Agar musik berulang
+            backgroundMusicRef.current.volume = 0.3; // Sesuaikan volume agar tidak terlalu keras
+        }
+
+        // Memulai musik latar saat komponen dimuat
+        const playBackgroundMusic = () => {
+            if (backgroundMusicRef.current) {
+                backgroundMusicRef.current.play().catch(e => console.error("Gagal memutar musik latar:", e));
+            }
+        };
+
+        playBackgroundMusic();
+
+        // Menghentikan musik saat komponen di-unmount
+        return () => {
+            if (backgroundMusicRef.current) {
+                backgroundMusicRef.current.pause();
+                backgroundMusicRef.current.currentTime = 0;
+            }
+        };
+    }, []); // Array dependensi kosong agar hanya berjalan sekali saat mount
+
+    // Fungsi untuk memutar suara klik
+    const playClickSound = () => {
+        if (clickAudioRef.current) {
+            clickAudioRef.current.currentTime = 0;
+            clickAudioRef.current.play().catch(e => console.error("Gagal memutar suara klik:", e));
+        }
+    };
+
+    // Fungsi untuk memutar suara jawaban benar
+    const playCorrectSound = () => {
+        if (correctSoundRef.current) {
+            correctSoundRef.current.currentTime = 0;
+            correctSoundRef.current.play().catch(e => console.error("Gagal memutar suara benar:", e));
+        }
+    };
+
+    // Fungsi untuk memutar suara jawaban salah
+    const playIncorrectSound = () => {
+        if (incorrectSoundRef.current) {
+            incorrectSoundRef.current.currentTime = 0;
+            incorrectSoundRef.current.play().catch(e => console.error("Gagal memutar suara salah:", e));
+        }
+    };
 
     useEffect(() => {
         loadNewMaze();
@@ -546,6 +616,7 @@ const PathFinderPage = () => {
     };
 
     const handleCellClick = (row, col) => {
+        playClickSound(); // Play click sound on cell click
         if (showSolution) return; // Mencegah interaksi jika solusi ditampilkan
 
         const cellValue = maze[row][col];
@@ -563,6 +634,7 @@ const PathFinderPage = () => {
         if (userPath.length === 0) {
             setFeedback('Mulai dari titik A (hijau) dulu ya! 🟢');
             setFeedbackColor('orange');
+            playIncorrectSound(); // Play incorrect sound
             return;
         }
 
@@ -576,9 +648,9 @@ const PathFinderPage = () => {
                 if (lastIdx === userPath.length - 1) { // Hanya hapus jika itu sel terakhir yang ditambahkan
                     setUserPath(prevPath => prevPath.slice(0, prevPath.length - 1));
                 } else {
-                    // Mencegah melompat kembali ke sel yang tidak bersebelahan di jalur
                     setFeedback('Kamu hanya bisa mundur satu langkah atau maju ke kotak yang bersebelahan! 🤔');
                     setFeedbackColor('red');
+                    playIncorrectSound(); // Play incorrect sound
                 }
             } else {
                 setUserPath(prevPath => [...prevPath, clickedCell]);
@@ -586,16 +658,20 @@ const PathFinderPage = () => {
         } else if (cellValue === 1) {
             setFeedback('Itu tembok! Cari jalan lain ya! 🧱');
             setFeedbackColor('red');
+            playIncorrectSound(); // Play incorrect sound
         } else {
             setFeedback('Kamu harus bergerak ke kotak yang bersebelahan! ➡️⬆️⬇️⬅️');
             setFeedbackColor('red');
+            playIncorrectSound(); // Play incorrect sound
         }
     };
 
     const checkPath = () => {
+        playClickSound(); // Play click sound on check path button
         if (userPath.length === 0) {
             setFeedback('Buat jalur dulu ya! 🤔');
             setFeedbackColor('orange');
+            playIncorrectSound(); // Play incorrect sound
             return;
         }
 
@@ -603,6 +679,7 @@ const PathFinderPage = () => {
         if (JSON.stringify(lastCell) !== JSON.stringify(endPos)) {
             setFeedback('Jalurmu belum sampai ke titik B (merah)! 🔴');
             setFeedbackColor('red');
+            playIncorrectSound(); // Play incorrect sound
             return;
         }
 
@@ -614,6 +691,7 @@ const PathFinderPage = () => {
             if (!isAdjacent || maze[r2][c2] === 1) {
                 setFeedback('Jalurmu ada yang salah! Pastikan tidak melewati tembok dan selalu bersebelahan. 🤔');
                 setFeedbackColor('red');
+                playIncorrectSound(); // Play incorrect sound
                 return;
             }
         }
@@ -622,6 +700,7 @@ const PathFinderPage = () => {
             setFeedback('Hebat! Kamu menemukan jalur terpendek! 🎉 Lanjut ke labirin berikutnya!');
             setFeedbackColor('green');
             setIsExploding(true);
+            playCorrectSound(); // Play correct sound
             setTimeout(() => {
                 setIsExploding(false);
                 setCurrentMazeIndex(prev => prev + 1);
@@ -629,13 +708,16 @@ const PathFinderPage = () => {
         } else if (shortestPathSolution && userPath.length > shortestPathSolution.length) {
             setFeedback(`Jalurmu benar, tapi ada yang lebih pendek! Coba cari lagi! 🤔 (Jalur terpendek: ${shortestPathSolution.length} langkah)`);
             setFeedbackColor('orange');
+            playIncorrectSound(); // Play incorrect sound
         } else {
             setFeedback('Jalurmu benar, tapi ada yang lebih pendek! Coba cari lagi! 🤔');
             setFeedbackColor('orange');
+            playIncorrectSound(); // Play incorrect sound
         }
     };
 
     const handleShowSolution = () => {
+        playClickSound(); // Play click sound on show solution button
         if (hintCount > 0) {
             setShowSolution(true);
             setFeedback('Ini dia jalur terpendeknya! ✨ Pelajari ya!');
@@ -649,10 +731,12 @@ const PathFinderPage = () => {
         } else {
             setFeedback('Maaf, bantuan sudah habis! Coba pecahkan sendiri ya! 💪');
             setFeedbackColor('red');
+            playIncorrectSound(); // Play incorrect sound
         }
     };
 
     const handleResetPath = () => {
+        playClickSound(); // Play click sound on reset path button
         setUserPath([]);
         setFeedback('');
         setFeedbackColor('');
@@ -660,6 +744,7 @@ const PathFinderPage = () => {
     };
 
     const handleGoToDashboard = () => {
+        playClickSound(); // Play click sound on dashboard button
         navigate('/dashboard');
     };
 

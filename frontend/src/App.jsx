@@ -4,7 +4,6 @@ import LandingPage from './pages/LandingPage/LandingPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import GamesPage from './pages/GamesPage/GamesPage';
 import MathPage from './pages/MathPage/MathPage';
-import ProfilePage from './pages/ProfilePage/ProfilePage';
 import ReadingPage from './pages/ReadingPage/ReadingPage';
 import WritingPage from './pages/WritingPage/WritingPage';
 import PathFinderPage from './pages/PathFinderPage/PathFinderPage';
@@ -18,7 +17,6 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/games" element={<GamesPage />} />
         <Route path="/math" element={<MathPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/read" element={<ReadingPage />} />
         <Route path="/write" element={<WritingPage />} />
         <Route path="/pathfinder" element={<PathFinderPage />} />
