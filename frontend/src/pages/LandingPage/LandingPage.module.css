@@ -122,7 +122,7 @@ body {
 }
 
 .dashboardButton {
-    background: linear-gradient(45deg, #4CAF50, #8BC34A); /* Gradien hijau */
+    background: linear-gradient(45deg, #39863c, #88c740); /* Gradien hijau */
 }
 
 .dashboardButton:hover {

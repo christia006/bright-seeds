@@ -5,40 +5,40 @@ import styles from './ReadingPage.module.css';
 
 // --- Data untuk Game Membaca ---
 
-// Pengenalan Huruf (A-Z)
+// Pengenalan Huruf (A-Z) - Audio paths removed, will use browser TTS
 const LETTERS_QUESTIONS = [
-    { letter: 'A', audio: '/sound/a.mp3' },
-    { letter: 'B', audio: '/sound/b.mp3' },
-    { letter: 'C', audio: '/sound/c.mp3' },
-    { letter: 'D', audio: '/sound/d.mp3' },
-    { letter: 'E', audio: '/sound/e.mp3' },
-    { letter: 'F', audio: '/sound/f.mp3' },
-    { letter: 'G', audio: '/sound/g.mp3' },
-    { letter: 'H', audio: '/sound/h.mp3' },
-    { letter: 'I', audio: '/sound/i.mp3' },
-    { letter: 'J', audio: '/sound/j.mp3' },
-    { letter: 'K', audio: '/sound/k.mp3' },
-    { letter: 'L', audio: '/sound/l.mp3' },
-    { letter: 'M', audio: '/sound/m.mp3' },
-    { letter: 'N', audio: '/sound/n.mp3' },
-    { letter: 'O', audio: '/sound/o.mp3' },
-    { letter: 'P', audio: '/sound/p.mp3' },
-    { letter: 'Q', audio: '/sound/q.mp3' },
-    { letter: 'R', audio: '/sound/r.mp3' },
-    { letter: 'S', audio: '/sound/s.mp3' },
-    { letter: 'T', audio: '/sound/t.mp3' },
-    { letter: 'U', audio: '/sound/u.mp3' },
-    { letter: 'V', audio: '/sound/v.mp3' },
-    { letter: 'W', audio: '/sound/w.mp3' },
-    { letter: 'X', audio: '/sound/x.mp3' },
-    { letter: 'Y', audio: '/sound/y.mp3' },
-    { letter: 'Z', audio: '/sound/z.mp3' },
+    { letter: 'A' },
+    { letter: 'B' },
+    { letter: 'C' },
+    { letter: 'D' },
+    { letter: 'E' },
+    { letter: 'F' },
+    { letter: 'G' },
+    { letter: 'H' },
+    { letter: 'I' },
+    { letter: 'J' },
+    { letter: 'K' },
+    { letter: 'L' },
+    { letter: 'M' },
+    { letter: 'N' },
+    { letter: 'O' },
+    { letter: 'P' },
+    { letter: 'Q' },
+    { letter: 'R' },
+    { letter: 'S' },
+    { letter: 'T' },
+    { letter: 'U' },
+    { letter: 'V' },
+    { letter: 'W' },
+    { letter: 'X' },
+    { letter: 'Y' },
+    { letter: 'Z' },
 ];
 
 // Mengeja Kata (30 soal, satu kata lebih dari 4 huruf)
-const SYLLABLE_QUESTIONS = [
+const SYLLABLE_QUESTIONS_ORIGINAL = [
     { word: 'Meja', audio: '/sound/meja.mp3' },
-    { word: 'Buku', audio: '/sounds/buku.mp3' },
+     { word: 'Buku', audio: '/sounds/buku.mp3' },
     { word: 'Kursi', audio: '/sounds/kursi.mp3' },
     { word: 'Pensil', audio: '/sounds/pensil.mp3' },
     { word: 'Rumah', audio: '/sounds/rumah.mp3' },
@@ -68,26 +68,12 @@ const SYLLABLE_QUESTIONS = [
     { word: 'Mobil', audio: '/sounds/mobil.mp3' },
     { word: 'Motor', audio: '/sounds/motor.mp3' },
 
-
-
-
-
-
-
-
-    
 ];
 
 // Membaca Kalimat Sederhana (30 soal, progresif)
-const SENTENCE_QUESTIONS = [
+const SENTENCE_QUESTIONS_ORIGINAL = [
     { sentence: 'Ini bola.', audio: '/sound/kalimat1.mp3' },
-    
-
-
-
-
-
-     { sentence: 'Kucing makan.', audio: '/sounds/kalimat2.mp3' },
+    { sentence: 'Kucing makan.', audio: '/sounds/kalimat2.mp3' },
     { sentence: 'Bunga itu indah.', audio: '/sounds/kalimat3.mp3' },
     { sentence: 'Ayah membaca buku.', audio: '/sounds/kalimat4.mp3' },
     { sentence: 'Ibu memasak nasi.', audio: '/sounds/kalimat5.mp3' },
@@ -116,7 +102,9 @@ const SENTENCE_QUESTIONS = [
     { sentence: 'Mobil itu melaju pelan.', audio: '/sounds/kalimat28.mp3' },
     { sentence: 'Rumah saya dekat sekolah.', audio: '/sounds/kalimat29.mp3' },
     { sentence: 'Kami makan bersama keluarga.', audio: '/sounds/kalimat30.mp3' },
-    
+
+
+
 ];
 
 const POSITIVE_MESSAGES = [
@@ -136,6 +124,18 @@ const NEGATIVE_MESSAGES = [
     'Jangan menyerah, kamu pasti bisa! 💪'
 ];
 
+// Helper function untuk mengacak array
+const shuffleArray = (array) => {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+    }
+    return array;
+};
+
 const ReadingPage = () => {
     const [subSection, setSubSection] = useState(null);
     const [message, setMessage] = useState('');
@@ -144,21 +144,22 @@ const ReadingPage = () => {
 
     // State untuk Mengeja Kata
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
+    const [shuffledSyllableQuestions, setShuffledSyllableQuestions] = useState([]);
 
     // State untuk Membaca Kalimat Sederhana
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
+    const [shuffledSentenceQuestions, setShuffledSentenceQuestions] = useState([]);
 
     // State umum untuk Speech Recognition
     const [isListening, setIsListening] = useState(false);
     const speechRecognitionRef = useRef(null);
 
-    const audioRef = useRef(null); // Untuk memutar audio pertanyaan (huruf, kata, kalimat)
+    const audioRef = useRef(null); // Untuk memutar audio pertanyaan (kata, kalimat)
     const clickAudioRef = useRef(null); // Untuk memutar audio klik tombol
     const correctSoundRef = useRef(null); // Untuk memutar audio jawaban benar
     const incorrectSoundRef = useRef(null); // Untuk memutar audio jawaban salah
-    const backgroundMusicRef = useRef(null); // Ref baru untuk musik latar
 
-    // Efek samping untuk inisialisasi suara klik, suara jawaban, dan musik latar
+    // Efek samping untuk inisialisasi suara klik dan suara jawaban
     useEffect(() => {
         if (!clickAudioRef.current) {
             clickAudioRef.current = new Audio('/sound/tombol.mp3'); // Pastikan path ini benar
@@ -172,29 +173,11 @@ const ReadingPage = () => {
             incorrectSoundRef.current = new Audio('/sound/salah.mp3'); // Path untuk suara salah
             incorrectSoundRef.current.volume = 1.0;
         }
-        // Inisialisasi musik latar
-        if (!backgroundMusicRef.current) {
-            backgroundMusicRef.current = new Audio('/sound/membaca.mp3'); // Path untuk musik latar
-            backgroundMusicRef.current.loop = true; // Agar musik berulang
-            backgroundMusicRef.current.volume = 0.3; // Sesuaikan volume agar tidak terlalu keras
-        }
 
-        // Memulai musik latar saat komponen dimuat
-        const playBackgroundMusic = () => {
-            if (backgroundMusicRef.current) {
-                backgroundMusicRef.current.play().catch(e => console.error("Gagal memutar musik latar:", e));
-            }
-        };
+        // Initialize shuffled questions on component mount
+        setShuffledSyllableQuestions(shuffleArray([...SYLLABLE_QUESTIONS_ORIGINAL]));
+        setShuffledSentenceQuestions(shuffleArray([...SENTENCE_QUESTIONS_ORIGINAL]));
 
-        playBackgroundMusic();
-
-        // Menghentikan musik saat komponen di-unmount
-        return () => {
-            if (backgroundMusicRef.current) {
-                backgroundMusicRef.current.pause();
-                backgroundMusicRef.current.currentTime = 0;
-            }
-        };
     }, []); // Array dependensi kosong agar hanya berjalan sekali saat mount
 
     // Fungsi untuk memutar suara klik
@@ -221,6 +204,20 @@ const ReadingPage = () => {
         }
     };
 
+    // Fungsi untuk memutar huruf menggunakan Web Speech API (Text-to-Speech)
+    const speakLetter = (letter) => {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(letter);
+            utterance.lang = 'id-ID'; // Set bahasa ke Bahasa Indonesia
+            utterance.rate = 0.7; // Mengatur kecepatan bicara (nilai default adalah 1.0, 0.7 akan lebih lambat)
+            window.speechSynthesis.speak(utterance);
+        } else {
+            console.warn('Web Speech API (SpeechSynthesis) tidak didukung di browser ini.');
+            setMessage('Maaf, browser Anda tidak mendukung fitur suara huruf. Silakan gunakan Chrome terbaru.');
+            setMessageColor('orange');
+        }
+    };
+
     useEffect(() => {
         if (!('webkitSpeechRecognition' in window)) {
             setMessage('Maaf, browser Anda tidak mendukung fitur pengenalan suara. Silakan gunakan Chrome terbaru.');
@@ -238,7 +235,7 @@ const ReadingPage = () => {
             setIsListening(false);
 
             if (subSection === 'syllables') {
-                const expectedWord = SYLLABLE_QUESTIONS[currentWordIndex].word.toLowerCase();
+                const expectedWord = shuffledSyllableQuestions[currentWordIndex].word.toLowerCase();
                 const normalizedTranscript = transcript.replace(/\s+/g, ' ').trim();
                 const normalizedExpectedWord = expectedWord.replace(/\s+/g, ' ').trim();
 
@@ -265,7 +262,7 @@ const ReadingPage = () => {
                     setTimeout(() => setMessage(''), 3000);
                 }
             } else if (subSection === 'sentences') {
-                const expectedSentence = SENTENCE_QUESTIONS[currentSentenceIndex].sentence.toLowerCase();
+                const expectedSentence = shuffledSentenceQuestions[currentSentenceIndex].sentence.toLowerCase();
                 const normalizedTranscript = transcript.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ").trim();
                 const normalizedExpected = expectedSentence.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ").trim();
 
@@ -307,7 +304,8 @@ const ReadingPage = () => {
                 speechRecognitionRef.current.stop();
             }
         };
-    }, [currentWordIndex, currentSentenceIndex, subSection]);
+    }, [currentWordIndex, currentSentenceIndex, subSection, shuffledSyllableQuestions, shuffledSentenceQuestions]); // Add shuffled arrays to dependencies
+
 
     // --- Fungsi Pembantu ---
     const playAudio = (audioPath) => {
@@ -330,28 +328,22 @@ const ReadingPage = () => {
     // --- Logika untuk Mengeja Kata ---
     useEffect(() => {
         if (subSection === 'syllables') {
-            if (currentWordIndex < SYLLABLE_QUESTIONS.length) {
-                // Audio for the current word can be auto-played here if desired
-                // playAudio(SYLLABLE_QUESTIONS[currentWordIndex].audio);
-            } else {
-                setMessage(`🎉 Selamat! Kamu telah menyelesaikan semua ${SYLLABLE_QUESTIONS.length} kata! Kamu hebat!`);
-                setMessageColor('green');
-                setTimeout(() => {
-                    setSubSection(null);
-                    setCurrentWordIndex(0);
-                    setMessage('');
-                }, 3000);
+            setCurrentWordIndex(0); // Reset index when entering this section
+            setShuffledSyllableQuestions(shuffleArray([...SYLLABLE_QUESTIONS_ORIGINAL])); // Reshuffle
+            if (shuffledSyllableQuestions.length > 0) {
+                // Initial audio play for the first word in the shuffled list
+                // playAudio(shuffledSyllableQuestions[0].audio); // Uncomment if auto-play is desired
             }
         }
-    }, [currentWordIndex, subSection]);
+    }, [subSection]); // Only depend on subSection
 
     const moveToNextWord = async () => {
         playClickSound(); // Play sound when moving to next word
-        if (currentWordIndex < SYLLABLE_QUESTIONS.length - 1) {
+        if (currentWordIndex < shuffledSyllableQuestions.length - 1) {
             setCurrentWordIndex(prevIndex => prevIndex + 1);
             setMessage('');
         } else {
-            setMessage(`🎉 Selamat! Kamu telah menyelesaikan semua ${SYLLABLE_QUESTIONS.length} kata! Kamu hebat!`);
+            setMessage(`🎉 Selamat! Kamu telah menyelesaikan semua ${shuffledSyllableQuestions.length} kata! Kamu hebat!`);
             setMessageColor('green');
             setTimeout(() => {
                 setSubSection(null);
@@ -364,28 +356,22 @@ const ReadingPage = () => {
     // --- Logika untuk Membaca Kalimat Sederhana ---
     useEffect(() => {
         if (subSection === 'sentences') {
-            if (currentSentenceIndex < SENTENCE_QUESTIONS.length) {
-                // Audio for the current sentence can be auto-played here
-                // playAudio(SENTENCE_QUESTIONS[currentSentenceIndex].audio);
-            } else {
-                setMessage(`🎉 Selamat! Kamu telah membaca semua ${SENTENCE_QUESTIONS.length} kalimat! Kamu pembaca hebat!`);
-                setMessageColor('green');
-                setTimeout(() => {
-                    setSubSection(null);
-                    setCurrentSentenceIndex(0);
-                    setMessage('');
-                }, 3000);
+            setCurrentSentenceIndex(0); // Reset index when entering this section
+            setShuffledSentenceQuestions(shuffleArray([...SENTENCE_QUESTIONS_ORIGINAL])); // Reshuffle
+            if (shuffledSentenceQuestions.length > 0) {
+                // Initial audio play for the first sentence in the shuffled list
+                // playAudio(shuffledSentenceQuestions[0].audio); // Uncomment if auto-play is desired
             }
         }
-    }, [currentSentenceIndex, subSection]);
+    }, [subSection]); // Only depend on subSection
 
     const moveToNextSentence = async () => {
         playClickSound(); // Play sound when moving to next sentence
-        if (currentSentenceIndex < SENTENCE_QUESTIONS.length - 1) {
+        if (currentSentenceIndex < shuffledSentenceQuestions.length - 1) {
             setCurrentSentenceIndex(prevIndex => prevIndex + 1);
             setMessage('');
         } else {
-            setMessage(`🎉 Selamat! Kamu telah membaca semua ${SENTENCE_QUESTIONS.length} kalimat! Kamu pembaca hebat!`);
+            setMessage(`🎉 Selamat! Kamu telah membaca semua ${shuffledSentenceQuestions.length} kalimat! Kamu pembaca hebat!`);
             setMessageColor('green');
             setTimeout(() => {
                 setSubSection(null);
@@ -415,7 +401,7 @@ const ReadingPage = () => {
                                     key={index}
                                     className={styles.letterBox}
                                     onClick={() => {
-                                        playAudio(item.audio);
+                                        speakLetter(item.letter); // Panggil fungsi speakLetter
                                         playClickSound(); // Play sound when clicking a letter box
                                     }}
                                 >
@@ -424,6 +410,7 @@ const ReadingPage = () => {
                             ))}
                         </div>
 
+                        {/* audioRef masih diperlukan untuk bagian Syllables dan Sentences */}
                         <audio ref={audioRef} preload="auto"></audio>
 
                         {message && <p style={{ color: messageColor, fontWeight: 'bold', marginTop: '15px' }}>{message}</p>}
@@ -439,12 +426,12 @@ const ReadingPage = () => {
                 );
 
             case 'syllables':
-                const currentWord = SYLLABLE_QUESTIONS[currentWordIndex];
+                const currentWord = shuffledSyllableQuestions[currentWordIndex];
                 return (
                     <div className={styles.card}>
-                        <h3>📖 Mengeja Kata</h3>
+                      
                         <p className={styles.questionText}>Coba ucapkan kata ini:</p>
-                        <h1 className={styles.syllableText}>{currentWord.word}</h1>
+                        <h1 className={styles.syllableText}>{currentWord ? currentWord.word : 'Memuat...'}</h1>
 
                         <audio ref={audioRef} preload="auto"></audio>
 
@@ -459,18 +446,18 @@ const ReadingPage = () => {
                         </div>
                         {message && <p style={{ color: messageColor, fontWeight: 'bold', marginTop: '15px' }}>{message}</p>}
                         <p className={styles.progressText}>
-                            Soal ke: {currentWordIndex + 1} dari {SYLLABLE_QUESTIONS.length}
+                            Soal ke: {currentWordIndex + 1} dari {shuffledSyllableQuestions.length}
                         </p>
 
                         <button onClick={() => {
                             playClickSound(); // Play sound when returning to menu
                             setSubSection(null);
-                            setCurrentWordIndex(0);
+                            setCurrentWordIndex(0); // Reset index
                             setMessage('');
                         }} className={`${styles.actionButton} ${styles.secondaryButton}`}>
                             Kembali ke Menu
                         </button>
-                        {currentWordIndex < SYLLABLE_QUESTIONS.length - 1 && (
+                        {currentWordIndex < shuffledSyllableQuestions.length - 1 && (
                             <button onClick={moveToNextWord} className={`${styles.actionButton} ${styles.skipButton}`}>
                                 Lewati ➡️
                             </button>
@@ -479,12 +466,12 @@ const ReadingPage = () => {
                 );
 
             case 'sentences':
-                const currentSentence = SENTENCE_QUESTIONS[currentSentenceIndex];
+                const currentSentence = shuffledSentenceQuestions[currentSentenceIndex];
                 return (
                     <div className={styles.card}>
-                        <h3>📚 Membaca Kalimat Sederhana</h3>
+                    
                         <p className={styles.questionText}>Ayo kita baca kalimat pendek ini:</p>
-                        <h1 className={styles.sentenceText}>{currentSentence.sentence}</h1>
+                        <h1 className={styles.sentenceText}>{currentSentence ? currentSentence.sentence : 'Memuat...'}</h1>
 
                         <audio ref={audioRef} preload="auto"></audio>
 
@@ -499,18 +486,18 @@ const ReadingPage = () => {
                         </div>
                         {message && <p style={{ color: messageColor, fontWeight: 'bold', marginTop: '15px' }}>{message}</p>}
                         <p className={styles.progressText}>
-                            Soal ke: {currentSentenceIndex + 1} dari {SENTENCE_QUESTIONS.length}
+                            Soal ke: {currentSentenceIndex + 1} dari {shuffledSentenceQuestions.length}
                         </p>
 
                         <button onClick={() => {
                             playClickSound(); // Play sound when returning to menu
                             setSubSection(null);
-                            setCurrentSentenceIndex(0);
+                            setCurrentSentenceIndex(0); // Reset index
                             setMessage('');
                         }} className={`${styles.actionButton} ${styles.secondaryButton}`}>
                             Kembali ke Menu
                         </button>
-                        {currentSentenceIndex < SENTENCE_QUESTIONS.length - 1 && (
+                        {currentSentenceIndex < shuffledSentenceQuestions.length - 1 && (
                             <button onClick={moveToNextSentence} className={`${styles.actionButton} ${styles.skipButton}`}>
                                 Lewati ➡️
                             </button>
