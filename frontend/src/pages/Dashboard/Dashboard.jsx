@@ -167,11 +167,17 @@ const Dashboard = () => {
             <p>Temukan jalan terpendek di labirin yang rumit!</p>
           </Link>
 
+          {/* Wumpus World */}
           <Link to="/wumpus-world" className={`${styles.activityCard} ${styles.miniAIChessCard}`} onClick={playClickSound}>
             <div className={styles.cardIcon} aria-hidden="true">🏰</div>
             <h3>Wumpus World Deluxe</h3>
             <p>Lab AI klasik yang melatih penalaran & perencanaan!</p>
           </Link>
+
+
+      
+
+      
         </div>
 
         {/* Grup Tombol Logout dan Sound */}
