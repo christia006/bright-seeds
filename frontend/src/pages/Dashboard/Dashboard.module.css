@@ -73,15 +73,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 95%; /* Konten melebar hingga 95% dari lebar parent */
-  max-width: 1400px; /* Batasi lebar maksimum agar tidak terlalu lebar di layar super besar */
-  margin: 5.5rem auto; /* Geser ke bawah sedikit: dari 2rem ke 2.5rem */
+  width: 100%;              /* Tetap 98% lebar */
+  max-width: none;         /* Hilangkan batas lebar maksimum */
+  margin-top: 4.5rem;      /* Geser ke bawah */
+  margin-left: -1%;        /* Dorong ke kiri */
+  margin-right: auto;      /* Sisi kanan tetap normal */
   padding: 1.5rem;
   background-color: #ffffff;
-  border-radius: 25px; /* Sudut membulat */
+  border-radius: 25px;     /* Sudut membulat */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
-  position: relative; /* Agar konten berada di atas animatedBackground */
-  z-index: 1; /* Pastikan konten tampil di atas animasi latar belakang */
+  position: relative;      /* Agar konten berada di atas animatedBackground */
+  z-index: 1;              /* Pastikan konten tampil di atas animasi latar belakang */
 }
 
 
@@ -318,11 +320,13 @@
   .pageContainer {
     padding: 0.5rem;
   }
+.dashboardContent {
+  padding: 1rem;
+  margin: 1.7rem auto;    /* Dari 1rem auto → jadi 1.5rem auto untuk tambah jarak atas */
+  margin-left: -0.8rem;   /* Tetap geser sedikit ke kiri */
+}
 
-  .dashboardContent {
-    padding: 1rem;
-    margin: 1rem auto;
-  }
+
 
   .welcomeMessage {
     font-size: 1.8rem; /* Ukuran font lebih kecil di ponsel */
