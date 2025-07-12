@@ -29,7 +29,7 @@ const Dashboard = () => {
 
   // State dan Ref untuk Musik Latar Belakang
   const [isPlaying, setIsPlaying] = useState(true);
-  const backgroundAudioRef = useRef(null); // Changed name for clarity
+  const backgroundAudioRef = useRef(null);
 
   // Ref untuk Suara Klik Tombol/Kartu
   const clickAudioRef = useRef(null);
@@ -126,6 +126,18 @@ const Dashboard = () => {
       <ErrorBoundary>
         <Header />
       </ErrorBoundary>
+
+      {/* --- Animasi Latar Belakang (Contoh dengan berbagai emoji) --- */}
+      <div className={styles.animatedBackground}>
+        <div className={styles.animatedElement} style={{ top: '10%', left: '5%', animationDelay: '0s' }}>📚</div>
+        <div className={styles.animatedElement} style={{ top: '20%', left: '70%', animationDelay: '2s' }}>✏️</div>
+        <div className={styles.animatedElement} style={{ top: '40%', left: '15%', animationDelay: '4s' }}>🔢</div>
+        <div className={styles.animatedElement} style={{ top: '60%', left: '85%', animationDelay: '6s' }}>🎮</div>
+        <div className={styles.animatedElement} style={{ top: '80%', left: '40%', animationDelay: '8s' }}>💡</div>
+        <div className={styles.animatedElement} style={{ top: '5%', left: '50%', animationDelay: '10s' }}>⭐</div>
+      </div>
+      {/* --- Akhir Animasi Latar Belakang --- */}
+
       <div className={styles.dashboardContent}>
         <h2 className={styles.welcomeMessage}>
           Halo, {user.username}! 👋 Ayo kita belajar dan bermain!
@@ -174,10 +186,23 @@ const Dashboard = () => {
             <p>Lab AI klasik yang melatih penalaran & perencanaan!</p>
           </Link>
 
+          <Link to="/privacy-policy" className={`${styles.activityCard} ${styles.privacy}`} onClick={playClickSound}>
+            <div className={styles.cardIcon} aria-hidden="true">🔒</div>
+            <h3>Kebijakan Privasi</h3>
+            <p>Pelajari bagaimana kami menjaga data Anda tetap aman.</p>
+          </Link>
 
-      
+          <Link to="/about" className={`${styles.activityCard} ${styles.about}`} onClick={playClickSound}>
+            <div className={styles.cardIcon} aria-hidden="true">🌱</div>
+            <h3>Tentang BrightSeeds</h3>
+            <p>Kisah di balik petualangan belajar kami!</p>
+          </Link>
 
-      
+          <Link to="/contact" className={`${styles.activityCard} ${styles.contact}`} onClick={playClickSound}>
+            <div className={styles.cardIcon} aria-hidden="true">✉️</div>
+            <h3>Hubungi Kami</h3>
+            <p>Punya pertanyaan? Kami siap membantu!</p>
+          </Link>
         </div>
 
         {/* Grup Tombol Logout dan Sound */}

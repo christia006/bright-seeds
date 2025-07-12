@@ -230,7 +230,8 @@ const LandingPage = () => {
       </section>
 
       <footer className={styles.footer}>
-        <p>&copy; 2025 Christian J Hutahaean. All rights reserved.</p>
+        <p>&copy; 2025  Semua hak dilindungi. Dilarang menyalin atau mendistribusikan ulang konten tanpa izin.
+</p>
       </footer>
 
       {/* Overlay dan Konten Modal */}

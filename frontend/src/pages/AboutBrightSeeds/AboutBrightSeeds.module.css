@@ -1,0 +1,204 @@
+/* Styling for the About BrightSeeds Page */
+
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f0ff; /* Light lavender background */
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  color: #333;
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Animasi Latar Belakang (Sparkles) --- */
+.animatedBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sparkle {
+  position: absolute;
+  font-size: 2.8em; /* Ukuran sparkle */
+  opacity: 0.8;
+  animation: twinkle 10s infinite ease-in-out; /* Animasi berkedip dan melayang */
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+    opacity: 0.8;
+  }
+  25% {
+    transform: scale(1.1) translateY(-10px) rotate(15deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+    opacity: 0.7;
+  }
+  75% {
+    transform: scale(0.9) translateY(10px) rotate(-15deg);
+    opacity: 0.9;
+  }
+}
+
+.sparkle:nth-child(2) { animation: twinkle 12s infinite reverse ease-in-out; }
+.sparkle:nth-child(3) { animation: twinkle 11s infinite ease-in-out; font-size: 2.5em; }
+.sparkle:nth-child(4) { animation: twinkle 13s infinite reverse ease-in-out; }
+
+
+/* --- Gaya Konten Utama --- */
+.container {
+  position: relative;
+  z-index: 1;
+  flex-grow: 1;
+  max-width: 90%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  border: 3px solid #e6b2ff; /* Border ungu muda */
+}
+
+.mainTitle, .sectionTitle {
+  color: #a020f0; /* Purple untuk judul */
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.mainTitle {
+  font-size: 2.5em;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed #9932cc; /* Dark Orchid dashed line */
+}
+
+.sectionTitle {
+  font-size: 1.8em;
+  margin-top: 35px;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  border-bottom: 1px dotted #cc99ff; /* Light purple dotted line */
+}
+
+.mainTitle span,
+.sectionTitle span {
+  margin-right: 15px;
+  font-size: 1.5em;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: transform 0.2s ease-out;
+}
+
+/* Animasi bouncing untuk ikon saat hover */
+.iconBounce {
+  animation: bounce 0.5s ease-out;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.introParagraph {
+  font-size: 1.2em;
+  text-align: center;
+  margin-bottom: 25px;
+  color: #555;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.paragraph {
+  font-size: 1.1em;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.infoSection {
+  background-color: #fcf7ff; /* Latar belakang lebih terang */
+  border-radius: 15px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.quote {
+  font-style: italic;
+  text-align: center;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #fffacd; /* Lemon Chiffon background for quote */
+  border-left: 8px solid #ffd700; /* Gold border */
+  border-radius: 15px; /* Lebih melengkung */
+  font-size: 1.3em; /* Lebih besar */
+  color: #8b4513; /* Saddle brown text color */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.quote:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Gaya Tombol Dashboard di Halaman --- */
+.dashboardButtonContainer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #e6b2ff; /* Garis pemisah sesuai tema */
+}
+
+.dashboardButton {
+  display: inline-block;
+  text-decoration: none;
+  background-color: #90ee90; /* Light green */
+  color: #333;
+  padding: 15px 30px;
+  border-radius: 30px;
+  font-size: 1.3em;
+  font-weight: bold;
+  border: 2px solid #3cb371;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.dashboardButton:hover {
+  background-color: #3cb371;
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container { margin: 15px auto; padding: 18px; border-radius: 20px; }
+  .mainTitle { font-size: 2em; margin-bottom: 15px; }
+  .sectionTitle { font-size: 1.5em; margin-top: 25px; }
+  .mainTitle span, .sectionTitle span { font-size: 1.3em; }
+  .introParagraph, .paragraph { font-size: 1em; }
+  .quote { font-size: 1.1em; padding: 15px; }
+  .sparkle { font-size: 2em; animation: twinkle 8s infinite ease-in-out; }
+  .dashboardButton { padding: 12px 25px; font-size: 1.1em; }
+}
+
+@media (max-width: 480px) {
+  .container { margin: 10px auto; padding: 12px; border-radius: 15px; }
+  .mainTitle { font-size: 1.6em; margin-bottom: 10px; }
+  .sectionTitle { font-size: 1.3em; margin-top: 20px; }
+  .mainTitle span, .sectionTitle span { font-size: 1.1em; margin-right: 10px; }
+  .introParagraph, .paragraph { font-size: 0.95em; }
+  .quote { font-size: 1em; padding: 10px; }
+  .sparkle { font-size: 1.5em; animation: twinkle 7s infinite ease-in-out; }
+  .dashboardButton { padding: 10px 20px; font-size: 1em; }
+}

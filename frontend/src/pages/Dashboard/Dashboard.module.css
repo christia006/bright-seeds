@@ -13,8 +13,58 @@
   color: #333;
   padding: 1rem; /* Padding keseluruhan untuk responsivitas */
   box-sizing: border-box; /* Pastikan padding tidak menambah lebar total */
-  position: relative; /* Penting untuk positioning absolut tombol sound */
+  position: relative; /* PENTING: Untuk positioning absolut elemen animasi */
+  overflow: hidden; /* PENTING: Sembunyikan elemen animasi yang keluar batas */
 }
+
+/* --- Animasi Latar Belakang Baru --- */
+.animatedBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Agar tidak menghalangi interaksi mouse */
+  z-index: 0; /* Di belakang konten utama */
+}
+
+.animatedElement {
+  position: absolute;
+  font-size: 3em; /* Ukuran emoji animasi */
+  opacity: 0.6;
+  animation: floatAndFadeDashboard 20s infinite ease-in-out; /* Animasi melayang dan memudar */
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1); /* Sedikit bayangan pada emoji */
+}
+
+@keyframes floatAndFadeDashboard {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translateY(-25px) translateX(15px) rotate(10deg);
+  }
+  50% {
+    transform: translateY(0px) translateX(-10px) rotate(-10deg);
+  }
+  75% {
+    transform: translateY(25px) translateX(20px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0.6;
+  }
+}
+
+/* Variasi animasi untuk setiap elemen untuk membuat lebih acak */
+.animatedElement:nth-child(2) { animation: floatAndFadeDashboard 22s infinite reverse ease-in-out; font-size: 2.8em; }
+.animatedElement:nth-child(3) { animation: floatAndFadeDashboard 18s infinite ease-in-out; font-size: 3.2em; }
+.animatedElement:nth-child(4) { animation: floatAndFadeDashboard 21s infinite reverse ease-in-out; font-size: 2.9em; }
+.animatedElement:nth-child(5) { animation: floatAndFadeDashboard 19s infinite ease-in-out; font-size: 3.5em; }
+.animatedElement:nth-child(6) { animation: floatAndFadeDashboard 23s infinite reverse ease-in-out; font-size: 2.7em; }
+
+/* --- Akhir Animasi Latar Belakang Baru --- */
+
 
 /* Area Konten Dashboard */
 .dashboardContent {
@@ -25,12 +75,16 @@
   justify-content: flex-start;
   width: 95%; /* Konten melebar hingga 95% dari lebar parent */
   max-width: 1400px; /* Batasi lebar maksimum agar tidak terlalu lebar di layar super besar */
-  margin: 2rem auto; /* Pusatkan konten dengan margin otomatis */
+  margin: 5.5rem auto; /* Geser ke bawah sedikit: dari 2rem ke 2.5rem */
   padding: 1.5rem;
   background-color: #ffffff;
   border-radius: 25px; /* Sudut membulat */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
+  position: relative; /* Agar konten berada di atas animatedBackground */
+  z-index: 1; /* Pastikan konten tampil di atas animasi latar belakang */
 }
+
+
 
 /* Pesan Selamat Datang */
 .welcomeMessage {
@@ -117,8 +171,32 @@
 .miniAIChessCard { background-color: #f3e5f5; border-color: #ce93d8; }
 .miniAIChessCard:hover { border-color: #9c27b0; }
 
+/* Privacy Policy Card Styles */
+.privacy {
+  background-color: #E0F7FA; /* Light cyan - lembut */
+  border-color: #00BCD4; /* Cyan tua - kalem */
+}
+.privacy:hover {
+  border-color: #00838F; /* Border lebih gelap saat di-hover */
+}
 
+/* About BrightSeeds Card Styles */
+.about {
+  background-color: #FFF3E0; /* Light orange - hangat */
+  border-color: #FF9800; /* Oranye sedang */
+}
+.about:hover {
+  border-color: #E65100; /* Lebih gelap saat di-hover */
+}
 
+/* Contact Us Card Styles */
+.contact {
+  background-color: #F3E5F5; /* Light purple - ceria */
+  border-color: #9C27B0; /* Ungu sedang */
+}
+.contact:hover {
+  border-color: #4A148C; /* Lebih gelap saat di-hover */
+}
 
 /* Grup Tombol Logout dan Sound */
 .buttonGroup {
@@ -228,6 +306,12 @@
     width: 20px;
     height: 20px;
   }
+
+  /* Animasi Latar Belakang Responsif */
+  .animatedElement {
+    font-size: 2.5em; /* Kecilkan ukuran di layar kecil */
+    animation: floatAndFadeDashboard 15s infinite ease-in-out; /* Percepat sedikit animasi */
+  }
 }
 
 @media (max-width: 480px) {
@@ -282,6 +366,12 @@
   .musicToggleButton svg {
     width: 18px;
     height: 18px;
+  }
+
+  /* Animasi Latar Belakang Responsif */
+  .animatedElement {
+    font-size: 2em; /* Lebih kecil lagi */
+    animation: floatAndFadeDashboard 12s infinite ease-in-out; /* Lebih cepat lagi */
   }
 }
 
