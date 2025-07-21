@@ -69,7 +69,7 @@ const AboutBrightSeeds = () => {
             >🧑‍💻</span> Siapa di Balik BrightSeeds?
           </h2>
           <p className={styles.paragraph}>
-            BrightSeeds dikembangkan oleh <strong>Christian Johannes Hutahaean</strong> pada tahun 2025, sebagai kontribusi nyata untuk pendidikan anak-anak Indonesia.
+            BrightSeeds dikembangkan oleh seorang<strong> Mahasiswa IT </strong> pada tahun 2025, sebagai kontribusi nyata untuk pendidikan anak-anak Indonesia.
           </p>
         </div>
 
