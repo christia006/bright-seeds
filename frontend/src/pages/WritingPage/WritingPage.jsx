@@ -17,9 +17,17 @@ const ConfettiExplosionPlaceholder = ({ force, duration, particleCount, width, h
 const ActualConfettiExplosion = typeof ConfettiExplosion !== 'undefined' ? ConfettiExplosion : ConfettiExplosionPlaceholder;
 
 const alphabetLetters = Array.from({ length: 26 }, (_, i) => String.fromCharCode(97 + i)); // 'a' through 'z'
+const LOCAL_STORAGE_KEY = 'currentLetterIndex'; // Kunci untuk localStorage
 
 const WritingPage = () => {
-    const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
+    // Inisialisasi state dari localStorage atau default ke 0 (huruf 'a')
+    const [currentLetterIndex, setCurrentLetterIndex] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const savedIndex = localStorage.getItem(LOCAL_STORAGE_KEY);
+            return savedIndex !== null ? parseInt(savedIndex, 10) : 0;
+        }
+        return 0; // Default if not in browser environment
+    });
     const [feedback, setFeedback] = useState('');
     const [feedbackColor, setFeedbackColor] = useState('');
     const [isExploding, setIsExploding] = useState(false);
@@ -99,7 +107,6 @@ const WritingPage = () => {
     }, []);
 
     // --- Canvas Drawing Logic ---
-    // This function redraws the guide and the user's path
     const redrawCanvas = useCallback(() => {
         const canvas = canvasRef.current;
         const hiddenCanvas = hiddenCanvasRef.current;
@@ -245,13 +252,6 @@ const WritingPage = () => {
         hiddenCtx.fillStyle = 'black';
         hiddenCtx.fillText(currentLetter.toUpperCase(), hiddenCanvas.width / 2, hiddenCanvas.height / 2);
 
-        // Get pixel data from both canvases
-        // Important: We need the *actual* user drawing. The visible canvas (ctx) has both guide and user drawing.
-        // To accurately check *only* the user's drawing against the hidden target,
-        // we can temporarily draw only the user's path onto a new temporary canvas,
-        // or refine the check.
-        // For simplicity and given the user's request for leniency, we will check the visible canvas's state.
-
         const imageDataUser = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const dataUser = imageDataUser.data;
 
@@ -319,11 +319,18 @@ const WritingPage = () => {
             setTimeout(() => {
                 setIsExploding(false);
                 if (currentLetterIndex < alphabetLetters.length - 1) {
-                    setCurrentLetterIndex(currentLetterIndex + 1);
-                    // The useEffect for currentLetter change will automatically call clearCanvas
+                    const nextIndex = currentLetterIndex + 1;
+                    setCurrentLetterIndex(nextIndex);
+                    // Simpan indeks baru ke localStorage
+                    if (typeof window !== 'undefined') {
+                        localStorage.setItem(LOCAL_STORAGE_KEY, nextIndex.toString());
+                    }
                 } else {
                     // All letters completed
                     setCurrentLetterIndex(0); // Loop back to 'a' or show a final message
+                    if (typeof window !== 'undefined') {
+                        localStorage.setItem(LOCAL_STORAGE_KEY, '0'); // Reset progress if all completed
+                    }
                     setFeedback('Kamu sudah menyelesaikan semua huruf! Hebat! 🎉');
                     setFeedbackColor('purple');
                     // Do NOT clear canvas here. User can admire their final work.
@@ -365,10 +372,7 @@ const WritingPage = () => {
                     </div>
                 )}
 
-                <h1 className={styles.pageTitle}>Ayo Latih Menulis Huruf! ✍️</h1>
-                <p className={styles.instructions}>
-                    Dengarkan suara huruf, lalu **lacak di atas garis huruf** dengan jarimu. Jika sudah selesai, **tekan tombol "Periksa"**!
-                </p>
+              
 
                 <div className={styles.tracingCard}>
                     <h2 className={styles.cardTitle}>Huruf saat ini: <span className={styles.currentLetterDisplay}>{currentLetter.toUpperCase()}</span></h2>
