@@ -9,7 +9,7 @@ const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)
 
 // Helper function untuk menghasilkan soal matematika
 const generateCountingQuestion = () => {
-    const count = getRandomNumber(5, 30); // Hitung objek hingga 30
+    const count = getRandomNumber(3, 20); // Hitung objek hingga 30
     const objectTypes = [
         { name: 'apel', emoji: '🍎' },
         { name: 'bintang', emoji: '⭐' },
@@ -37,8 +37,8 @@ const generateCountingQuestion = () => {
 };
 
 const generateAdditionQuestion = () => {
-    const num1 = getRandomNumber(5, 20); // Angka lebih besar
-    const num2 = getRandomNumber(5, 20);
+    const num1 = getRandomNumber(1, 7); // Angka lebih besar
+    const num2 = getRandomNumber(1, 7);
     return {
         question: `${num1} + ${num2} = ?`,
         answer: num1 + num2,
@@ -48,7 +48,7 @@ const generateAdditionQuestion = () => {
 };
 
 const generateSubtractionQuestion = () => {
-    let num1 = getRandomNumber(10, 30); // Angka lebih besar
+    let num1 = getRandomNumber(1, 9); // Angka lebih besar
     let num2 = getRandomNumber(5, num1 - 5); // Pastikan hasil positif dan cukup besar
     return {
         question: `${num1} - ${num2} = ?`,
