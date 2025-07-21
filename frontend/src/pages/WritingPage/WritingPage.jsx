@@ -1,313 +1,350 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
+// import ConfettiExplosion from 'react-confetti-explosion'; // Uncomment this line if using the real library
 import styles from './WritingPage.module.css';
 
-// Placeholder untuk ConfettiExplosion jika Anda belum menginstalnya atau ingin mengujinya tanpa library
-// Jika Anda sudah menginstal 'react-confetti-explosion', Anda bisa menghapus placeholder ini.
-const ConfettiExplosion = ({ force, duration, particleCount, width, height, colors }) => {
+// Placeholder for ConfettiExplosion if you haven't installed it or want to test without the library.
+const ConfettiExplosionPlaceholder = ({ force, duration, particleCount, width, height, colors }) => {
     useEffect(() => {
-        // Ini adalah komponen dummy. Dalam aplikasi nyata, Anda akan mengimpor library yang sebenarnya.
         if (typeof window !== 'undefined') {
             // console.log("Confetti Explosion would be playing now!");
-            // Anda bisa menambahkan visual sederhana di sini untuk demonstrasi
         }
     }, []);
-    return null; // Tidak merender apapun yang terlihat
-};
-
-// Data untuk konten menulis (huruf, kata, kalimat)
-const writingContent = {
-    letters: {
-        title: "Menulis Huruf",
-        instructions: "Dengarkan suara huruf, lalu ketikkan huruf tersebut di kolom jawaban. Gunakan huruf kecil.",
-        examples: [
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-            'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-            'aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg', 'hh', 'ii', 'jj', 'kk', 'll', 'mm', 'nn', 'oo',
-            'pp', 'qq', 'rr', 'ss', 'tt', 'uu', 'vv', 'ww', 'xx', 'yy', 'zz',
-            'ab', 'ac', 'ad', 'ae', 'af', 'ag', 'ah', 'ai', 'aj', 'ak',
-            'ba', 'ca', 'da', 'ea', 'fa', 'ga', 'ha', 'ia', 'ja', 'ka'
-        ],
-        soundType: 'letter',
-    },
-    words: {
-        title: "Menulis Kata",
-        instructions: "Dengarkan kata yang diucapkan, lalu ketikkan kata tersebut di kolom jawaban. Gunakan huruf kecil.",
-        examples: [
-            'apel', 'buku', 'bola', 'susu', 'roti', 'kucing', 'rumah', 'mobil', 'ikan', 'burung',
-            'meja', 'kursi', 'pensil', 'papan', 'bunga', 'lampu', 'pintu', 'jendela', 'sendok', 'garpu',
-            'naga', 'harimau', 'gajah', 'kelinci', 'monyet', 'kura', 'singa', 'jerapah', 'kuda', 'domba',
-            'jalan', 'makan', 'minum', 'tidur', 'duduk', 'berdiri', 'lompat', 'lari', 'terbang', 'berenang',
-            'cantik', 'pandai', 'rajin', 'malas', 'sedih', 'senang', 'marah', 'takut', 'lapar', 'haus'
-        ],
-        soundType: 'word',
-    },
-    sentences: {
-        title: "Menulis Kalimat",
-        instructions: "Dengarkan kalimat yang diucapkan, lalu ketikkan kalimat tersebut di kolom jawaban. Perhatikan spasi dan tanda baca.",
-        examples: [
-            'Rachel Cantik',
-            'bella nyanyi di rumah budi',
-            'bapak joget pakai sarung',
-            'rachel makan roti jatuh',
-            'kak angel lompat sambil nangis',
-            'mamak baca koran terbalik',
-            'bou mery takut balon meletus',
-            'kakak aulia lari keliling kursi',
-            'bapak jatuh dari bangku',
-            'bella ketawa sampai nangis',
-            'rachel siram bunga kebanyakan air',
-            'kak angel joget balon sabun',
-            'mamak nyanyi suara cempreng',
-            'bou mery makan donat besar',
-            'bapak beli bakso pedas banget',
-            'kakak aulia main boneka kelinci',
-            'rachel tidur sambil ngorok',
-            'bella lompat ke kasur empuk',
-            'bapak baca buku kebalik',
-            'mamak makan mie kepedasan',
-            'kak angel baca buku pink',
-            'bou mery nyanyi sambil lompat',
-            'bella takut boneka panda',
-            'kakak aulia joget di teras',
-            'rachel ketawa keras banget',
-            'bapak lompat sambil pegang sandal',
-            'mamak siram bunga pagi',
-            'bou mery joget di dapur',
-            'kak angel nyanyi nada tinggi',
-            'bella baca buku tebal',
-            'rachel makan roti coklat',
-            'bapak tidur sambil ngorok',
-            'kakak aulia lompat jungkir balik',
-            'mamak jatuh duduk lucu',
-            'bou mery baca buku tipis',
-            'kak angel main balon sabun',
-            'rachel joget keliling rumah',
-            'bella makan donat warna-warni',
-            'bapak ketawa sambil pegang perut',
-            'kakak aulia siram bunga kuning',
-            'mamak beli donat kepedasan',
-            'bou mery lompat ke sofa',
-            'rachel nyanyi sambil ketawa',
-            'kak angel lompat di kasur',
-            'bapak makan mie panas banget',
-            'bella joget sambil ketawa',
-            'mamak lari keliling rumah',
-            'kakak aulia baca buku besar',
-            'rachel takut kucing gendut',
-            'bou mery ketawa jungkir balik',
-            'bapak nyanyi suara sumbang',
-            'kak angel tidur sambil senyum',
-            'bella siram bunga sore',
-            'mamak joget balon sabun',
-            'kakak aulia lompat sambil ketawa',
-            'bapak baca buku tipis',
-            'rachel lompat sambil tertawa',
-            'bou mery makan mie kebanyakan',
-            'kak angel ketawa ngakak keras',
-            'bella nyanyi suara cempreng',
-            'mamak makan roti isi coklat'
-        ],
-        soundType: 'sentence',
-    },
-};
-
-// Fungsi placeholder untuk mendapatkan path suara.
-// Dalam aplikasi nyata, Anda akan memiliki file audio di folder 'public'
-// dan mengembalikan path yang sesuai, misalnya: `/sounds/letters/a.mp3`
-const getSoundPath = (text, type) => {
-    // Contoh: jika Anda memiliki file di public/sounds/letters/a.mp3,
-    // Anda bisa mengembalikan `/sounds/${type}s/${text}.mp3`
-    // Untuk saat ini, kita akan selalu mengembalikan null agar Web Speech API digunakan.
     return null;
 };
 
+const ActualConfettiExplosion = typeof ConfettiExplosion !== 'undefined' ? ConfettiExplosion : ConfettiExplosionPlaceholder;
+
+const alphabetLetters = Array.from({ length: 26 }, (_, i) => String.fromCharCode(97 + i)); // 'a' through 'z'
+
 const WritingPage = () => {
-    const [selectedSection, setSelectedSection] = useState('letters');
-    const [currentExampleIndex, setCurrentExampleIndex] = useState(0);
-    const [userInput, setUserInput] = useState('');
+    const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
     const [feedback, setFeedback] = useState('');
     const [feedbackColor, setFeedbackColor] = useState('');
     const [isExploding, setIsExploding] = useState(false);
 
-    const audioRef = useRef(new Audio()); // Untuk memutar audio pertanyaan (dari getSoundPath atau TTS)
-    const clickAudioRef = useRef(null); // Untuk memutar audio klik tombol
-    const correctSoundRef = useRef(null); // Untuk memutar audio jawaban benar
-    const incorrectSoundRef = useRef(null); // Untuk memutar audio jawaban salah
+    const canvasRef = useRef(null);
+    const hiddenCanvasRef = useRef(null); // Canvas for drawing the target letter for comparison
+    const [isDrawing, setIsDrawing] = useState(false);
+    const [drawingPoints, setDrawingPoints] = useState([]); // Stores {x, y} coordinates of user's drawing
+
+    const clickAudioRef = useRef(null);
+    const correctSoundRef = useRef(null);
+    const incorrectSoundRef = useRef(null);
 
     const navigate = useNavigate();
 
-    const currentContent = writingContent[selectedSection];
-    const currentExample = currentContent.examples[currentExampleIndex];
+    const currentLetter = alphabetLetters[currentLetterIndex];
 
-    // Efek samping untuk inisialisasi suara klik dan suara jawaban
+    // --- Audio Initialization ---
     useEffect(() => {
         if (!clickAudioRef.current) {
-            clickAudioRef.current = new Audio('/sound/tombol.mp3'); // Path untuk suara tombol
+            clickAudioRef.current = new Audio('/sound/tombol.mp3');
             clickAudioRef.current.volume = 0.8;
         }
         if (!correctSoundRef.current) {
-            correctSoundRef.current = new Audio('/sound/benar.mp3'); // Path untuk suara benar
+            correctSoundRef.current = new Audio('/sound/benar.mp3');
             correctSoundRef.current.volume = 1.0;
         }
         if (!incorrectSoundRef.current) {
-            incorrectSoundRef.current = new Audio('/sound/salah.mp3'); // Path untuk suara salah
+            incorrectSoundRef.current = new Audio('/sound/salah.mp3');
             incorrectSoundRef.current.volume = 1.0;
         }
     }, []);
 
-    // Fungsi untuk memutar suara klik
     const playClickSound = () => {
         if (clickAudioRef.current) {
-            clickAudioRef.current.currentTime = 0; // Setel ulang ke awal jika sudah diputar
-            clickAudioRef.current.play().catch(e => console.error("Gagal memutar suara klik:", e));
+            clickAudioRef.current.currentTime = 0;
+            clickAudioRef.current.play().catch(e => console.error("Failed to play click sound:", e));
         }
     };
 
-    // Fungsi untuk memutar suara jawaban benar
     const playCorrectSound = () => {
         if (correctSoundRef.current) {
             correctSoundRef.current.currentTime = 0;
-            correctSoundRef.current.play().catch(e => console.error("Gagal memutar suara benar:", e));
+            correctSoundRef.current.play().catch(e => console.error("Failed to play correct sound:", e));
         }
     };
 
-    // Fungsi untuk memutar suara jawaban salah
     const playIncorrectSound = () => {
         if (incorrectSoundRef.current) {
             incorrectSoundRef.current.currentTime = 0;
-            incorrectSoundRef.current.play().catch(e => console.error("Gagal memutar suara salah:", e));
+            incorrectSoundRef.current.play().catch(e => console.error("Failed to play incorrect sound:", e));
         }
     };
 
-    // Efek samping saat bagian (letters, words, sentences) berubah
-    useEffect(() => {
-        setUserInput('');
-        setFeedback('');
-        setFeedbackColor('');
-        setCurrentExampleIndex(0);
-        setIsExploding(false);
-        // Memastikan suara diputar saat bagian baru dipilih
-        if (currentContent.examples[0]) {
-            playSound();
-        }
-    }, [selectedSection]);
-
-    // Efek samping untuk memutar suara saat currentExample berubah
-    useEffect(() => {
-        // Memastikan suara diputar saat soal baru dimuat
-        if (currentExample) {
-            playSound();
-        }
-    }, [currentExample]); // Dependensi: panggil playSound setiap kali currentExample berubah
-
-    // Fungsi untuk memutar suara dari file atau fallback ke Web Speech API
-    const playSound = () => {
-        if (!currentExample) return;
-
-        const soundText = currentExample.toLowerCase();
-        const soundPath = getSoundPath(soundText, currentContent.soundType);
-
-        if (soundPath) {
-            audioRef.current.src = soundPath;
-            audioRef.current.play().catch(e => {
-                console.warn("Error playing sound from file, falling back to Web Speech API:", e);
-                playWebSpeech(currentExample);
-            });
-        } else {
-            console.warn("No specific sound file found, falling back to Web Speech API for:", currentExample);
-            playWebSpeech(currentExample);
-        }
-    };
-
-    // Fungsi untuk memutar teks menggunakan Web Speech API (Text-to-Speech)
-    const playWebSpeech = (text) => {
+    // --- Web Speech API (Text-to-Speech) for letters ---
+    const playWebSpeech = useCallback((text) => {
         if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
             const msg = new SpeechSynthesisUtterance(text);
             msg.lang = 'id-ID';
             msg.rate = 0.7;
             msg.pitch = 1.0;
 
             const voices = window.speechSynthesis.getVoices();
-            // Pastikan voices dimuat sebelum mencoba mencari
-            window.speechSynthesis.onvoiceschanged = () => {
-                const indoVoice = voices.find(voice => voice.lang === 'id-ID' && voice.name.includes('Google Bahasa Indonesia'));
-                if (indoVoice) {
-                    msg.voice = indoVoice;
-                }
-                window.speechSynthesis.speak(msg);
-            };
-
-            // Jika voices sudah dimuat, langsung panggil speak
-            if (voices.length > 0) {
-                const indoVoice = voices.find(voice => voice.lang === 'id-ID' && voice.name.includes('Google Bahasa Indonesia'));
-                if (indoVoice) {
-                    msg.voice = indoVoice;
-                }
-                window.speechSynthesis.speak(msg);
+            const indoVoice = voices.find(voice => voice.lang === 'id-ID' && voice.name.includes('Google Bahasa Indonesia'));
+            if (indoVoice) {
+                msg.voice = indoVoice;
+            } else {
+                console.warn("Indonesian voice not found, using default voice.");
             }
-
+            window.speechSynthesis.speak(msg);
         } else {
-            console.error("Browser Anda tidak mendukung Web Speech API.");
+            console.error("Your browser does not support Web Speech API.");
             setFeedback("Maaf, browser Anda tidak mendukung fitur suara.");
             setFeedbackColor("orange");
         }
-    };
+    }, []);
 
-    // Handler saat pengguna menekan tombol "Periksa"
-    const handleSubmit = async () => {
-        playClickSound(); // Play click sound on submit
-        const trimmedInput = userInput.trim().toLowerCase();
-        const trimmedExample = currentExample.trim().toLowerCase();
+    // --- Canvas Drawing Logic ---
+    // This function redraws the guide and the user's path
+    const redrawCanvas = useCallback(() => {
+        const canvas = canvasRef.current;
+        const hiddenCanvas = hiddenCanvasRef.current;
+        if (!canvas || !hiddenCanvas) return;
 
-        if (trimmedInput === trimmedExample) {
-            playCorrectSound(); // Play correct sound
-            setFeedback('Hebat! Betul sekali! Lanjut ke tantangan berikutnya! ✨');
-            setFeedbackColor('green');
-            setIsExploding(true);
+        const ctx = canvas.getContext('2d');
+        const hiddenCtx = hiddenCanvas.getContext('2d');
 
-            setTimeout(() => {
-                setIsExploding(false);
-                if (currentExampleIndex < currentContent.examples.length - 1) {
-                    setCurrentExampleIndex(currentExampleIndex + 1);
-                } else {
-                    setCurrentExampleIndex(0);
-                    setFeedback('Kamu sudah menyelesaikan semua tantangan di bagian ini! Hebat! 🎉');
-                    setFeedbackColor('purple');
+        // Clear visible canvas completely
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the light guide on visible canvas
+        ctx.font = `${Math.min(canvas.width, canvas.height) * 0.7}px 'Comic Sans MS', cursive, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(100, 100, 255, 0.2)'; // Faded blue for guide
+        ctx.fillText(currentLetter.toUpperCase(), canvas.width / 2, canvas.height / 2);
+
+        // Draw the user's path on visible canvas
+        ctx.strokeStyle = '#FF5722'; // User's drawing color (orange-red)
+        ctx.lineWidth = 15; // Thicker line for child-like drawing
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        // Redraw all drawing points, handling multiple segments
+        ctx.beginPath();
+        if (drawingPoints.length > 0) {
+            drawingPoints.forEach((point, index) => {
+                if (point.type === 'start') {
+                    ctx.moveTo(point.x, point.y);
+                } else { // type === 'draw'
+                    ctx.lineTo(point.x, point.y);
                 }
-                setUserInput('');
-                setTimeout(() => {
-                    setFeedback('');
-                    setFeedbackColor('');
-                }, 1000);
-            }, 1500);
-
-        } else {
-            playIncorrectSound(); // Play incorrect sound
-            setFeedback('Coba lagi, ya! Jangan menyerah! Kamu pasti bisa! 💪');
-            setFeedbackColor('red');
-            setIsExploding(false);
+            });
+            ctx.stroke();
         }
+
+        // Clear and draw the solid target letter on the hidden canvas for comparison
+        hiddenCtx.clearRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+        hiddenCtx.font = `${Math.min(hiddenCanvas.width, hiddenCanvas.height) * 0.7}px 'Comic Sans MS', cursive, sans-serif`;
+        hiddenCtx.textAlign = 'center';
+        hiddenCtx.textBaseline = 'middle';
+        hiddenCtx.fillStyle = 'black'; // Use a solid, distinguishable color for the target
+        hiddenCtx.fillText(currentLetter.toUpperCase(), hiddenCanvas.width / 2, hiddenCanvas.height / 2);
+
+    }, [currentLetter, drawingPoints]); // Redraw whenever currentLetter or drawingPoints change
+
+    const clearCanvas = useCallback(() => {
+        setDrawingPoints([]); // Reset drawing points
+        setFeedback(''); // Clear feedback
+        setFeedbackColor('');
+        setIsExploding(false); // Ensure confetti stops
+        // Redraw will be triggered by drawingPoints change, which will clear and redraw the guide
+    }, []);
+
+
+    // Effect to play sound and reset for new letter
+    useEffect(() => {
+        if (currentLetter) {
+            playWebSpeech(currentLetter);
+            clearCanvas(); // Clear canvas for new letter
+        }
+    }, [currentLetter, playWebSpeech, clearCanvas]);
+
+    // Effect to handle canvas resizing and initial drawing
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const hiddenCanvas = hiddenCanvasRef.current;
+        if (!canvas || !hiddenCanvas) return;
+
+        const resizeCanvas = () => {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            hiddenCanvas.width = canvas.offsetWidth; // Hidden canvas matches visible one
+            hiddenCanvas.height = canvas.offsetHeight;
+            redrawCanvas(); // Redraw everything on resize
+        };
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); // Initial size setting
+
+        return () => window.removeEventListener('resize', resizeCanvas);
+    }, [redrawCanvas]); // Depends on redrawCanvas
+
+
+    const getCanvasCoordinates = (event) => {
+        const canvas = canvasRef.current;
+        const rect = canvas.getBoundingClientRect();
+        let clientX, clientY;
+
+        if (event.touches) {
+            clientX = event.touches[0].clientX;
+            clientY = event.touches[0].clientY;
+        } else {
+            clientX = event.clientX;
+            clientY = event.clientY;
+        }
+
+        return {
+            x: clientX - rect.left,
+            y: clientY - rect.top,
+        };
     };
 
-    // Handler untuk melewati soal saat ini
-    const handleSkip = () => {
-        playClickSound(); // Play click sound on skip
-        setIsExploding(false);
-        if (currentExampleIndex < currentContent.examples.length - 1) {
-            setCurrentExampleIndex(currentExampleIndex + 1);
-        } else {
-            setCurrentExampleIndex(0);
-        }
-        setUserInput('');
-        setFeedback('');
+    const handleStartDrawing = (event) => {
+        setIsDrawing(true);
+        const point = getCanvasCoordinates(event);
+        // Add a 'start' type point to signal a new drawing segment
+        setDrawingPoints(prevPoints => [...prevPoints, { type: 'start', x: point.x, y: point.y }]);
+        setFeedback(''); // Clear feedback when new drawing starts
         setFeedbackColor('');
     };
 
-    // Handler untuk navigasi ke Dashboard
+    const handleDrawing = (event) => {
+        if (!isDrawing) return;
+        const point = getCanvasCoordinates(event);
+        // Add a 'draw' type point for continuous drawing
+        setDrawingPoints(prevPoints => [...prevPoints, { type: 'draw', x: point.x, y: point.y }]);
+    };
+
+    const handleEndDrawing = () => {
+        setIsDrawing(false);
+        // No auto-validation here
+    };
+
+    // --- Accurate Completion Logic (Pixel-based comparison) ---
+    const checkAccurateCompletion = useCallback(() => {
+        const canvas = canvasRef.current;
+        const hiddenCanvas = hiddenCanvasRef.current;
+        if (!canvas || !hiddenCanvas) {
+            console.error("Canvas references are null.");
+            return false;
+        }
+
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const hiddenCtx = hiddenCanvas.getContext('2d', { willReadFrequently: true });
+
+        // Ensure the target letter is drawn correctly on the hiddenCanvas before comparison
+        hiddenCtx.clearRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+        hiddenCtx.font = `${Math.min(hiddenCanvas.width, hiddenCanvas.height) * 0.7}px 'Comic Sans MS', cursive, sans-serif`;
+        hiddenCtx.textAlign = 'center';
+        hiddenCtx.textBaseline = 'middle';
+        hiddenCtx.fillStyle = 'black';
+        hiddenCtx.fillText(currentLetter.toUpperCase(), hiddenCanvas.width / 2, hiddenCanvas.height / 2);
+
+        // Get pixel data from both canvases
+        // Important: We need the *actual* user drawing. The visible canvas (ctx) has both guide and user drawing.
+        // To accurately check *only* the user's drawing against the hidden target,
+        // we can temporarily draw only the user's path onto a new temporary canvas,
+        // or refine the check.
+        // For simplicity and given the user's request for leniency, we will check the visible canvas's state.
+
+        const imageDataUser = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const dataUser = imageDataUser.data;
+
+        const imageDataTarget = hiddenCtx.getImageData(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+        const dataTarget = imageDataTarget.data;
+
+        let totalTargetPixels = 0; // Pixels that form the letter on the hidden canvas
+        let matchedPixels = 0;     // Pixels on the user's canvas that overlap with target pixels
+
+        // NEW: Increased tolerance and adjusted coverage for more leniency
+        const colorMatchTolerance = 80; // Allow a wider range for matching the drawing color
+        const requiredCoverage = 0.45; // Only 45% of the target letter needs to be covered
+
+        const drawingColorR = 255; // Red component of #FF5722
+        const drawingColorG = 87;  // Green component of #FF5722
+        const drawingColorB = 34;  // Blue component of #FF5722
+
+        // Iterate through pixels
+        for (let i = 0; i < dataTarget.length; i += 4) {
+            // Check if the target pixel on hidden canvas is part of the letter (non-transparent black)
+            if (dataTarget[i + 3] > 0 && dataTarget[i] === 0 && dataTarget[i+1] === 0 && dataTarget[i+2] === 0) {
+                totalTargetPixels++;
+
+                // Check if the corresponding pixel on the user's canvas has been drawn over (is orange-red)
+                const rUser = dataUser[i];
+                const gUser = dataUser[i + 1];
+                const bUser = dataUser[i + 2];
+                const aUser = dataUser[i + 3];
+
+                // If user pixel is mostly opaque and somewhat matches our drawing color
+                if (aUser > 100 && // Opacity check, must be visible
+                    Math.abs(rUser - drawingColorR) < colorMatchTolerance &&
+                    Math.abs(gUser - drawingColorG) < colorMatchTolerance &&
+                    Math.abs(bUser - drawingColorB) < colorMatchTolerance) {
+                    matchedPixels++;
+                }
+            }
+        }
+
+        const completionPercentage = (totalTargetPixels > 0) ? (matchedPixels / totalTargetPixels) : 0;
+
+        console.log(`Huruf: ${currentLetter.toUpperCase()}, Total Piksel Target: ${totalTargetPixels}, Piksel Cocok: ${matchedPixels}, Persentase Penyelesaian: ${(completionPercentage * 100).toFixed(2)}%`);
+
+        return completionPercentage >= requiredCoverage;
+    }, [currentLetter]);
+
+    const handleSubmit = () => {
+        playClickSound(); // Play sound when check button is pressed
+        if (drawingPoints.length === 0) {
+            setFeedback('Gambarlah hurufnya dulu, ya! 🤔');
+            setFeedbackColor('orange');
+            playIncorrectSound();
+            return; // Do not proceed with check if nothing is drawn
+        }
+
+        const isCorrect = checkAccurateCompletion();
+
+        if (isCorrect) {
+            playCorrectSound();
+            setFeedback('Hebat! Betul sekali! Lanjut ke huruf berikutnya! ✨');
+            setFeedbackColor('green');
+            setIsExploding(true);
+
+            // Wait for confetti/feedback to finish, then advance letter
+            setTimeout(() => {
+                setIsExploding(false);
+                if (currentLetterIndex < alphabetLetters.length - 1) {
+                    setCurrentLetterIndex(currentLetterIndex + 1);
+                    // The useEffect for currentLetter change will automatically call clearCanvas
+                } else {
+                    // All letters completed
+                    setCurrentLetterIndex(0); // Loop back to 'a' or show a final message
+                    setFeedback('Kamu sudah menyelesaikan semua huruf! Hebat! 🎉');
+                    setFeedbackColor('purple');
+                    // Do NOT clear canvas here. User can admire their final work.
+                    // They can manually clear or navigate to dashboard.
+                }
+                setTimeout(() => {
+                    setFeedback('');
+                    setFeedbackColor('');
+                }, 1000); // Clear feedback message after a delay
+            }, 1500); // Confetti duration + a bit
+        } else {
+            playIncorrectSound();
+            setFeedback('Coba lagi, ya! Pastikan kamu melacak hurufnya dengan lengkap! 💪');
+            setFeedbackColor('red');
+            setIsExploding(false);
+            // DO NOT clear canvas here. User's drawing remains.
+        }
+    };
+
     const handleGoToDashboard = () => {
-        playClickSound(); // Play click sound on dashboard button
+        playClickSound();
         navigate('/dashboard');
     };
 
@@ -317,7 +354,7 @@ const WritingPage = () => {
             <div className={styles.contentArea}>
                 {isExploding && (
                     <div className={styles.confettiContainer}>
-                        <ConfettiExplosion
+                        <ActualConfettiExplosion
                             force={0.8}
                             duration={3000}
                             particleCount={100}
@@ -328,46 +365,41 @@ const WritingPage = () => {
                     </div>
                 )}
 
-                <h1 className={styles.pageTitle}>Ayo Menulis! ✍️</h1>
+                <h1 className={styles.pageTitle}>Ayo Latih Menulis Huruf! ✍️</h1>
+                <p className={styles.instructions}>
+                    Dengarkan suara huruf, lalu **lacak di atas garis huruf** dengan jarimu. Jika sudah selesai, **tekan tombol "Periksa"**!
+                </p>
 
-                <div className={styles.sectionSelector}>
-                    <button
-                        onClick={() => { playClickSound(); setSelectedSection('letters'); }}
-                        className={`${styles.sectionButton} ${selectedSection === 'letters' ? styles.active : ''}`}
-                    >
-                        Menulis Huruf
-                    </button>
-                    <button
-                        onClick={() => { playClickSound(); setSelectedSection('words'); }}
-                        className={`${styles.sectionButton} ${selectedSection === 'words' ? styles.active : ''}`}
-                    >
-                        Menulis Kata
-                    </button>
-                    <button
-                        onClick={() => { playClickSound(); setSelectedSection('sentences'); }}
-                        className={`${styles.sectionButton} ${selectedSection === 'sentences' ? styles.active : ''}`}
-                    >
-                        Menulis Kalimat
-                    </button>
-                </div>
+                <div className={styles.tracingCard}>
+                    <h2 className={styles.cardTitle}>Huruf saat ini: <span className={styles.currentLetterDisplay}>{currentLetter.toUpperCase()}</span></h2>
 
-                <div className={styles.writingCard}>
-                    <h2 className={styles.cardTitle}>{currentContent.title}</h2>
-                    <p className={styles.instructions}>{currentContent.instructions}</p>
-
-                    <div className={styles.exampleContainer}>
-                        <button onClick={() => { playClickSound(); playSound(); }} className={styles.speakButton}>
-                            <span role="img" aria-label="speaker">🔊</span> Dengar Suara
+                    <div className={styles.canvasWrapper}>
+                        <canvas
+                            ref={canvasRef}
+                            className={styles.tracingCanvas}
+                            onMouseDown={handleStartDrawing}
+                            onMouseMove={handleDrawing}
+                            onMouseUp={handleEndDrawing}
+                            onMouseLeave={handleEndDrawing}
+                            onTouchStart={handleStartDrawing}
+                            onTouchMove={handleDrawing}
+                            onTouchEnd={handleEndDrawing}
+                            onTouchCancel={handleEndDrawing}
+                        ></canvas>
+                        <canvas
+                            ref={hiddenCanvasRef}
+                            style={{ display: 'none', position: 'absolute', top: 0, left: 0 }}
+                        ></canvas>
+                        <button onClick={() => { playClickSound(); clearCanvas(); }} className={styles.clearButton}>
+                            Bersihkan <span role="img" aria-label="clear">🧼</span>
                         </button>
                     </div>
 
-                    <textarea
-                        className={styles.writingInput}
-                        value={userInput}
-                        onChange={(e) => setUserInput(e.target.value)}
-                        placeholder="Tulis di sini..."
-                        rows="3"
-                    />
+                    <div className={styles.audioControl}>
+                        <button onClick={() => { playClickSound(); playWebSpeech(currentLetter); }} className={styles.speakButton}>
+                            <span role="img" aria-label="speaker">🔊</span> Dengar Suara
+                        </button>
+                    </div>
 
                     <div className={styles.feedbackMessage} style={{ color: feedbackColor }}>
                         {feedback}
@@ -377,18 +409,14 @@ const WritingPage = () => {
                         <button onClick={handleSubmit} className={styles.submitButton}>
                             Periksa ✅
                         </button>
-                        <button onClick={handleSkip} className={styles.skipButton}>
-                            Lewati ⏭️
+                        <button
+                            onClick={handleGoToDashboard}
+                            className={styles.dashboardButtonWriting}
+                        >
+                            <span role="img" aria-label="dashboard">🏠</span> Dashboard Utama
                         </button>
                     </div>
                 </div>
-
-                <button
-                    onClick={handleGoToDashboard}
-                    className={styles.dashboardButtonWriting}
-                >
-                    <span role="img" aria-label="dashboard">🏠</span> Dashboard Utama
-                </button>
             </div>
         </div>
     );
